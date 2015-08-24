@@ -38,11 +38,11 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 	private LinearLayout mView;
 	private TextView mText;
 	private SurfaceView mImage;
-	
+
 	private Camera mCamera;
 	private SurfaceHolder mSurfaceHolder;
 	private PictureCallback mJpegCallback;
-	
+
 	public static final StepCreatorFragment newInstance(Step step) {
 		final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
 		final Bundle argsBundle = new Bundle(1);
@@ -156,30 +156,26 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 	}
 
 	public void surfaceCreated(SurfaceHolder holder) {
-		try {
-			// open the camera
-			mCamera = Camera.open();
-		} catch (RuntimeException e) {
-			// check for exceptions
-			System.err.println(e);
-			return;
-		}
+		// open the camera
+		mCamera = Camera.open();
+
+		mCamera.setDisplayOrientation(90);
+		
 		Camera.Parameters param;
 		param = mCamera.getParameters();
 
 		// modify parameter
 		param.setPreviewSize(352, 288);
 		mCamera.setParameters(param);
+		// The Surface has been created, now tell the camera where to draw
+		// the preview.
 		try {
-			// The Surface has been created, now tell the camera where to draw
-			// the preview.
 			mCamera.setPreviewDisplay(mSurfaceHolder);
-			mCamera.startPreview();
-		} catch (Exception e) {
-			// check for exceptions
-			System.err.println(e);
-			return;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		mCamera.startPreview();
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -188,5 +184,5 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 		mCamera.release();
 		mCamera = null;
 	}
-	
+
 }
