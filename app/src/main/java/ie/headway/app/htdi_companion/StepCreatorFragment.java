@@ -33,7 +33,7 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 
 	private static final String STEP_KEY = "STEP";
 
-	private Step mStep;
+    private StepBuilder mStepBuilder = new StepBuilder();
 
 	private LinearLayout mView;
 	private TextView mText;
@@ -43,12 +43,8 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 	private SurfaceHolder mSurfaceHolder;
 	private PictureCallback mJpegCallback;
 
-	public static final StepCreatorFragment newInstance(Step step) {
+	public static final StepCreatorFragment newInstance() {
 		final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
-		final Bundle argsBundle = new Bundle(1);
-		argsBundle.putParcelable(STEP_KEY, step);
-		stepCreatorFragment.setArguments(argsBundle);
-
 		return stepCreatorFragment;
 	}
 
@@ -56,19 +52,19 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mStep = getArguments().getParcelable(STEP_KEY);
-
 		mView = new LinearLayout(getActivity().getBaseContext());
 		mView.setOrientation(VERTICAL);
 
 		mText = new TextView(getActivity().getBaseContext());
-		mText.setText(mStep.getText());
+		mText.setText(" ");
 		mText.setTextSize(COMPLEX_UNIT_SP, 25);
 		mText.setGravity(CENTER);
 		mText.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
 		mView.addView(mText);
 
 		mImage = new SurfaceView(getActivity().getBaseContext());
+        mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
 
 		mSurfaceHolder = mImage.getHolder();
 
@@ -105,11 +101,6 @@ public class StepCreatorFragment extends Fragment implements SurfaceHolder.Callb
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return mView;
-	}
-
-	@Override
-	public String toString() {
-		return "Step = " + mStep;
 	}
 
 	private int px2Dp(final Activity activity, final int dp) {
