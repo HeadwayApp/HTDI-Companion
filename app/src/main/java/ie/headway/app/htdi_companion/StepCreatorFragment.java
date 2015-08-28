@@ -23,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -32,11 +33,11 @@ import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
 
-    private StepBuilder mStepBuilder = new StepBuilder();
-
 	private LinearLayout mView;
 	private TextView mText;
 	private CameraView mImage;
+
+    private Button mCreateStepButton;
 
 	public static final StepCreatorFragment newInstance() {
 		final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
@@ -57,11 +58,27 @@ public class StepCreatorFragment extends Fragment {
 		mText.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
 		mView.addView(mText);
 
+        mCreateStepButton = new Button(getActivity().getBaseContext());
+        mCreateStepButton.setText("Create Step");
+        mCreateStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        mCreateStepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                final Step step = new Step(mText.getText().toString(), "", "");
+                try {
+                    mImage.captureImage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        mView.addView(mCreateStepButton);
+
 		mImage = new CameraView(getActivity().getBaseContext());
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
-
-		mView.addView(mImage);
+        mView.addView(mImage);
 	}
 
 	@Override
