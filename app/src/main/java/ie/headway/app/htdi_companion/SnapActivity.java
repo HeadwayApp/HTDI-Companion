@@ -10,6 +10,8 @@ public class SnapActivity extends Activity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
 		setContentView(R.layout.activity_snap);
 
 		final Fragment newFragment = StepCreatorFragment.newInstance();

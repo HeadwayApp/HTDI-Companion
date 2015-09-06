@@ -1,1 +1,1 @@
-include ':app', ':headwaySharedLibrary'
+include ':app'
