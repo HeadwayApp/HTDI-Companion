@@ -16,12 +16,13 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import ie.headway.app.xml.Step;
+
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.LinearLayout.VERTICAL;
-//import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
 
@@ -56,7 +57,7 @@ public class StepCreatorFragment extends Fragment {
         mCreateStepButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                final Step step = new Step(mText.getText().toString(), "", "");
+        		final Step step = new Step(mText.getText().toString(), "", "");
                 try {
                     mImage.captureImage();
                 } catch (IOException e) {
