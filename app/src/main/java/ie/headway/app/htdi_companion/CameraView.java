@@ -5,48 +5,45 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private Camera mCamera; //TODO Should use dependancy injection.
+    private static final String TAG = "CameraView";
+
+    private final Camera mCamera; //TODO Should use dependancy injection.
     private SurfaceHolder mSurfaceHolder;
     private Camera.PictureCallback mJpegCallback;
 
-    public CameraView(final Context context) {
+    public CameraView(final Context context, final Camera camera) {
         super(context);
+        mCamera = camera;
         mSurfaceHolder = getHolder();
-
-        // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.
         mSurfaceHolder.addCallback(this);
+        mJpegCallback = getJpegCallback();
+    }
 
-        // deprecated setting, but required on Android versions prior to 3.0
-        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-        mJpegCallback = new Camera.PictureCallback() {
+    private Camera.PictureCallback getJpegCallback() {
+        return new Camera.PictureCallback() {
+            @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                FileOutputStream outStream = null;
                 try {
-                    outStream = new FileOutputStream(String.format("/sdcard/%d.jpg", System.currentTimeMillis()));
-                    outStream.write(data);
-                    outStream.close();
-                    Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    writeRawDataToFile(data, new File("/sdcard/img"));
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
+                    Log.e(TAG, "exception on line: writeRawDataToFile(data, file)", e);
                 }
-                Toast.makeText(getContext().getApplicationContext(),
-                        "Picture Saved", Toast.LENGTH_SHORT).show();
                 refreshCamera();
             }
         };
+    }
+
+    private void writeRawDataToFile(final byte[] data, final File file) throws IOException {
+        final FileOutputStream outStream = new FileOutputStream(file);
+        outStream.write(data);
+        outStream.close();
     }
 
     public void captureImage() throws IOException {
@@ -80,41 +77,26 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
-        // Now that the size is known, set up the camera parameters and begin
-        // the preview.
         refreshCamera();
     }
 
     @Override
     public void surfaceCreated(final SurfaceHolder holder) {
-        // open the camera
-        mCamera = Camera.open();
 
         mCamera.setDisplayOrientation(90);
 
-        Camera.Parameters param;
-        param = mCamera.getParameters();
-
-        // modify parameter
-        param.setPreviewSize(352, 288);
-        mCamera.setParameters(param);
-        // The Surface has been created, now tell the camera where to draw
-        // the preview.
         try {
             mCamera.setPreviewDisplay(mSurfaceHolder);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.e(TAG, "exception on line: mCamera.setPreviewDisplay(mSurfaceHolder)", e);
         }
         mCamera.startPreview();
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // stop preview and release camera
         mCamera.stopPreview();
         mCamera.release();
-        mCamera = null;
     }
 
 }

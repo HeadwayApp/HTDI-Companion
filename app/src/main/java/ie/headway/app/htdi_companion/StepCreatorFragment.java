@@ -3,6 +3,7 @@ package ie.headway.app.htdi_companion;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Resources;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -68,7 +69,7 @@ public class StepCreatorFragment extends Fragment {
 
         mView.addView(mCreateStepButton);
 
-		mImage = new CameraView(getActivity().getBaseContext());
+		mImage = new CameraView(getActivity().getBaseContext(), Camera.open());
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
         mView.addView(mImage);
