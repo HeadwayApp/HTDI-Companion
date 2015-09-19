@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ie.headway.app.xml.Step;
@@ -27,7 +30,9 @@ import static android.widget.LinearLayout.VERTICAL;
 
 public class StepCreatorFragment extends Fragment {
 
-	private LinearLayout mView;
+    private static final String TAG = "StepCreatorFragment";
+
+    private LinearLayout mView;
 	private TextView mText;
 	private CameraView mImage;
 
@@ -59,17 +64,13 @@ public class StepCreatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
         		final Step step = new Step(mText.getText().toString(), "", "");
-                try {
-                    mImage.captureImage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                mImage.captureImage();
             }
         });
 
         mView.addView(mCreateStepButton);
 
-		mImage = new CameraView(getActivity().getBaseContext(), Camera.open());
+		mImage = new CameraView(getActivity().getBaseContext(), Camera.open(), getJpegCallback());
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
         mView.addView(mImage);
@@ -90,6 +91,25 @@ public class StepCreatorFragment extends Fragment {
 		final float scale = displayMetrics.density;
 		int px = (int) (dp * scale + 0.5f);
 		return px;
+	}
+
+	private Camera.PictureCallback getJpegCallback() {
+		return new Camera.PictureCallback() {
+			@Override
+			public void onPictureTaken(byte[] data, Camera camera) {
+				try {
+					writeRawDataToFile(data, new File("/sdcard/img"));
+				} catch (IOException e) {
+					Log.e(TAG, "exception on line: writeRawDataToFile(data, file)", e);
+				}
+			}
+		};
+	}
+
+	private void writeRawDataToFile(final byte[] data, final File file) throws IOException {
+		final FileOutputStream outStream = new FileOutputStream(file);
+		outStream.write(data);
+		outStream.close();
 	}
 
 }

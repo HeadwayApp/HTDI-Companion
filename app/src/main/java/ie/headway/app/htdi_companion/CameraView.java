@@ -6,52 +6,30 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
+@SuppressWarnings("deprecation")
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "CameraView";
 
-    private final Camera mCamera; //TODO Should use dependancy injection.
-    private SurfaceHolder mSurfaceHolder;
-    private Camera.PictureCallback mJpegCallback;
+    private final Camera mCamera;
+    private final SurfaceHolder mSurfaceHolder;
+    private final Camera.PictureCallback mJpegCallback;
 
-    public CameraView(final Context context, final Camera camera) {
+    public CameraView(final Context context, final Camera camera, final Camera.PictureCallback pictureCallback) {
         super(context);
         mCamera = camera;
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
-        mJpegCallback = getJpegCallback();
+        mJpegCallback = pictureCallback;
     }
 
-    private Camera.PictureCallback getJpegCallback() {
-        return new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    writeRawDataToFile(data, new File("/sdcard/img"));
-                } catch (IOException e) {
-                    Log.e(TAG, "exception on line: writeRawDataToFile(data, file)", e);
-                }
-                refreshCamera();
-            }
-        };
-    }
-
-    private void writeRawDataToFile(final byte[] data, final File file) throws IOException {
-        final FileOutputStream outStream = new FileOutputStream(file);
-        outStream.write(data);
-        outStream.close();
-    }
-
-    public void captureImage() throws IOException {
-        //take the picture
+    public void captureImage() {
         mCamera.takePicture(null, null, mJpegCallback);
     }
 
-    private void refreshCamera() {
+    public void refreshCameraView() {
         if (mSurfaceHolder.getSurface() == null) {
             // preview surface does not exist
             return;
@@ -77,7 +55,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
-        refreshCamera();
+        refreshCameraView();
     }
 
     @Override
