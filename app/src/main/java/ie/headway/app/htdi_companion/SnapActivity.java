@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
+import ie.headway.app.xml.Step;
+import ie.headway.app.xml.Task;
+
 public class SnapActivity extends Activity {
 
 	@Override
@@ -14,7 +19,8 @@ public class SnapActivity extends Activity {
 
 		setContentView(R.layout.activity_snap);
 
-		final Fragment newFragment = StepCreatorFragment.newInstance();
+		final Fragment newFragment = StepCreatorFragment.newInstance(
+				new Task("TestCompanion", new ArrayList<Step>()));
 		getFragmentManager().beginTransaction().add(R.id.splash_screen_layout, newFragment, "tagoo").commit();
 	}
 
