@@ -35,7 +35,7 @@ public class StepCreatorFragment extends Fragment {
 
     private static final String TAG = "StepCreatorFragment";
 
-    private static int stepCnt = 1;
+    private int stepCnt = 1;
 
 	private Task mTask;
 
@@ -83,6 +83,13 @@ public class StepCreatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mImage.captureImage();
+
+                //TODO Deserialize the previously created task and add to it.
+                // This actually isn't even a bad idea for the refactoring.
+                // It will hurt performance but a loading screen will fix that in terms of UX.
+                // This is a good functional-style approach for not allowing inconsistent state between
+                // the file and the object to corrupt the system.
+
                 final Step step = new Step(mText.getText().toString(), file.getAbsolutePath(), "");
 
                 mTask = getArguments().getParcelable("task");
@@ -97,12 +104,18 @@ public class StepCreatorFragment extends Fragment {
                 }
 
                 stepCnt++;
+
+                mText.setText("");
+
             }
         });
 
         mView.addView(mCreateStepButton);
 
-        mImage = new CameraView(getActivity().getBaseContext(), Camera.open(), JpegCallback.newInstance(file));
+        final JpegCallback jCall = JpegCallback.newInstance(file, null);
+
+        mImage = new CameraView(getActivity().getBaseContext(), Camera.open(), jCall);
+        jCall.setCamView(mImage);
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
         mView.addView(mImage);
