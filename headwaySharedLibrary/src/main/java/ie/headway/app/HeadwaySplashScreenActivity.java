@@ -7,8 +7,12 @@ import android.os.Bundle;
 
 public abstract class HeadwaySplashScreenActivity extends Activity {
 
+	public HeadwaySplashScreenActivity() {
+		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+	}
+
 	@Override
-	public void onCreate(final Bundle savedInstanceBundle) {
+	protected void onCreate(final Bundle savedInstanceBundle) {
 		super.onCreate(savedInstanceBundle);
 		setContentView(R.layout.activity_splash_screen);
 		makeAppDirs();	//NOTE  Having this across both apps may cause problems, keep that in mind.

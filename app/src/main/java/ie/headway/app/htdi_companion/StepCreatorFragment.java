@@ -45,12 +45,7 @@ public class StepCreatorFragment extends Fragment {
 
     private Button mCreateStepButton;
 
-    final File file = new File(
-            Environment.getExternalStorageDirectory() +
-                    File.separator + "Headway" +
-                    File.separator + "TestCompanion" +
-                    File.separator + "imgs" +
-                    File.separator + String.valueOf(stepCnt) + ".jpg");
+    private File file;
 
 	public static final StepCreatorFragment newInstance(final Task task) {
         final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
@@ -63,6 +58,13 @@ public class StepCreatorFragment extends Fragment {
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
+
+        final String taskName = ((Task)getArguments().getParcelable("task")).getName();
+
+        file = AppDir.ROOT.getFile( File.separator + taskName +
+                                    File.separator + "imgs" +
+                                    File.separator + String.valueOf(stepCnt) + ".jpg");
+
 
         mView = new LinearLayout(getActivity().getBaseContext());
         mView.setOrientation(VERTICAL);
