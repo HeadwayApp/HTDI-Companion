@@ -11,6 +11,8 @@ import ie.headway.app.xml.Task;
 
 public class SnapActivity extends Activity {
 
+    private String mTaskName = "TestCompanion";
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,8 +22,10 @@ public class SnapActivity extends Activity {
 		setContentView(R.layout.activity_snap);
 
 		final Fragment newFragment = StepCreatorFragment.newInstance(
-				new Task("TestCompanion", new ArrayList<Step>()));
-		getFragmentManager().beginTransaction().add(R.id.splash_screen_layout, newFragment, "tagoo").commit();
+				new Task(mTaskName, new ArrayList<Step>()));
+
+		getFragmentManager().beginTransaction().add(R.id.splash_screen_layout, newFragment, "tagoo")
+                .commit();
 	}
 
 }

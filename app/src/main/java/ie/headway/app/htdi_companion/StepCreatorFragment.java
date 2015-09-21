@@ -35,6 +35,8 @@ public class StepCreatorFragment extends Fragment {
 
     private static final String TAG = "StepCreatorFragment";
 
+    private static int stepCnt = 1;
+
 	private Task mTask;
 
     private LinearLayout mView;
@@ -47,7 +49,8 @@ public class StepCreatorFragment extends Fragment {
             Environment.getExternalStorageDirectory() +
                     File.separator + "Headway" +
                     File.separator + "TestCompanion" +
-                    File.separator + "1.jpg");
+                    File.separator + "imgs" +
+                    File.separator + String.valueOf(stepCnt) + ".jpg");
 
 	public static final StepCreatorFragment newInstance(final Task task) {
         final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
@@ -90,6 +93,8 @@ public class StepCreatorFragment extends Fragment {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
+                stepCnt++;
             }
         });
 

@@ -1,7 +1,6 @@
 package ie.headway.app.htdi_companion;
 
 import android.hardware.Camera;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
