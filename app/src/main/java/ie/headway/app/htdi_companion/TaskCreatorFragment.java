@@ -96,9 +96,7 @@ public class TaskCreatorFragment extends Fragment {
                         File.separator + String.valueOf(++stepCnt) + ".jpg");
 
                 String filePath = file.getAbsolutePath();
-                Log.i("mo", "filePath is: " + filePath);
                 filePath = filePath.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
-                Log.w("mo", "filePath.replace(" + Environment.getExternalStorageDirectory().getAbsolutePath() + ", " + PortableStep.PATH_ARTIFACT + ")");
 
                 final PortableStep step = new PortableStep(mText.getText().toString(), filePath, "");
                 Log.w("mo", "created step " + step);
