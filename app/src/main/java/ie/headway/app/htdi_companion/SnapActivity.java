@@ -2,8 +2,10 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class SnapActivity extends Activity {
 
 		setContentView(R.layout.activity_snap);
 
-		Task task = (Task)getIntent().getParcelableExtra("task");
+		Task task = (Task) getIntent().getParcelableExtra("task");
 
 		task = new Task(task.getName(), new ArrayList<Step>());
 
@@ -32,7 +34,7 @@ public class SnapActivity extends Activity {
 		final Fragment newFragment = StepCreatorFragment.newInstance(task);
 
 		getFragmentManager().beginTransaction().add(R.id.splash_screen_layout, newFragment, "tagoo")
-                .commit();
+				.commit();
 	}
 
 }

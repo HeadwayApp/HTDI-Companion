@@ -5,10 +5,10 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,7 +21,6 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.xml.Step;
@@ -117,9 +116,12 @@ public class StepCreatorFragment extends Fragment {
 
         mView.addView(mCreateStepButton);
 
-        jCall = JpegCallback.newInstance(file, null);
+        jCall = JpegCallback.newInstance(file, null, getActivity());
 
-        mImage = new CameraView(getActivity().getBaseContext(), Camera.open(), jCall);
+        final Camera camera = Camera.open();
+        setCameraDisplayOrientation(getActivity(), 0, camera);
+
+        mImage = new CameraView(getActivity().getBaseContext(), camera, jCall);
         jCall.setCamView(mImage);
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
@@ -138,5 +140,35 @@ public class StepCreatorFragment extends Fragment {
 		final int px = (int) (dp * scale + 0.5f);
 		return px;
 	}
+
+    public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360; // compensate the mirror
+        } else { // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
+    }
 
 }
