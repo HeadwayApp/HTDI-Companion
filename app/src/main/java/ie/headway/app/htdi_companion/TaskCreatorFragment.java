@@ -136,7 +136,7 @@ public class TaskCreatorFragment extends Fragment {
         mImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                final String taskName = mTask != null ? mTask.getName() : "";
+                final String taskName = (mTask != null) ? mTask.getName() : "";
                 Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
                 return true;
