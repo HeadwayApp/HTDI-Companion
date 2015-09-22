@@ -2,6 +2,7 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -48,6 +50,8 @@ public class TaskCreatorFragment extends Fragment {
 	private CameraView mImage;
 
     private Button mCreateStepButton;
+
+    private Button mFinishedButton;
 
     private File file;
 
@@ -129,6 +133,15 @@ public class TaskCreatorFragment extends Fragment {
         jCall.setCamView(mImage);
         mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
+        mImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final String taskName = mTask != null ? mTask.getName() : "";
+                Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
+                return true;
+            }
+        });
         mView.addView(mImage);
 
 		return mView;
