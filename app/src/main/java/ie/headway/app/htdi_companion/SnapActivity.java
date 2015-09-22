@@ -2,10 +2,7 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Surface;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class SnapActivity extends Activity {
 		final File file = AppDir.ROOT.getFile(task.getName() + File.separator + "imgs");
 		file.mkdirs();
 
-		final Fragment newFragment = StepCreatorFragment.newInstance(task);
+		final Fragment newFragment = TaskCreatorFragment.newInstance(task);
 
 		getFragmentManager().beginTransaction().add(R.id.splash_screen_layout, newFragment, "tagoo")
 				.commit();

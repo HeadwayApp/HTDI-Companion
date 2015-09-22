@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 
 import ie.headway.app.disk.AppDir;
-import ie.headway.app.xml.Step;
+import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Task;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
@@ -32,9 +33,9 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.LinearLayout.VERTICAL;
 
-public class StepCreatorFragment extends Fragment {
+public class TaskCreatorFragment extends Fragment {
 
-    private static final String TAG = "StepCreatorFragment";
+    private static final String TAG = "TaskCreatorFragment";
 
     private int stepCnt = 0;
 
@@ -50,12 +51,12 @@ public class StepCreatorFragment extends Fragment {
 
     private File file;
 
-	public static final StepCreatorFragment newInstance(final Task task) {
-        final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
+	public static final TaskCreatorFragment newInstance(final Task task) {
+        final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
         final Bundle args = new Bundle();
         args.putParcelable("task", task);
-        stepCreatorFragment.setArguments(args);
-        return stepCreatorFragment;
+        taskCreatorFragment.setArguments(args);
+        return taskCreatorFragment;
     }
 
 	@Override
@@ -94,7 +95,12 @@ public class StepCreatorFragment extends Fragment {
                         File.separator + "imgs" +
                         File.separator + String.valueOf(++stepCnt) + ".jpg");
 
-                final Step step = new Step(mText.getText().toString(), file.getAbsolutePath(), "");
+                String filePath = file.getAbsolutePath();
+                Log.i("mo", "filePath is: " + filePath);
+                filePath = filePath.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
+                Log.w("mo", "filePath.replace(" + Environment.getExternalStorageDirectory().getAbsolutePath() + ", " + PortableStep.PATH_ARTIFACT + ")");
+
+                final PortableStep step = new PortableStep(mText.getText().toString(), filePath, "");
                 Log.w("mo", "created step " + step);
 
                 jCall.setFile(file);
