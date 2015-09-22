@@ -41,6 +41,10 @@ public class Task implements Parcelable {
 		return steps.get(index);
 	}
 
+	public List<Step> getSteps() {
+		return steps;
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -67,5 +71,10 @@ public class Task implements Parcelable {
 			return new Task[size];
 		}
 	};
+
+	@Override
+	public String toString() {
+		return "name: " + name + ", steps: " + steps.toString();
+	}
 
 }

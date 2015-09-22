@@ -11,7 +11,7 @@ public class JpegCallback implements Camera.PictureCallback {
 
     private static final String TAG = "JpegCallback";
 
-    private final File mFile;
+    private File mFile;
     private CameraView mCamView;
 
     private JpegCallback(final File file, final CameraView cameraView) {
@@ -49,4 +49,7 @@ public class JpegCallback implements Camera.PictureCallback {
         mCamView = camView;
     }
 
+    public void setFile(File file) {
+        mFile = file;
+    }
 }

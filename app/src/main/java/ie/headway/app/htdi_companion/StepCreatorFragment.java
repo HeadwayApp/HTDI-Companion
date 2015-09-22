@@ -7,6 +7,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.xml.Step;
@@ -35,7 +37,9 @@ public class StepCreatorFragment extends Fragment {
 
     private static final String TAG = "StepCreatorFragment";
 
-    private int stepCnt = 1;
+    private int stepCnt = 0;
+
+    private JpegCallback jCall;
 
 	private Task mTask;
 
@@ -65,7 +69,6 @@ public class StepCreatorFragment extends Fragment {
                                     File.separator + "imgs" +
                                     File.separator + String.valueOf(stepCnt) + ".jpg");
 
-
         mView = new LinearLayout(getActivity().getBaseContext());
         mView.setOrientation(VERTICAL);
 
@@ -84,15 +87,19 @@ public class StepCreatorFragment extends Fragment {
             public void onClick(View view) {
                 mImage.captureImage();
 
-                //TODO Deserialize the previously created task and add to it.
-                // This actually isn't even a bad idea for the refactoring.
-                // It will hurt performance but a loading screen will fix that in terms of UX.
-                // This is a good functional-style approach for not allowing inconsistent state between
-                // the file and the object to corrupt the system.
+                mTask = getArguments().getParcelable("task");
+
+                Log.i("mo", "Received Task as arg: " + mTask.toString());
+
+                file = AppDir.ROOT.getFile(File.separator + taskName +
+                        File.separator + "imgs" +
+                        File.separator + String.valueOf(++stepCnt) + ".jpg");
 
                 final Step step = new Step(mText.getText().toString(), file.getAbsolutePath(), "");
+                Log.w("mo", "created step " + step);
 
-                mTask = getArguments().getParcelable("task");
+                jCall.setFile(file);
+
                 mTask.addStep(step);
 
                 final Serializer serializer = new Persister();
@@ -103,8 +110,6 @@ public class StepCreatorFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
 
-                stepCnt++;
-
                 mText.setText("");
 
             }
@@ -112,7 +117,7 @@ public class StepCreatorFragment extends Fragment {
 
         mView.addView(mCreateStepButton);
 
-        final JpegCallback jCall = JpegCallback.newInstance(file, null);
+        jCall = JpegCallback.newInstance(file, null);
 
         mImage = new CameraView(getActivity().getBaseContext(), Camera.open(), jCall);
         jCall.setCamView(mImage);
