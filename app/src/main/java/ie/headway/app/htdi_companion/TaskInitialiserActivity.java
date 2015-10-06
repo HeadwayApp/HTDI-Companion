@@ -46,7 +46,7 @@ public class TaskInitialiserActivity extends Activity {
     }
 
     private void startTaskCreation(final Context context, final CharSequence taskName) {
-        final Intent intent = new Intent(context, SnapActivity.class);
+        final Intent intent = new Intent(context, TaskCreatorActivity.class);
         final Task task = new Task(taskName.toString(), new ArrayList<Step>(10));
         intent.putExtra("task", task);
         startActivity(intent);

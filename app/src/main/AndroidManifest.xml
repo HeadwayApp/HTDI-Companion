@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ie.headway.app.htdi_companion.SnapActivity"
+            android:name=".TaskCreatorActivity"
             android:label="@string/app_name" />
         <activity
             android:name="ie.headway.app.htdi_companion.TaskInitialiserActivity"

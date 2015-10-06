@@ -3,15 +3,18 @@ package ie.headway.app.xml;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.Root;
 
+import java.io.File;
+import java.util.List;
+
+import ie.headway.app.disk.AppDir;
+
 @Root
-public class Task implements Parcelable {
+public class Task implements Parcelable, RequiresDirs {
 
 	@Attribute private String name;
     @ElementListUnion({
@@ -21,7 +24,6 @@ public class Task implements Parcelable {
 	private List<Step> steps;
 	
 	public Task() {
-		
 	}
 	
 	public Task(final String name, List<Step> steps) {
@@ -74,7 +76,16 @@ public class Task implements Parcelable {
 
 	@Override
 	public String toString() {
-		return "name: " + name + ", steps: " + steps.toString();
+		return name;
 	}
 
+	@Override
+	public void makeRequiredDirs() {
+		final File taskImgDirectory = AppDir.ROOT.getFile(getName() + File.separator + "imgs");
+		final boolean dirsAlreadyExist = taskImgDirectory.exists();
+		final boolean wasSuccessful = taskImgDirectory.mkdirs();
+		if(!dirsAlreadyExist && !wasSuccessful) {
+			throw new RuntimeException("Couldn't make task directories for task: " + this);
+		}
+	}
 }
