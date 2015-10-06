@@ -1,68 +1,55 @@
 package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ie.headway.app.htdi_companion.R.layout;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
 public class TaskInitialiserActivity extends Activity {
 
-    private LinearLayout mContentView;
-
-    private EditText mInputText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(mContentView = new LinearLayout(this));
-        mContentView.setOrientation(LinearLayout.VERTICAL);
-        mContentView.addView(getTextView());
-        mContentView.addView(getTextBox());
-        mContentView.addView(getEntryButton());
+        setContentView(layout.activity_task_initialiser);
     }
 
-    private TextView getTextView() {
-        final TextView tv = new TextView(this);
-        tv.setText("Enter name of task");
-        return tv;
+    public void onClickStartTaskCreationButton(final View v) {
+        final Context context = getApplicationContext();
+        final String taskNameFromView = getCurrentlyEnteredTaskNameText();
+
+        if (taskNameFromView.isEmpty()) {
+            showEnterTaskNameToast(context);
+        } else {
+            startTaskCreation(context, taskNameFromView);
+        }
     }
 
-    private EditText getTextBox() {
-        final EditText et = new EditText(this);
-        mInputText = et;
-        return et;
+    private String getCurrentlyEnteredTaskNameText() {
+        final EditText inputTaskNameView = (EditText)findViewById(R.id.input_task_name_view);
+        final String taskNameFromView = inputTaskNameView.getText().toString();
+        return taskNameFromView;
     }
 
-    private Button getEntryButton() {
-        final Button btn = new Button(this);
-        btn.setText("Create Task");
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mInputText.getText().length() < 1) {
-                    Toast.makeText(
-                            TaskInitialiserActivity.this, "Enter name of task", Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    final Intent intent = new Intent(TaskInitialiserActivity.this, SnapActivity.class);
-                    final Task task = new Task(mInputText.getText().toString(), new ArrayList<Step>());
-                    intent.putExtra("task", task);
-                    startActivity(intent);
-                }
-            }
-        });
+    private void showEnterTaskNameToast(final Context context) {
+        final String toastText = getString(R.string.enter_task_toast_text);
+        final Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
-        return btn;
+    private void startTaskCreation(final Context context, final CharSequence taskName) {
+        final Intent intent = new Intent(context, SnapActivity.class);
+        final Task task = new Task(taskName.toString(), new ArrayList<Step>(10));
+        intent.putExtra("task", task);
+        startActivity(intent);
     }
 
 }
