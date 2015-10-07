@@ -1,11 +1,11 @@
 package ie.headway.app.xml;
 
-import java.io.File;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.simpleframework.xml.Attribute;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.File;
 
 public class Step implements Parcelable {
 
@@ -71,7 +71,7 @@ public class Step implements Parcelable {
 	
 	/**
 	 * TODO Can't be private because compiler error occurs. I don't remember this happening before,
-	 * this should be investigated further. The API example code has the ctor as private as well.
+	 * this should be investigated further. The API example code has the ctor as private aswell.
 	 * */
 	Step(Parcel in) {
 		this(in.readString(), 

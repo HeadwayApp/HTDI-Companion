@@ -53,7 +53,7 @@ public class Task implements Parcelable, RequiresDirs {
 	}
 
 	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+	public void writeToParcel(final Parcel dest, final int flags) {
 		dest.writeString(name);
 		dest.writeList(steps);
 	}
