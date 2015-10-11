@@ -9,6 +9,7 @@ import org.simpleframework.xml.ElementListUnion;
 import org.simpleframework.xml.Root;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import ie.headway.app.disk.AppDir;
@@ -31,7 +32,7 @@ public class Task implements Parcelable, RequiresDirs {
   public Task() {
   }
 
-  public Task(final String name, List<Step> steps) {
+  public Task(final String name, final List<Step> steps) {
     this.name = name;
     this.steps = steps;
   }
@@ -44,7 +45,7 @@ public class Task implements Parcelable, RequiresDirs {
     steps.add(step);
   }
 
-  public Step getStep(int index) {
+  public Step getStep(final int index) {
     return steps.get(index);
   }
 
@@ -65,7 +66,7 @@ public class Task implements Parcelable, RequiresDirs {
 
   public Task(final Parcel in) {
     name = in.readString();
-    in.readList(steps, null);
+    retrieveStepsFromParcel(in);
   }
 
   public static final Creator<Task> CREATOR
@@ -94,4 +95,12 @@ public class Task implements Parcelable, RequiresDirs {
       throw new RuntimeException("Couldn't make task directories for task: " + this);
     }
   }
+
+  private void retrieveStepsFromParcel(final Parcel in) {
+    final List<Step> unmarshalledSteps = new ArrayList<>(10);
+    final ClassLoader classLoader = Task.class.getClassLoader();
+    in.readList(unmarshalledSteps, classLoader);
+    steps = unmarshalledSteps;
+  }
+
 }

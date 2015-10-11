@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ie.headway.app.htdi_companion.R.layout;
 import ie.headway.app.xml.Step;
@@ -46,9 +48,13 @@ public class TaskInitialiserActivity extends Activity {
   }
 
   private void startTaskCreation(final Context context, final CharSequence taskName) {
+    final String taskNameStr = taskName.toString();
+    final List<Step> stepsLst = new ArrayList<>(10);
+
+    final Parcelable task = new Task(taskNameStr, stepsLst);
     final Intent intent = new Intent(context, TaskCreatorActivity.class);
-    final Task task = new Task(taskName.toString(), new ArrayList<Step>(10));
     intent.putExtra("task", task);
+
     startActivity(intent);
   }
 

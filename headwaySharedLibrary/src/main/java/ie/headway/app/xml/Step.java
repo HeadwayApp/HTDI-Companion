@@ -63,8 +63,8 @@ public class Step implements Parcelable {
 
   public static final Creator<Step> CREATOR
       = new Creator<Step>() {
-    public Step createFromParcel(Parcel in) {
-      return new Step(in);
+    public Step createFromParcel(Parcel source) {
+      return new Step(source);
     }
 
     public Step[] newArray(int size) {
