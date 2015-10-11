@@ -9,50 +9,50 @@ import ie.headway.app.xml.Task;
 
 public class TaskCreatorActivity extends Activity {
 
-    private Fragment mTaskCreatorFragment;
+  private Fragment mTaskCreatorFragment;
 
-    private Task mTask;
+  private Task mTask;
 
-	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_task_creator);
+    setContentView(R.layout.activity_task_creator);
 
-		mTask = getIntent().getParcelableExtra("task");
+    mTask = getIntent().getParcelableExtra("task");
 
 //		task = new Task(task.getName(), new ArrayList<Step>());
 
-        mTask.makeRequiredDirs();
-	}
+    mTask.makeRequiredDirs();
+  }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mTaskCreatorFragment = attachTaskCreatorFragmentForTask(mTask);
-    }
+  @Override
+  protected void onResume() {
+    super.onResume();
+    mTaskCreatorFragment = attachTaskCreatorFragmentForTask(mTask);
+  }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        detachTaskCreatorFragment(mTaskCreatorFragment);
-    }
+  @Override
+  protected void onPause() {
+    super.onPause();
+    detachTaskCreatorFragment(mTaskCreatorFragment);
+  }
 
-    private Fragment attachTaskCreatorFragmentForTask(final Task task) {
-        final Fragment newFragment = TaskCreatorFragment.newInstance(task);
-        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
-                .add(R.id.splash_screen_layout, newFragment, task.getName());
+  private Fragment attachTaskCreatorFragmentForTask(final Task task) {
+    final Fragment newFragment = TaskCreatorFragment.newInstance(task);
+    final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
+        .add(R.id.splash_screen_layout, newFragment, task.getName());
 
-        fragmentTransaction.commit();
+    fragmentTransaction.commit();
 
-        return newFragment;
-    }
+    return newFragment;
+  }
 
-    private void detachTaskCreatorFragment(final Fragment fragment) {
-        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
-                .remove(fragment);
-        fragmentTransaction.commit();
-        mTaskCreatorFragment = null;
-    }
+  private void detachTaskCreatorFragment(final Fragment fragment) {
+    final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
+        .remove(fragment);
+    fragmentTransaction.commit();
+    mTaskCreatorFragment = null;
+  }
 
 }

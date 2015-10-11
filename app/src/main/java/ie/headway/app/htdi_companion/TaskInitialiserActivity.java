@@ -16,40 +16,40 @@ import ie.headway.app.xml.Task;
 
 public class TaskInitialiserActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(layout.activity_task_initialiser);
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(layout.activity_task_initialiser);
+  }
 
-    public void onClickStartTaskCreationButton(final View v) {
-        final Context context = getApplicationContext();
-        final String taskNameFromView = getCurrentlyEnteredTaskNameText();
+  public void onClickStartTaskCreationButton(final View v) {
+    final Context context = getApplicationContext();
+    final String taskNameFromView = getCurrentlyEnteredTaskNameText();
 
-        if (taskNameFromView.isEmpty()) {
-            showEnterTaskNameToast(context);
-        } else {
-            startTaskCreation(context, taskNameFromView);
-        }
+    if (taskNameFromView.isEmpty()) {
+      showEnterTaskNameToast(context);
+    } else {
+      startTaskCreation(context, taskNameFromView);
     }
+  }
 
-    private String getCurrentlyEnteredTaskNameText() {
-        final EditText inputTaskNameView = (EditText)findViewById(R.id.input_task_name_view);
-        final String taskNameFromView = inputTaskNameView.getText().toString();
-        return taskNameFromView;
-    }
+  private String getCurrentlyEnteredTaskNameText() {
+    final EditText inputTaskNameView = (EditText) findViewById(R.id.input_task_name_view);
+    final String taskNameFromView = inputTaskNameView.getText().toString();
+    return taskNameFromView;
+  }
 
-    private void showEnterTaskNameToast(final Context context) {
-        final String toastText = getString(R.string.enter_task_toast_text);
-        final Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_SHORT);
-        toast.show();
-    }
+  private void showEnterTaskNameToast(final Context context) {
+    final String toastText = getString(R.string.enter_task_toast_text);
+    final Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_SHORT);
+    toast.show();
+  }
 
-    private void startTaskCreation(final Context context, final CharSequence taskName) {
-        final Intent intent = new Intent(context, TaskCreatorActivity.class);
-        final Task task = new Task(taskName.toString(), new ArrayList<Step>(10));
-        intent.putExtra("task", task);
-        startActivity(intent);
-    }
+  private void startTaskCreation(final Context context, final CharSequence taskName) {
+    final Intent intent = new Intent(context, TaskCreatorActivity.class);
+    final Task task = new Task(taskName.toString(), new ArrayList<Step>(10));
+    intent.putExtra("task", task);
+    startActivity(intent);
+  }
 
 }
