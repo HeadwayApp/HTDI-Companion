@@ -66,7 +66,7 @@ public class Task implements Parcelable, RequiresDirs {
 
   public Task(final Parcel in) {
     name = in.readString();
-    retrieveStepsFromParcel(in);
+    steps = retrieveStepsFromParcel(in);
   }
 
   public static final Creator<Task> CREATOR
@@ -96,11 +96,11 @@ public class Task implements Parcelable, RequiresDirs {
     }
   }
 
-  private void retrieveStepsFromParcel(final Parcel in) {
+  private List<Step> retrieveStepsFromParcel(final Parcel in) {
     final List<Step> unmarshalledSteps = new ArrayList<>(10);
     final ClassLoader classLoader = Task.class.getClassLoader();
     in.readList(unmarshalledSteps, classLoader);
-    steps = unmarshalledSteps;
+    return unmarshalledSteps;
   }
 
 }
