@@ -177,9 +177,10 @@ public class TaskCreatorFragment extends Fragment {
     return px;
   }
 
-  public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
-    android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
-    android.hardware.Camera.getCameraInfo(cameraId, info);
+  public static void setCameraDisplayOrientation(final Activity activity,
+                                                 final int cameraId, final Camera camera) {
+    final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+    Camera.getCameraInfo(cameraId, info);
     int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
     int degrees = 0;
     switch (rotation) {
