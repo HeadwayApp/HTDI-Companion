@@ -88,7 +88,8 @@ public class Task implements Parcelable, RequiresDirs {
 
   @Override
   public void makeRequiredDirs() {
-    final File taskImgDirectory = AppDir.ROOT.getFile(getName() + File.separator + "imgs");
+    final String taskName = getName();
+    final File taskImgDirectory = AppDir.ROOT.getFile(taskName + File.separator + "imgs");
     final boolean dirsAlreadyExist = taskImgDirectory.exists();
     final boolean wasSuccessful = taskImgDirectory.mkdirs();
     if (!dirsAlreadyExist && !wasSuccessful) {
@@ -96,7 +97,7 @@ public class Task implements Parcelable, RequiresDirs {
     }
   }
 
-  private List<Step> retrieveStepsFromParcel(final Parcel in) {
+  private static List<Step> retrieveStepsFromParcel(final Parcel in) {
     final List<Step> unmarshalledSteps = new ArrayList<>(10);
     final ClassLoader classLoader = Task.class.getClassLoader();
     in.readList(unmarshalledSteps, classLoader);

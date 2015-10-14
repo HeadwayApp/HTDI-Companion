@@ -17,11 +17,17 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
   private final SurfaceHolder mSurfaceHolder;
   private final Camera.PictureCallback mJpegCallback;
 
-  public CameraView(final Context context, final Camera camera, final Camera.PictureCallback pictureCallback) {
+  public static CameraView newInstance(final Context context, final Camera camera,
+                                       final Camera.PictureCallback pictureCallback) {
+    final CameraView instance = new CameraView(context, camera, pictureCallback);
+    instance.mSurfaceHolder.addCallback(instance);
+    return instance;
+  }
+
+  private CameraView(final Context context, final Camera camera, final Camera.PictureCallback pictureCallback) {
     super(context);
     mCamera = camera;
     mSurfaceHolder = getHolder();
-    mSurfaceHolder.addCallback(this);
     mJpegCallback = pictureCallback;
   }
 
@@ -36,11 +42,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     // stop preview before making changes
-    try {
-      mCamera.stopPreview();
-    } catch (Exception e) {
-      // ignore: tried to stop a non-existent preview
-    }
+    mCamera.stopPreview();
 
     // set preview size and make any resize, rotate or
     // reformatting changes here
@@ -48,7 +50,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     try {
       mCamera.setPreviewDisplay(mSurfaceHolder);
       mCamera.startPreview();
-    } catch (Exception e) {
+    } catch (IOException e) {
 
     }
   }

@@ -129,7 +129,7 @@ public class TaskCreatorFragment extends Fragment {
     final Camera camera = Camera.open();
     setCameraDisplayOrientation(getActivity(), 0, camera);
 
-    mImage = new CameraView(getActivity().getBaseContext(), camera, jCall);
+    mImage = CameraView.newInstance(getActivity().getApplicationContext(), camera, jCall);
     jCall.setCamView(mImage);
     mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
     mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
