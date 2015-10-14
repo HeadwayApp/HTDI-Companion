@@ -24,15 +24,16 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     return instance;
   }
 
-  private CameraView(final Context context, final Camera camera, final Camera.PictureCallback pictureCallback) {
+  private CameraView(final Context context, final Camera camera,
+                     final Camera.PictureCallback pictureCallback) {
     super(context);
     mCamera = camera;
     mSurfaceHolder = getHolder();
     mJpegCallback = pictureCallback;
   }
 
-  public void captureImage() {
-    mCamera.takePicture(null, null, mJpegCallback);
+  public void captureImage(final ImageCapture imageCapture) {
+    imageCapture.takePicture(mCamera);
   }
 
   public void refreshCameraView() {

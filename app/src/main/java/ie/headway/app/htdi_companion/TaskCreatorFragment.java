@@ -42,6 +42,7 @@ public class TaskCreatorFragment extends Fragment {
   private int stepCnt = 0;
 
   private JpegCallback jCall;
+  private ImageCapture mImageCapture;
 
   private Task mTask;
 
@@ -53,7 +54,7 @@ public class TaskCreatorFragment extends Fragment {
 
   private Button mFinishedButton;
 
-  private File file;
+  private File currentJpegFile;
 
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
@@ -69,7 +70,7 @@ public class TaskCreatorFragment extends Fragment {
 
     final String taskName = ((Task) getArguments().getParcelable("task")).getName();
 
-    file = AppDir.ROOT.getFile(File.separator + taskName +
+    currentJpegFile = AppDir.ROOT.getFile(File.separator + taskName +
         File.separator + "imgs" +
         File.separator + String.valueOf(stepCnt) + ".jpg");
 
@@ -88,24 +89,23 @@ public class TaskCreatorFragment extends Fragment {
     mCreateStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     mCreateStepButton.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View view) {
-        mImage.captureImage();
+      public void onClick(final View view) {
 
-        mTask = getArguments().getParcelable("task");
+        captureImage();
+
+        loadTaskFromParcelable();
 
         Log.i("mo", "Received Task as arg: " + mTask.toString());
 
-        file = AppDir.ROOT.getFile(File.separator + taskName +
-            File.separator + "imgs" +
-            File.separator + String.valueOf(++stepCnt) + ".jpg");
+        currentJpegFile = getNextJpegFile();
 
-        String filePath = file.getAbsolutePath();
+        String filePath = currentJpegFile.getAbsolutePath();
         filePath = filePath.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
         final PortableStep step = new PortableStep(mText.getText().toString(), filePath, "");
         Log.w("mo", "created step " + step);
 
-        jCall.setFile(file);
+        jCall.setFile(currentJpegFile);
 
         mTask.addStep(step);
 
@@ -124,7 +124,8 @@ public class TaskCreatorFragment extends Fragment {
 
     mView.addView(mCreateStepButton);
 
-    jCall = JpegCallback.newInstance(file, null, getActivity());
+    jCall = JpegCallback.newInstance(currentJpegFile, null, getActivity());
+    mImageCapture = new SimpleJpegImageCapture(jCall);
 
     final Camera camera = Camera.open();
     setCameraDisplayOrientation(getActivity(), 0, camera);
@@ -137,7 +138,8 @@ public class TaskCreatorFragment extends Fragment {
       @Override
       public boolean onLongClick(View view) {
         final String taskName = (mTask != null) ? mTask.getName() : "";
-        Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG).show();
+        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
+        toast.show();
         startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
         return true;
       }
@@ -145,6 +147,23 @@ public class TaskCreatorFragment extends Fragment {
     mView.addView(mImage);
 
     return mView;
+  }
+
+  private File getNextJpegFile() {
+    final String taskName = mTask.getName();
+    final File jpegFile = AppDir.ROOT.getFile(File.separator + taskName +
+        File.separator + "imgs" +
+        File.separator + String.valueOf(++stepCnt) + ".jpg");
+
+    return jpegFile;
+  }
+
+  private void captureImage() {
+    mImage.captureImage(mImageCapture);
+  }
+
+  private void loadTaskFromParcelable() {
+    mTask = getArguments().getParcelable("task");
   }
 
   /**
