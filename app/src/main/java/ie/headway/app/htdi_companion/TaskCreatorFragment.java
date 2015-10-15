@@ -8,7 +8,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -53,7 +52,6 @@ public class TaskCreatorFragment extends Fragment {
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     loadTaskFromArguments();
-    Log.v(TAG, "Loaded task " + mTask.getName() + " from parcelable.");
   }
 
   @Override
@@ -63,33 +61,29 @@ public class TaskCreatorFragment extends Fragment {
     final LinearLayout parentLayout = new LinearLayout(getActivity());
     parentLayout.setOrientation(VERTICAL);
 
-    final EditText stepDescriptionField = new EditText(getActivity());
-    stepDescriptionField.setText(" ");
-    stepDescriptionField.setTextSize(COMPLEX_UNIT_SP, 25);
-    stepDescriptionField.setGravity(CENTER);
-    stepDescriptionField.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+    final EditText stepDescriptionField = makeStepDescriptionFieldView();
 
-    final JpegCallback jpegCallback = JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+    final JpegCallback jpegCallback =
+        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+
     final ImageCapture imageCapture = new SimpleJpegImageCapture(jpegCallback);
+    final Camera camera = openCamera();
 
-    final Camera camera = Camera.open();
-    setCameraDisplayOrientation(getActivity(), 0, camera);
+    final CameraView cameraView = makeCameraView(camera, jpegCallback, imageCapture);
 
-    final CameraView cameraView = CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
-    jpegCallback.setCamView(cameraView);
-    cameraView.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-    cameraView.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
-    cameraView.setOnLongClickListener(new View.OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View view) {
-        final String taskName = (mTask != null) ? mTask.getName() : "";
-        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
-        toast.show();
-        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
-        return true;
-      }
-    });
+    final Button createStepButton =
+        makeCreateStepButton(cameraView, jpegCallback, stepDescriptionField);
 
+    parentLayout.addView(stepDescriptionField);
+    parentLayout.addView(createStepButton);
+    parentLayout.addView(cameraView);
+
+    return parentLayout;
+  }
+
+  private Button makeCreateStepButton(final CameraView cameraView,
+                                      final JpegCallback jpegCallback,
+                                      final EditText stepDescriptionField) {
     final Button createStepButton = new Button(getActivity());
     createStepButton.setText("Create Step");
     createStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
@@ -124,11 +118,36 @@ public class TaskCreatorFragment extends Fragment {
       }
     });
 
-    parentLayout.addView(stepDescriptionField);
-    parentLayout.addView(createStepButton);
-    parentLayout.addView(cameraView);
+    return createStepButton;
+  }
 
-    return parentLayout;
+  private CameraView makeCameraView(final Camera camera,
+                                    final JpegCallback jpegCallback, ImageCapture imageCapture) {
+    final CameraView cameraView =
+        CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
+    jpegCallback.setCamView(cameraView);
+    cameraView.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+    cameraView.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
+    cameraView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View view) {
+        final String taskName = (mTask != null) ? mTask.getName() : "";
+        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
+        toast.show();
+        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
+        return true;
+      }
+    });
+    return cameraView;
+  }
+
+  private EditText makeStepDescriptionFieldView() {
+    final EditText stepDescriptionField = new EditText(getActivity());
+    stepDescriptionField.setText(" ");
+    stepDescriptionField.setTextSize(COMPLEX_UNIT_SP, 25);
+    stepDescriptionField.setGravity(CENTER);
+    stepDescriptionField.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+    return stepDescriptionField;
   }
 
   private File getNextJpegFile() {
@@ -144,6 +163,12 @@ public class TaskCreatorFragment extends Fragment {
     mTask = getArguments().getParcelable("task");
   }
 
+  private Camera openCamera() {
+    final Camera camera = Camera.open();
+    setCameraDisplayOrientation(getActivity(), 0, camera);
+    return camera;
+  }
+
   /**
    * TODO Possible duplicate definition.
    */
@@ -155,7 +180,7 @@ public class TaskCreatorFragment extends Fragment {
     return px;
   }
 
-  public static void setCameraDisplayOrientation(final Activity activity,
+  private static void setCameraDisplayOrientation(final Activity activity,
                                                  final int cameraId, final Camera camera) {
     final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
     Camera.getCameraInfo(cameraId, info);
