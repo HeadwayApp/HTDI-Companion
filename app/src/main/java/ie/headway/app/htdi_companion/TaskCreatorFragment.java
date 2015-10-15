@@ -196,6 +196,7 @@ public class TaskCreatorFragment extends Fragment {
       case Surface.ROTATION_270:
         degrees = 270;
         break;
+      default: throw new RuntimeException("Invalid rotation.");
     }
 
     int result;
