@@ -12,9 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -25,13 +23,10 @@ import java.io.File;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.xml.PortableStep;
+import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
-import static android.view.Gravity.CENTER;
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.LinearLayout.VERTICAL;
 
 public class TaskCreatorFragment extends Fragment {
 
@@ -58,10 +53,7 @@ public class TaskCreatorFragment extends Fragment {
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                            final Bundle savedInstanceState) {
 
-    final LinearLayout parentLayout = new LinearLayout(getActivity());
-    parentLayout.setOrientation(VERTICAL);
-
-    final EditText stepDescriptionField = makeStepDescriptionFieldView();
+    inflater.inflate(R.layout.task_creator_fragment, container);
 
     final JpegCallback jpegCallback =
         JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
@@ -70,55 +62,58 @@ public class TaskCreatorFragment extends Fragment {
     final Camera camera = openCamera();
 
     final CameraView cameraView = makeCameraView(camera, jpegCallback, imageCapture);
+//
+//    final Button createStepButton =
+//        makeCreateStepButton(cameraView, jpegCallback, stepDescriptionField);
 
-    final Button createStepButton =
-        makeCreateStepButton(cameraView, jpegCallback, stepDescriptionField);
+//    container.addView(createStepButton);
+    container.addView(cameraView);
 
-    parentLayout.addView(stepDescriptionField);
-    parentLayout.addView(createStepButton);
-    parentLayout.addView(cameraView);
-
-    return parentLayout;
+    return null;
   }
 
-  private Button makeCreateStepButton(final CameraView cameraView,
-                                      final JpegCallback jpegCallback,
-                                      final EditText stepDescriptionField) {
-    final Button createStepButton = new Button(getActivity());
-    createStepButton.setText("Create Step");
-    createStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    createStepButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(final View view) {
+  public void onClickCreateStepButton(final View view) {
 
-        cameraView.captureImage();
+    cameraView.captureImage();
 
-        loadTaskFromArguments();
+    loadTaskFromArguments();
 
-        final File nextJpegFile = getNextJpegFile();
-        jpegCallback.setFile(nextJpegFile);
+    final File nextJpegFile = getNextJpegFile();
+    jpegCallback.setFile(nextJpegFile);
 
-        final String filePath = nextJpegFile.getAbsolutePath().replace(
-            Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
+    final String filePath = nextJpegFile.getAbsolutePath().replace(
+        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
-        final PortableStep step = new PortableStep(stepDescriptionField.getText().toString(), filePath, "");
+    final String stepDescription = getStepDescription().toString();
 
-        mTask.addStep(step);
+    final PortableStep step = new PortableStep(stepDescription, filePath, "");
 
-        final Serializer serializer = new Persister();
+    saveStep(step);
 
-        try {
-          serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
+    clearStepDescriptionField();
 
-        stepDescriptionField.setText("");
+  }
 
-      }
-    });
+  private CharSequence getStepDescription() {
+    final EditText editText = (EditText)getView().findViewById(R.id.stepDescriptionFieldView);
+    return editText.getText();
+  }
 
-    return createStepButton;
+  private void clearStepDescriptionField() {
+    final EditText editText = (EditText)getView().findViewById(R.id.stepDescriptionFieldView);
+    editText.getText().clear();
+  }
+
+  private void saveStep(final Step step) {
+    mTask.addStep(step);
+
+    final Serializer serializer = new Persister();
+
+    try {
+      serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
+    }catch(Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private CameraView makeCameraView(final Camera camera,
@@ -141,15 +136,6 @@ public class TaskCreatorFragment extends Fragment {
     return cameraView;
   }
 
-  private EditText makeStepDescriptionFieldView() {
-    final EditText stepDescriptionField = new EditText(getActivity());
-    stepDescriptionField.setText(" ");
-    stepDescriptionField.setTextSize(COMPLEX_UNIT_SP, 25);
-    stepDescriptionField.setGravity(CENTER);
-    stepDescriptionField.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    return stepDescriptionField;
-  }
-
   private File getNextJpegFile() {
     final String taskName = mTask.getName();
     final File jpegFile = AppDir.ROOT.getFile(File.separator + taskName +
@@ -165,7 +151,7 @@ public class TaskCreatorFragment extends Fragment {
 
   private Camera openCamera() {
     final Camera camera = Camera.open();
-    setCameraDisplayOrientation(getActivity(), 0, camera);
+    setCameraDisplayOrientation(0, camera);
     return camera;
   }
 
@@ -180,11 +166,10 @@ public class TaskCreatorFragment extends Fragment {
     return px;
   }
 
-  private static void setCameraDisplayOrientation(final Activity activity,
-                                                 final int cameraId, final Camera camera) {
+  private void setCameraDisplayOrientation(final int cameraId, final Camera camera) {
     final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
     Camera.getCameraInfo(cameraId, info);
-    int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+    int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
     int degrees = 0;
     switch (rotation) {
       case Surface.ROTATION_0:

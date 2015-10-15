@@ -4,4 +4,5 @@
     <string name="start_task_creation_button">Create Task</string>
     <string name="input_task_name_view_hint">Enter name of task to create</string>
     <string name="enter_task_toast_text">Enter name of task</string>
+    <string name="create_step_button_text">Create Step</string>
 </resources>
