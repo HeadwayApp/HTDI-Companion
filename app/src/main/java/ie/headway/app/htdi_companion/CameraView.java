@@ -2,7 +2,6 @@ package ie.headway.app.htdi_companion;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,60 +13,64 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
   private static final String TAG = "CameraView";
 
   private final Camera mCamera;
-  private final SurfaceHolder mSurfaceHolder;
-  private final Camera.PictureCallback mJpegCallback;
+  private final ImageCapture mImageCapture;
 
   public static CameraView newInstance(final Context context, final Camera camera,
-                                       final Camera.PictureCallback pictureCallback) {
-    final CameraView instance = new CameraView(context, camera, pictureCallback);
-    instance.mSurfaceHolder.addCallback(instance);
+                                       final ImageCapture imageCapture) {
+    final CameraView instance = new CameraView(context, camera, imageCapture);
+    instance.getHolder().addCallback(instance);
     return instance;
   }
 
   private CameraView(final Context context, final Camera camera,
-                     final Camera.PictureCallback pictureCallback) {
+                     final ImageCapture imageCapture) {
     super(context);
     mCamera = camera;
-    mSurfaceHolder = getHolder();
-    mJpegCallback = pictureCallback;
+    mImageCapture = imageCapture;
   }
 
-  public void captureImage(final ImageCapture imageCapture) {
-    imageCapture.takePicture(mCamera);
+  public void captureImage() {
+    mImageCapture.takePicture(mCamera);
   }
 
-  public void refreshCameraView() {
-    // stop preview before making changes
-    mCamera.stopPreview();
-
-    // set preview size and make any resize, rotate or
-    // reformatting changes here
-    // start preview with new settings
-    try {
-      mCamera.setPreviewDisplay(mSurfaceHolder);
-      mCamera.startPreview();
-    } catch (IOException e) {
-
-    }
+  public void refreshCameraView() throws IOException {
+    stopCamera();
+    startCamera();
   }
 
   @Override
   public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
-    refreshCameraView();
+    try {
+      refreshCameraView();
+    }catch(IOException ioe) {
+      throw new RuntimeException("Couldn't refresh camera view.", ioe);
+    }
   }
 
   @Override
   public void surfaceCreated(final SurfaceHolder holder) {
     try {
-      mCamera.setPreviewDisplay(mSurfaceHolder);
-    } catch (IOException e) {
-      Log.e(TAG, "exception on line: mCamera.setPreviewDisplay(mSurfaceHolder)", e);
+      startCamera();
+    }catch(IOException ioe) {
+      throw new RuntimeException("Couldn't start camera.", ioe);
     }
-    mCamera.startPreview();
   }
 
   @Override
-  public void surfaceDestroyed(SurfaceHolder holder) {
+  public void surfaceDestroyed(final SurfaceHolder holder) {
+    releaseCamera();
+  }
+
+  protected void startCamera() throws IOException {
+    mCamera.setPreviewDisplay(getHolder());
+    mCamera.startPreview();
+  }
+
+  protected void stopCamera() {
+    mCamera.stopPreview();
+  }
+
+  protected void releaseCamera() {
     mCamera.stopPreview();
     mCamera.release();
   }
