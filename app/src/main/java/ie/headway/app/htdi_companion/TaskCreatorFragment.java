@@ -101,12 +101,13 @@ public class TaskCreatorFragment extends Fragment {
 
         loadTaskFromArguments();
 
-        final String filePath = getNextJpegFile().getAbsolutePath().replace(
+        final File nextJpegFile = getNextJpegFile();
+        jpegCallback.setFile(nextJpegFile);
+
+        final String filePath = nextJpegFile.getAbsolutePath().replace(
             Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
         final PortableStep step = new PortableStep(stepDescriptionField.getText().toString(), filePath, "");
-
-        jpegCallback.setFile(getNextJpegFile());
 
         mTask.addStep(step);
 
