@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.simpleframework.xml.Serializer;
@@ -39,22 +38,8 @@ public class TaskCreatorFragment extends Fragment {
 
   private static final String TAG = "TaskCreatorFragment";
 
-  private int stepCnt = 0;
-
-  private JpegCallback jCall;
-  private ImageCapture mImageCapture;
-
   private Task mTask;
-
-  private LinearLayout mView;
-  private TextView mText;
-  private CameraView mImage;
-
-  private Button mCreateStepButton;
-
-  private Button mFinishedButton;
-
-  private File currentJpegFile;
+  private int stepCnt;
 
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
@@ -65,47 +50,63 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   @Override
+  public void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    loadTaskFromArguments();
+    Log.v(TAG, "Loaded task " + mTask.getName() + " from parcelable.");
+  }
+
+  @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                            final Bundle savedInstanceState) {
 
-    final String taskName = ((Task) getArguments().getParcelable("task")).getName();
+    final LinearLayout parentLayout = new LinearLayout(getActivity());
+    parentLayout.setOrientation(VERTICAL);
 
-    currentJpegFile = AppDir.ROOT.getFile(File.separator + taskName +
-        File.separator + "imgs" +
-        File.separator + String.valueOf(stepCnt) + ".jpg");
+    final EditText stepDescriptionField = new EditText(getActivity());
+    stepDescriptionField.setText(" ");
+    stepDescriptionField.setTextSize(COMPLEX_UNIT_SP, 25);
+    stepDescriptionField.setGravity(CENTER);
+    stepDescriptionField.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
 
-    mView = new LinearLayout(getActivity().getBaseContext());
-    mView.setOrientation(VERTICAL);
+    final JpegCallback jpegCallback = JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+    final ImageCapture imageCapture = new SimpleJpegImageCapture(jpegCallback);
 
-    mText = new EditText(getActivity().getBaseContext());
-    mText.setText(" ");
-    mText.setTextSize(COMPLEX_UNIT_SP, 25);
-    mText.setGravity(CENTER);
-    mText.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    mView.addView(mText);
+    final Camera camera = Camera.open();
+    setCameraDisplayOrientation(getActivity(), 0, camera);
 
-    mCreateStepButton = new Button(getActivity().getBaseContext());
-    mCreateStepButton.setText("Create Step");
-    mCreateStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    mCreateStepButton.setOnClickListener(new View.OnClickListener() {
+    final CameraView cameraView = CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
+    jpegCallback.setCamView(cameraView);
+    cameraView.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+    cameraView.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
+    cameraView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View view) {
+        final String taskName = (mTask != null) ? mTask.getName() : "";
+        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
+        toast.show();
+        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
+        return true;
+      }
+    });
+
+    final Button createStepButton = new Button(getActivity());
+    createStepButton.setText("Create Step");
+    createStepButton.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+    createStepButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(final View view) {
 
-        captureImage();
+        cameraView.captureImage();
 
-        loadTaskFromParcelable();
+        loadTaskFromArguments();
 
-        Log.i("mo", "Received Task as arg: " + mTask.toString());
+        final String filePath = getNextJpegFile().getAbsolutePath().replace(
+            Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
-        currentJpegFile = getNextJpegFile();
+        final PortableStep step = new PortableStep(stepDescriptionField.getText().toString(), filePath, "");
 
-        String filePath = currentJpegFile.getAbsolutePath();
-        filePath = filePath.replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
-
-        final PortableStep step = new PortableStep(mText.getText().toString(), filePath, "");
-        Log.w("mo", "created step " + step);
-
-        jCall.setFile(currentJpegFile);
+        jpegCallback.setFile(getNextJpegFile());
 
         mTask.addStep(step);
 
@@ -117,52 +118,28 @@ public class TaskCreatorFragment extends Fragment {
           throw new RuntimeException(e);
         }
 
-        mText.setText("");
+        stepDescriptionField.setText("");
 
       }
     });
 
-    mView.addView(mCreateStepButton);
+    parentLayout.addView(stepDescriptionField);
+    parentLayout.addView(createStepButton);
+    parentLayout.addView(cameraView);
 
-    jCall = JpegCallback.newInstance(currentJpegFile, null, getActivity());
-    mImageCapture = new SimpleJpegImageCapture(jCall);
-
-    final Camera camera = Camera.open();
-    setCameraDisplayOrientation(getActivity(), 0, camera);
-
-    mImage = CameraView.newInstance(getActivity().getApplicationContext(), camera, mImageCapture);
-    jCall.setCamView(mImage);
-    mImage.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-    mImage.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
-    mImage.setOnLongClickListener(new View.OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View view) {
-        final String taskName = (mTask != null) ? mTask.getName() : "";
-        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
-        toast.show();
-        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
-        return true;
-      }
-    });
-    mView.addView(mImage);
-
-    return mView;
+    return parentLayout;
   }
 
   private File getNextJpegFile() {
     final String taskName = mTask.getName();
     final File jpegFile = AppDir.ROOT.getFile(File.separator + taskName +
         File.separator + "imgs" +
-        File.separator + String.valueOf(++stepCnt) + ".jpg");
+        File.separator + String.valueOf(stepCnt++) + ".jpg");
 
     return jpegFile;
   }
 
-  private void captureImage() {
-    mImage.captureImage();
-  }
-
-  private void loadTaskFromParcelable() {
+  private void loadTaskFromArguments() {
     mTask = getArguments().getParcelable("task");
   }
 
