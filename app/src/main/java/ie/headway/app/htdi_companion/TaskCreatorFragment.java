@@ -32,6 +32,7 @@ import ie.headway.app.xml.Task;
 public class TaskCreatorFragment extends Fragment {
 
   private static final String TAG = "TaskCreatorFragment";
+  private static final String EMPTY_STRING = "";
 
   private Task mTask;
   private int stepCnt;
@@ -91,7 +92,7 @@ public class TaskCreatorFragment extends Fragment {
 
     final String stepDescription = getStepDescription().toString();
 
-    final PortableStep step = new PortableStep(stepDescription, filePath, "");
+    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
 
     saveStep(step);
 
@@ -100,12 +101,12 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   protected CharSequence getStepDescription() {
-    final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText)getActivity().findViewById(R.id.inputStepDescriptionView);
     return editText.getText();
   }
 
   protected void clearStepDescriptionField() {
-    final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText)getActivity().findViewById(R.id.inputStepDescriptionView);
     editText.getText().clear();
   }
 
@@ -129,7 +130,7 @@ public class TaskCreatorFragment extends Fragment {
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View view) {
-        final String taskName = (mTask != null) ? mTask.getName() : "";
+        final String taskName = (mTask != null) ? mTask.getName() : EMPTY_STRING;
         final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
         toast.show();
         startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
