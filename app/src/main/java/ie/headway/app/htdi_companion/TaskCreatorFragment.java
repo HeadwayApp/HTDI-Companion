@@ -3,19 +3,15 @@ package ie.headway.app.htdi_companion;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import org.simpleframework.xml.Serializer;
@@ -24,11 +20,14 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 
 import ie.headway.app.disk.AppDir;
+import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
+import ie.headway.app.htdi_companion.camera.CameraView;
+import ie.headway.app.htdi_companion.camera.ImageCapture;
+import ie.headway.app.htdi_companion.camera.JpegCallback;
+import ie.headway.app.htdi_companion.camera.SimpleJpegImageCapture;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class TaskCreatorFragment extends Fragment {
 
@@ -58,7 +57,8 @@ public class TaskCreatorFragment extends Fragment {
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                            final Bundle savedInstanceState) {
-    final LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
+    final LinearLayout rootLayout =
+        (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
 
     mJpegCallback =
         JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
@@ -67,12 +67,16 @@ public class TaskCreatorFragment extends Fragment {
     final Camera camera = openCamera();
 
     mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
-//    layout.addView(mCameraView);
 
-    final FrameLayout cameraViewPlaceHolder = (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
-    cameraViewPlaceHolder.addView(mCameraView);
+    addCameraViewToLayout(mCameraView);
 
     return null;
+  }
+
+  private void addCameraViewToLayout(final CameraView cameraView) {
+    final FrameLayout cameraViewPlaceHolder =
+        (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
+    cameraViewPlaceHolder.addView(cameraView);
   }
 
   public void onClickCreateStepButton(final View view) {
@@ -122,8 +126,6 @@ public class TaskCreatorFragment extends Fragment {
     final CameraView cameraView =
         CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
     jpegCallback.setCamView(cameraView);
-    cameraView.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-    cameraView.setPadding(0, 0, 0, px2Dp(getActivity(), 15));
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View view) {
@@ -151,51 +153,9 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   private Camera openCamera() {
-    final Camera camera = Camera.open();
-    setCameraDisplayOrientation(0, camera);
+    final Activity activity = getActivity();
+    final Camera camera = AutoOrientatedCamera.getCamera(activity);
     return camera;
-  }
-
-  /**
-   * TODO Possible duplicate definition.
-   */
-  private static int px2Dp(final Activity activity, final int dp) {
-    final Resources resources = activity.getResources();
-    final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-    final float scale = displayMetrics.density;
-    final int px = (int) (dp * scale + 0.5f);
-    return px;
-  }
-
-  private void setCameraDisplayOrientation(final int cameraId, final Camera camera) {
-    final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
-    Camera.getCameraInfo(cameraId, info);
-    int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-    int degrees = 0;
-    switch (rotation) {
-      case Surface.ROTATION_0:
-        degrees = 0;
-        break;
-      case Surface.ROTATION_90:
-        degrees = 90;
-        break;
-      case Surface.ROTATION_180:
-        degrees = 180;
-        break;
-      case Surface.ROTATION_270:
-        degrees = 270;
-        break;
-      default: throw new RuntimeException("Invalid rotation.");
-    }
-
-    int result;
-    if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-      result = (info.orientation + degrees) % 360;
-      result = (360 - result) % 360; // compensate the mirror
-    } else { // back-facing
-      result = (info.orientation - degrees + 360) % 360;
-    }
-    camera.setDisplayOrientation(result);
   }
 
 }

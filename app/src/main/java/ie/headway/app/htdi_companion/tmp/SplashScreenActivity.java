@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.splash;
+package ie.headway.app.htdi_companion.tmp;
 
 import android.content.Context;
 import android.os.Bundle;

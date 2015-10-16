@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
