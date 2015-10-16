@@ -13,6 +13,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
@@ -59,14 +60,17 @@ public class TaskCreatorFragment extends Fragment {
                            final Bundle savedInstanceState) {
     final LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
 
-//    mJpegCallback =
-//        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
-//
-//    final ImageCapture imageCapture = new SimpleJpegImageCapture(mJpegCallback);
-//    final Camera camera = openCamera();
-//
-//    mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
+    mJpegCallback =
+        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+
+    final ImageCapture imageCapture = new SimpleJpegImageCapture(mJpegCallback);
+    final Camera camera = openCamera();
+
+    mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
 //    layout.addView(mCameraView);
+
+    final FrameLayout cameraViewPlaceHolder = (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
+    cameraViewPlaceHolder.addView(mCameraView);
 
     return null;
   }

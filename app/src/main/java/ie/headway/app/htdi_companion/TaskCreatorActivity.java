@@ -22,8 +22,6 @@ public class TaskCreatorActivity extends Activity {
 
     mTask = getIntent().getParcelableExtra("task");
 
-//		task = new Task(task.getName(), new ArrayList<Step>());
-
     mTask.makeRequiredDirs();
   }
 
@@ -49,6 +47,9 @@ public class TaskCreatorActivity extends Activity {
     return newFragment;
   }
 
+  /**
+   * TODO: Proxy for fragment method, may need refactoring.
+   * */
   public void onClickCreateStepButton(final View view) {
     mTaskCreatorFragment.onClickCreateStepButton(view);
   }
