@@ -7,6 +7,8 @@ import static ie.headway.app.disk.AppDir.makeAppDirs;
 
 public abstract class HeadwaySplashScreenActivity extends Activity {
 
+  private static final long SPLASH_SCREEN_SHOW_TIME = 5000L;
+
   public HeadwaySplashScreenActivity() {
     Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
   }
@@ -15,9 +17,8 @@ public abstract class HeadwaySplashScreenActivity extends Activity {
   protected void onCreate(final Bundle savedInstanceBundle) {
     super.onCreate(savedInstanceBundle);
     setContentView(R.layout.activity_splash_screen);
-    makeAppDirs();    //NOTE  Having this across both apps may cause problems, keep that in mind.
-//    exitSplashScreen(5000);
-    exitSplashScreen(1);
+    makeAppDirs();  //TODO:  Having this across both apps may cause problems, keep that in mind.
+    exitSplashScreen(SPLASH_SCREEN_SHOW_TIME);
   }
 
   /**

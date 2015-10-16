@@ -24,6 +24,7 @@ public class SplashScreenActivity extends HeadwaySplashScreenActivity {
     final DelayedStartActivityRunnable runnable =
         new DelayedStartActivityRunnable(applicationContext, TaskInitialiserActivity.class);
 
+    runnable.setDelay(delay);
     runnable.run();
   }
 

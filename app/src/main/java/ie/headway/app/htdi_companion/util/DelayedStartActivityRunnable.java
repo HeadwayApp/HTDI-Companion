@@ -28,12 +28,14 @@ public class DelayedStartActivityRunnable extends StartActivityRunnable {
   }
 
   private Runnable makeRunnableFromSuper() {
-    return new Runnable() {
+    final Runnable runnable = new Runnable() {
       @Override
       public void run() {
         DelayedStartActivityRunnable.super.run();
       }
     };
+
+    return runnable;
   }
 
   private static void runAfterDelay(final Runnable runnable, final long delay) {
