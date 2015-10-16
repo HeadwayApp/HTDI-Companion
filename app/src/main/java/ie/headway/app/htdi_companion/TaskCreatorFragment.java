@@ -99,17 +99,17 @@ public class TaskCreatorFragment extends Fragment {
 
   }
 
-  private CharSequence getStepDescription() {
+  protected CharSequence getStepDescription() {
     final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
     return editText.getText();
   }
 
-  private void clearStepDescriptionField() {
+  protected void clearStepDescriptionField() {
     final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
     editText.getText().clear();
   }
 
-  private void saveStep(final Step step) {
+  protected void saveStep(final Step step) {
     mTask.addStep(step);
 
     final Serializer serializer = new Persister();
