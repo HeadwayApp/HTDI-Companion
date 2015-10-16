@@ -19,13 +19,16 @@ public class SplashScreenActivity extends HeadwaySplashScreenActivity {
   @Override
   protected void exitSplashScreen(final long delay) {
     checkArgument(delay >= 0L, "delay value is negative");
+    startTaskInitialiserActivityWithDelay(delay);
+  }
 
+  private void startTaskInitialiserActivityWithDelay(final long delay) {
     final Context applicationContext = getApplicationContext();
-    final DelayedStartActivityRunnable runnable =
+    final DelayedStartActivityRunnable startActivityRunnable =
         new DelayedStartActivityRunnable(applicationContext, TaskInitialiserActivity.class);
 
-    runnable.setDelay(delay);
-    runnable.run();
+    startActivityRunnable.setDelay(delay);
+    startActivityRunnable.run();
   }
 
 }

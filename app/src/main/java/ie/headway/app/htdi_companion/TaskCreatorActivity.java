@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.View;
 
 import ie.headway.app.xml.Task;
 
 public class TaskCreatorActivity extends Activity {
 
-  private Fragment mTaskCreatorFragment;
+  private TaskCreatorFragment mTaskCreatorFragment;
 
   private Task mTask;
 
@@ -38,8 +39,8 @@ public class TaskCreatorActivity extends Activity {
     detachTaskCreatorFragment(mTaskCreatorFragment);
   }
 
-  private Fragment attachTaskCreatorFragmentForTask(final Task task) {
-    final Fragment newFragment = TaskCreatorFragment.newInstance(task);
+  private TaskCreatorFragment attachTaskCreatorFragmentForTask(final Task task) {
+    final TaskCreatorFragment newFragment = TaskCreatorFragment.newInstance(task);
     final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
         .add(R.id.splash_screen_layout, newFragment, task.getName());
 
@@ -47,6 +48,11 @@ public class TaskCreatorActivity extends Activity {
 
     return newFragment;
   }
+
+  public void onClickCreateStepButton(final View view) {
+    mTaskCreatorFragment.onClickCreateStepButton(view);
+  }
+
 
   private void detachTaskCreatorFragment(final Fragment fragment) {
     final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
