@@ -25,5 +25,6 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile project(':headwaySharedLibrary')
 }

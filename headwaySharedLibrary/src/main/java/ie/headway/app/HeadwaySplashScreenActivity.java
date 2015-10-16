@@ -1,9 +1,9 @@
 package ie.headway.app;
 
-import static ie.headway.app.disk.AppDir.makeAppDirs;
-
 import android.app.Activity;
 import android.os.Bundle;
+
+import static ie.headway.app.disk.AppDir.makeAppDirs;
 
 public abstract class HeadwaySplashScreenActivity extends Activity {
 
@@ -16,7 +16,8 @@ public abstract class HeadwaySplashScreenActivity extends Activity {
     super.onCreate(savedInstanceBundle);
     setContentView(R.layout.activity_splash_screen);
     makeAppDirs();    //NOTE  Having this across both apps may cause problems, keep that in mind.
-    exitSplashScreen(5000);
+//    exitSplashScreen(5000);
+    exitSplashScreen(1);
   }
 
   /**

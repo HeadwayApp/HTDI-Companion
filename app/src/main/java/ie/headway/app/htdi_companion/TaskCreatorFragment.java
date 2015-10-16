@@ -13,6 +13,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -35,6 +36,10 @@ public class TaskCreatorFragment extends Fragment {
   private Task mTask;
   private int stepCnt;
 
+  private CameraView mCameraView;
+
+  private JpegCallback mJpegCallback;
+
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
     final Bundle args = new Bundle();
@@ -52,34 +57,26 @@ public class TaskCreatorFragment extends Fragment {
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                            final Bundle savedInstanceState) {
+    final LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
 
-    inflater.inflate(R.layout.task_creator_fragment, container);
-
-    final JpegCallback jpegCallback =
-        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
-
-    final ImageCapture imageCapture = new SimpleJpegImageCapture(jpegCallback);
-    final Camera camera = openCamera();
-
-    final CameraView cameraView = makeCameraView(camera, jpegCallback, imageCapture);
+//    mJpegCallback =
+//        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
 //
-//    final Button createStepButton =
-//        makeCreateStepButton(cameraView, jpegCallback, stepDescriptionField);
-
-//    container.addView(createStepButton);
-    container.addView(cameraView);
+//    final ImageCapture imageCapture = new SimpleJpegImageCapture(mJpegCallback);
+//    final Camera camera = openCamera();
+//
+//    mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
+//    layout.addView(mCameraView);
 
     return null;
   }
 
   public void onClickCreateStepButton(final View view) {
 
-    cameraView.captureImage();
-
-    loadTaskFromArguments();
+    mCameraView.captureImage();
 
     final File nextJpegFile = getNextJpegFile();
-    jpegCallback.setFile(nextJpegFile);
+    mJpegCallback.setFile(nextJpegFile);
 
     final String filePath = nextJpegFile.getAbsolutePath().replace(
         Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
@@ -95,12 +92,12 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   private CharSequence getStepDescription() {
-    final EditText editText = (EditText)getView().findViewById(R.id.stepDescriptionFieldView);
+    final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
     return editText.getText();
   }
 
   private void clearStepDescriptionField() {
-    final EditText editText = (EditText)getView().findViewById(R.id.stepDescriptionFieldView);
+    final EditText editText = (EditText)getView().findViewById(R.id.inputStepDescriptionView);
     editText.getText().clear();
   }
 

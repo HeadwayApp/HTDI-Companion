@@ -6,6 +6,8 @@ import android.os.Handler;
 
 import ie.headway.app.HeadwaySplashScreenActivity;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class SplashScreenActivity extends HeadwaySplashScreenActivity {
 
   @Override
@@ -14,12 +16,13 @@ public class SplashScreenActivity extends HeadwaySplashScreenActivity {
   }
 
   @Override
-  protected void exitSplashScreen(long delay) {
+  protected void exitSplashScreen(final long delay) {
+    checkArgument(delay >= 0, "delay value is negative");
     new Handler().postDelayed(new Runnable() {
       @Override
       public void run() {
-        final Intent i = new Intent(getApplicationContext(), TaskInitialiserActivity.class);
-        startActivity(i);
+        final Intent intent = new Intent(getApplicationContext(), TaskInitialiserActivity.class);
+        startActivity(intent);
       }
     }, delay);
   }
