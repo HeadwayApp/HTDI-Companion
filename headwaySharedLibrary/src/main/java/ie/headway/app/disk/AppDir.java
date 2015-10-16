@@ -10,7 +10,7 @@ public enum AppDir {
 
   private final String mPath;
 
-  private AppDir(String path) {
+  AppDir(String path) {
     mPath = path;
   }
 

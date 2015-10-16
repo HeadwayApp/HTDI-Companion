@@ -19,7 +19,7 @@ public class JpegCallback implements Camera.PictureCallback {
   private File mFile;
   private CameraView mCamView;
 
-  private Context mContext;
+  private final Context mContext;
 
   private JpegCallback(final File file, final CameraView cameraView, final Context context) {
     mFile = file;

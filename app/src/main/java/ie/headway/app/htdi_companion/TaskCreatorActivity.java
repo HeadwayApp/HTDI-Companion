@@ -2,49 +2,51 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 
 import ie.headway.app.xml.Task;
 
+import static com.google.common.base.Preconditions.checkState;
+
 public class TaskCreatorActivity extends Activity {
 
-  private TaskCreatorFragment mTaskCreatorFragment;
-
   private Task mTask;
+  private TaskCreatorFragment mTaskCreatorFragment;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_task_creator);
-
-    mTask = getIntent().getParcelableExtra("task");
-
-    mTask.makeRequiredDirs();
+    loadTask();
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    mTaskCreatorFragment = attachTaskCreatorFragmentForTask(mTask);
+    attachTaskCreatorFragmentForTask(mTask);
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    detachTaskCreatorFragment(mTaskCreatorFragment);
+    detachTaskCreatorFragment();
   }
 
-  private TaskCreatorFragment attachTaskCreatorFragmentForTask(final Task task) {
-    final TaskCreatorFragment newFragment = TaskCreatorFragment.newInstance(task);
-    final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
-        .add(R.id.splash_screen_layout, newFragment, task.getName());
+  protected void attachTaskCreatorFragmentForTask(final Task task) {
+    checkState(mTaskCreatorFragment == null, "task creator fragment is already assigned.");
+    final String taskName = task.getName();
+    mTaskCreatorFragment = TaskCreatorFragment.newInstance(task);
+    addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName);
+  }
 
-    fragmentTransaction.commit();
-
-    return newFragment;
+  protected void detachTaskCreatorFragment() {
+    removeFragmentFromLayout(mTaskCreatorFragment);
+    mTaskCreatorFragment = null;
   }
 
   /**
@@ -54,12 +56,26 @@ public class TaskCreatorActivity extends Activity {
     mTaskCreatorFragment.onClickCreateStepButton(view);
   }
 
+  private void loadTask() {
+    final Intent intent = getIntent();
+    final Parcelable taskParcleable = intent.getParcelableExtra("task");
+    final Task task = (Task)taskParcleable;
+    mTask = task;
+    mTask.makeRequiredDirs();
+  }
 
-  private void detachTaskCreatorFragment(final Fragment fragment) {
-    final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction()
-        .remove(fragment);
+  private void addFragmentToLayout(final int layoutId, final Fragment fragment, final String tag) {
+    final FragmentManager fragmentManager = getFragmentManager();
+    final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.add(layoutId, fragment, tag);
     fragmentTransaction.commit();
-    mTaskCreatorFragment = null;
+  }
+
+  private void removeFragmentFromLayout(final Fragment fragment) {
+    final FragmentManager fragmentManager = getFragmentManager();
+    final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.remove(fragment);
+    fragmentTransaction.commit();
   }
 
 }

@@ -69,8 +69,8 @@ public class Task implements Parcelable, RequiresDirs {
     steps = retrieveStepsFromParcel(in);
   }
 
-  public static final Creator<Task> CREATOR
-      = new Creator<Task>() {
+  public static final Parcelable.Creator<Task> CREATOR
+      = new Parcelable.Creator<Task>() {
     public Task createFromParcel(final Parcel source) {
       return new Task(source);
     }

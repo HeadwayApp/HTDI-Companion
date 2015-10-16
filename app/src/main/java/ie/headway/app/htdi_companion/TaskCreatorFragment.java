@@ -56,8 +56,7 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                           final Bundle savedInstanceState) {
+  public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
     final LinearLayout rootLayout =
         (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
 
@@ -72,32 +71,6 @@ public class TaskCreatorFragment extends Fragment {
     addCameraViewToLayout(mCameraView);
 
     return null;
-  }
-
-  private void addCameraViewToLayout(final CameraView cameraView) {
-    final FrameLayout cameraViewPlaceHolder =
-        (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
-    cameraViewPlaceHolder.addView(cameraView);
-  }
-
-  public void onClickCreateStepButton(final View view) {
-
-    mCameraView.captureImage();
-
-    final File nextJpegFile = getNextJpegFile();
-    mJpegCallback.setFile(nextJpegFile);
-
-    final String filePath = nextJpegFile.getAbsolutePath().replace(
-        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
-
-    final String stepDescription = getStepDescription().toString();
-
-    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
-
-    saveStep(step);
-
-    clearStepDescriptionField();
-
   }
 
   protected CharSequence getStepDescription() {
@@ -122,8 +95,27 @@ public class TaskCreatorFragment extends Fragment {
     }
   }
 
-  private CameraView makeCameraView(final Camera camera,
-                                    final JpegCallback jpegCallback, ImageCapture imageCapture) {
+  void onClickCreateStepButton(final View view) {
+
+    mCameraView.captureImage();
+
+    final File nextJpegFile = getNextJpegFile();
+    mJpegCallback.setFile(nextJpegFile);
+
+    final String filePath = nextJpegFile.getAbsolutePath().replace(
+        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
+
+    final String stepDescription = getStepDescription().toString();
+
+    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
+
+    saveStep(step);
+
+    clearStepDescriptionField();
+
+  }
+
+  private CameraView makeCameraView(final Camera camera, final JpegCallback jpegCallback, ImageCapture imageCapture) {
     final CameraView cameraView =
         CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
     jpegCallback.setCamView(cameraView);
@@ -144,7 +136,7 @@ public class TaskCreatorFragment extends Fragment {
     final String taskName = mTask.getName();
     final File jpegFile = AppDir.ROOT.getFile(File.separator + taskName +
         File.separator + "imgs" +
-        File.separator + String.valueOf(stepCnt++) + ".jpg");
+        File.separator + stepCnt++ + ".jpg");
 
     return jpegFile;
   }
@@ -157,6 +149,12 @@ public class TaskCreatorFragment extends Fragment {
     final Activity activity = getActivity();
     final Camera camera = AutoOrientatedCamera.getCamera(activity);
     return camera;
+  }
+
+  private void addCameraViewToLayout(final CameraView cameraView) {
+    final FrameLayout cameraViewPlaceHolder =
+        (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
+    cameraViewPlaceHolder.addView(cameraView);
   }
 
 }

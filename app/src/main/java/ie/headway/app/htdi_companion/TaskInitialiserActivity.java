@@ -12,7 +12,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ie.headway.app.htdi_companion.R.layout;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
@@ -21,7 +20,7 @@ public class TaskInitialiserActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(layout.activity_task_initialiser);
+    setContentView(R.layout.activity_task_initialiser);
   }
 
   public void onClickStartTaskCreationButton(final View v) {

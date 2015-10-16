@@ -18,7 +18,7 @@ public final class AutoOrientatedCamera {
   }
 
   private Camera setCameraDisplayOrientation(final int cameraId, final Camera camera) {
-    final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+    final Camera.CameraInfo info = new Camera.CameraInfo();
     Camera.getCameraInfo(cameraId, info);
     int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
     int degrees = 0;
