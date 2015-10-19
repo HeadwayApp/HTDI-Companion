@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.simpleframework.xml.Serializer;
@@ -22,6 +21,7 @@ import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.ImageCapture;
+import ie.headway.app.htdi_companion.camera.JpegCallback;
 import ie.headway.app.htdi_companion.camera.JpegImageCapture;
 import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
 import ie.headway.app.xml.PortableStep;
@@ -35,11 +35,12 @@ public class TaskCreatorFragment extends Fragment {
 
   private static final String TAG = "TaskCreatorFragment";
   private static final String EMPTY_STRING = "";
+  private static final View NO_VIEW_TO_RETURN = null;
 
   private Task mTask;
   private int stepCnt;
 
-  private ScaledJpegCallback mJpegCallback;
+  private JpegCallback mJpegCallback;
 
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
@@ -57,8 +58,6 @@ public class TaskCreatorFragment extends Fragment {
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    final LinearLayout rootLayout =
-        (LinearLayout) inflater.inflate(R.layout.task_creator_fragment, container);
 
     mJpegCallback =
         ScaledJpegCallback.newInstance(getNextJpegFile(), null, getActivity());
@@ -68,7 +67,7 @@ public class TaskCreatorFragment extends Fragment {
 
     setUpCameraView(camera, mJpegCallback, imageCapture);
 
-    return null;
+    return NO_VIEW_TO_RETURN;
   }
 
   protected CharSequence getStepDescription() {
@@ -115,13 +114,12 @@ public class TaskCreatorFragment extends Fragment {
 
   }
 
-  private void setUpCameraView(final Camera camera, final ScaledJpegCallback jpegCallback, ImageCapture imageCapture) {
+  private void setUpCameraView(final Camera camera, final JpegCallback jpegCallback, ImageCapture imageCapture) {
 
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
     cameraView.setImageCapture(imageCapture);
 
-    jpegCallback.setCamView(cameraView);
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View view) {
@@ -144,7 +142,8 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   private void loadTaskFromArguments() {
-    mTask = getArguments().getParcelable("task");
+    final Bundle arguments = getArguments();
+    mTask = arguments.getParcelable("task");
   }
 
   private Camera openCamera() {

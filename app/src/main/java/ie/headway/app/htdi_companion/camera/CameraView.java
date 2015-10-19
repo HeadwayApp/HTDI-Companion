@@ -1,15 +1,13 @@
 package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
-/**
- * TODO: Should CameraView return an ImageCapture which is used to invoke captureImage() on?
- */
 public final class CameraView extends AbstractCameraView {
 
   private Camera mCamera;
@@ -29,7 +27,13 @@ public final class CameraView extends AbstractCameraView {
 
   @Override
   public void captureImage() {
-    mImageCapture.takePicture(mCamera);
+    final Bitmap imageBitmap = mImageCapture.takePicture(mCamera);
+
+    try {
+      mImageCapture.savePicture(imageBitmap);
+    }catch(IOException ioe) {
+      throw new RuntimeException("Couldn't save image.", ioe);
+    }
   }
 
   @Override

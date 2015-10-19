@@ -23,7 +23,7 @@ public class ScaledJpegCallback extends JpegCallback {
 
     scaleCapturedBitmap(screenWidth, screenHeight);
 
-    //TODO: The roating of the image is not the responsibility of ScaledJpegCallback, must refactor.
+    //TODO: The rotating of the image is not the responsibility of ScaledJpegCallback, must refactor.
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
       rotateCapturedBitmap(90.0f);
     }
@@ -59,33 +59,3 @@ public class ScaledJpegCallback extends JpegCallback {
   }
 
 }
-
-//    try {
-////            writeRawDataToFile(data, mFile);
-//      writeBitmapToFile(bm, mFile);
-//    } catch (IOException e) {
-//      Log.e(TAG, "exception on line: writeBitmapToFile(bitmap, file)", e);
-//    }
-
-//    try {
-//      mCamView.refreshCameraView();
-//    } catch (Exception e) {
-//      Log.e("mo", "Error occurred", e);
-//    }
-
-//  private void writeBitmapToFile(final Bitmap bitmap, final File file) throws IOException {
-//    FileOutputStream out = new FileOutputStream(file);
-//    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-//    // PNG is a lossless format, the compression factor (100) is ignored
-//    if (out != null) {
-//      out.close();
-//    }
-//  }
-
-//  public void setCamView(final CameraView camView) {
-//    mCamView = camView;
-//  }
-//
-//  public void setFile(File file) {
-//    mFile = file;
-//  }
