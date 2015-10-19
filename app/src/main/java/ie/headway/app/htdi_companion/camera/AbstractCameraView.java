@@ -6,6 +6,12 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 
+/**
+ * NOTE: You'll notice there is no reference to android.hardware.Camera anywhere in the class.
+ * While this was note completely intentional, it is a good design choice as the AbstractCameraView
+ * is now not tied to either android.hardware.Camera or android.hardware.camera2 (which are
+ * completely separate classes, not related by any kind of inheritance or interface).
+ * */
 public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback {
 
   protected AbstractCameraView(final Context context) {
