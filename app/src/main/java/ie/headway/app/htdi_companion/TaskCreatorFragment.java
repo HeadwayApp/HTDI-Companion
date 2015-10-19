@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -23,12 +22,15 @@ import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.ImageCapture;
-import ie.headway.app.htdi_companion.camera.JpegCallback;
+import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
 import ie.headway.app.htdi_companion.camera.JpegImageCapture;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
+/**
+ * TODO: Should getActivity().findViewById() be replaced with getView().findViewById()?
+ * */
 public class TaskCreatorFragment extends Fragment {
 
   private static final String TAG = "TaskCreatorFragment";
@@ -37,7 +39,7 @@ public class TaskCreatorFragment extends Fragment {
   private Task mTask;
   private int stepCnt;
 
-  private JpegCallback mJpegCallback;
+  private ScaledJpegCallback mJpegCallback;
 
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
@@ -59,14 +61,12 @@ public class TaskCreatorFragment extends Fragment {
         (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
 
     mJpegCallback =
-        JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+        ScaledJpegCallback.newInstance(getNextJpegFile(), null, getActivity());
 
     final ImageCapture imageCapture = new JpegImageCapture(mJpegCallback);
     final Camera camera = openCamera();
 
-    mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
-
-    addViewToPlaceholder(mCameraView);
+    setUpCameraView(camera, mJpegCallback, imageCapture);
 
     return null;
   }
@@ -95,7 +95,9 @@ public class TaskCreatorFragment extends Fragment {
 
   void onClickCreateStepButton(final View view) {
 
-    mCameraView.captureImage();
+    final CameraView cameraView = (CameraView)getActivity().findViewById(R.id.cameraView);
+
+    cameraView.captureImage();
 
     final File nextJpegFile = getNextJpegFile();
     mJpegCallback.setFile(nextJpegFile);
@@ -113,9 +115,12 @@ public class TaskCreatorFragment extends Fragment {
 
   }
 
-  private CameraView makeCameraView(final Camera camera, final JpegCallback jpegCallback, ImageCapture imageCapture) {
-    final CameraView cameraView =
-        CameraView.newInstance(getActivity().getApplicationContext(), camera, imageCapture);
+  private void setUpCameraView(final Camera camera, final ScaledJpegCallback jpegCallback, ImageCapture imageCapture) {
+
+    final CameraView cameraView = (CameraView)getActivity().findViewById(R.id.cameraView);
+    cameraView.setCamera(camera);
+    cameraView.setImageCapture(imageCapture);
+
     jpegCallback.setCamView(cameraView);
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
@@ -127,7 +132,6 @@ public class TaskCreatorFragment extends Fragment {
         return true;
       }
     });
-    return cameraView;
   }
 
   private File getNextJpegFile() {
@@ -147,12 +151,6 @@ public class TaskCreatorFragment extends Fragment {
     final Activity activity = getActivity();
     final Camera camera = AutoOrientatedCamera.getCamera(activity);
     return camera;
-  }
-
-  private void addViewToPlaceholder(final View view) {
-    final Activity activity = getActivity();
-    final FrameLayout placeholder = (FrameLayout)activity.findViewById(R.id.placeholder);
-    placeholder.addView(view);
   }
 
 }

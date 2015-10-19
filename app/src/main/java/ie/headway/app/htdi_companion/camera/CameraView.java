@@ -2,27 +2,28 @@ package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
+/**
+ * TODO: Should CameraView return an ImageCapture which is used to invoke captureImage() on?
+ * */
 public final class CameraView extends AbstractCameraView {
 
-  private static final String TAG = "CameraView";
+  private Camera mCamera;
+  private ImageCapture mImageCapture;
 
-  private final Camera mCamera;
-  private final ImageCapture mImageCapture;
-
-  public static CameraView newInstance(final Context context, final Camera camera,
-                                       final ImageCapture imageCapture) {
-    final CameraView instance = new CameraView(context, camera, imageCapture);
-    return instance;
+  public CameraView(final Context context, final AttributeSet attrs) {
+    super(context, attrs);
   }
 
-  private CameraView(final Context context, final Camera camera,
-                     final ImageCapture imageCapture) {
-    super(context);
+  public void setCamera(final Camera camera) {
     mCamera = camera;
+  }
+
+  public void setImageCapture(final ImageCapture imageCapture) {
     mImageCapture = imageCapture;
   }
 

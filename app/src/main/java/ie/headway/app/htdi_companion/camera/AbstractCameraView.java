@@ -1,6 +1,7 @@
 package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -15,7 +16,16 @@ import java.io.IOException;
 public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback {
 
   protected AbstractCameraView(final Context context) {
-    super(context);
+    this(context, null);
+  }
+
+  protected AbstractCameraView(final Context context, final AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  protected AbstractCameraView(final Context context, final AttributeSet attrs,
+                               final int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
     final SurfaceHolder holder = getHolder();
     final SurfaceHolder.Callback callback = this;
     holder.addCallback(callback);

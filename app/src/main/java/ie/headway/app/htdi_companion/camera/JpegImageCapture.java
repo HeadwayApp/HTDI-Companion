@@ -1,5 +1,6 @@
 package ie.headway.app.htdi_companion.camera;
 
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 
 public class JpegImageCapture implements ImageCapture {
@@ -11,7 +12,7 @@ public class JpegImageCapture implements ImageCapture {
   }
 
   @Override
-  public void takePicture(final Camera camera) {
+  public Bitmap takePicture(final Camera camera) {
     camera.takePicture(null, null, mJpegCallback);
   }
 
