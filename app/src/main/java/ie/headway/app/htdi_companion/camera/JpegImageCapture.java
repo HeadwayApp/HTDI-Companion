@@ -2,11 +2,11 @@ package ie.headway.app.htdi_companion.camera;
 
 import android.hardware.Camera;
 
-public class SimpleJpegImageCapture implements ImageCapture {
+public class JpegImageCapture implements ImageCapture {
 
   private final Camera.PictureCallback mJpegCallback;
 
-  public SimpleJpegImageCapture(Camera.PictureCallback jpegCallback) {
+  public JpegImageCapture(Camera.PictureCallback jpegCallback) {
     mJpegCallback = jpegCallback;
   }
 

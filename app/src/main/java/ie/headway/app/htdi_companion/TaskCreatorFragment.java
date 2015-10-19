@@ -24,7 +24,7 @@ import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.ImageCapture;
 import ie.headway.app.htdi_companion.camera.JpegCallback;
-import ie.headway.app.htdi_companion.camera.SimpleJpegImageCapture;
+import ie.headway.app.htdi_companion.camera.JpegImageCapture;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
@@ -36,8 +36,6 @@ public class TaskCreatorFragment extends Fragment {
 
   private Task mTask;
   private int stepCnt;
-
-  private CameraView mCameraView;
 
   private JpegCallback mJpegCallback;
 
@@ -63,12 +61,12 @@ public class TaskCreatorFragment extends Fragment {
     mJpegCallback =
         JpegCallback.newInstance(getNextJpegFile(), null, getActivity());
 
-    final ImageCapture imageCapture = new SimpleJpegImageCapture(mJpegCallback);
+    final ImageCapture imageCapture = new JpegImageCapture(mJpegCallback);
     final Camera camera = openCamera();
 
     mCameraView = makeCameraView(camera, mJpegCallback, imageCapture);
 
-    addCameraViewToLayout(mCameraView);
+    addViewToPlaceholder(mCameraView);
 
     return null;
   }
@@ -151,10 +149,10 @@ public class TaskCreatorFragment extends Fragment {
     return camera;
   }
 
-  private void addCameraViewToLayout(final CameraView cameraView) {
-    final FrameLayout cameraViewPlaceHolder =
-        (FrameLayout)getActivity().findViewById(R.id.cameraViewPlaceHolder);
-    cameraViewPlaceHolder.addView(cameraView);
+  private void addViewToPlaceholder(final View view) {
+    final Activity activity = getActivity();
+    final FrameLayout placeholder = (FrameLayout)activity.findViewById(R.id.placeholder);
+    placeholder.addView(view);
   }
 
 }
