@@ -2,20 +2,16 @@ package ie.headway.app.htdi_companion.camera;
 
 import android.graphics.Bitmap;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
-public class FileSystemJpegCapture extends JpegImageCapture {
+public class SavableJpegCapture extends JpegImageCapture {
 
-  private final FileOutputStream mOutputStream;
+  private final OutputStream mOutputStream;
 
-  public FileSystemJpegCapture(final JpegCallback jpegCallback, final FileOutputStream outputStream) {
+  public SavableJpegCapture(final JpegCallback jpegCallback, final OutputStream outputStream) {
     super(jpegCallback);
     mOutputStream = outputStream;
-  }
-
-  public void closeOutputStream() throws IOException {
-    mOutputStream.close();
   }
 
   @Override
@@ -26,6 +22,7 @@ public class FileSystemJpegCapture extends JpegImageCapture {
   private void writeBitmapToFile(final Bitmap bitmap) throws IOException {
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, mOutputStream);
     mOutputStream.flush();
+    mOutputStream.close();
   }
 
 }

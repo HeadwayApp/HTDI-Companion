@@ -3,6 +3,7 @@ package ie.headway.app.htdi_companion;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,13 +17,15 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.ImageCapture;
 import ie.headway.app.htdi_companion.camera.JpegCallback;
-import ie.headway.app.htdi_companion.camera.JpegImageCapture;
+import ie.headway.app.htdi_companion.camera.SavableJpegCapture;
 import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
@@ -59,15 +62,30 @@ public class TaskCreatorFragment extends Fragment {
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-    mJpegCallback =
-        ScaledJpegCallback.newInstance(getNextJpegFile(), null, getActivity());
+    inflater.inflate(R.layout.task_creator_fragment, container);
 
-    final ImageCapture imageCapture = new JpegImageCapture(mJpegCallback);
+    return NO_VIEW_TO_RETURN;
+  }
+
+  @Override
+  public void onActivityCreated(final Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    final Resources resources = getResources();
+    mJpegCallback = new ScaledJpegCallback(resources);
+
+    FileOutputStream jpegOutputStream;
+
+    try{
+      jpegOutputStream = new FileOutputStream(getNextJpegFile());
+    }catch(FileNotFoundException fnfe){
+      throw new RuntimeException("File not found", fnfe);
+    }
+
+    final ImageCapture imageCapture = new SavableJpegCapture(mJpegCallback, jpegOutputStream);
     final Camera camera = openCamera();
 
     setUpCameraView(camera, mJpegCallback, imageCapture);
-
-    return NO_VIEW_TO_RETURN;
   }
 
   protected CharSequence getStepDescription() {
@@ -99,7 +117,7 @@ public class TaskCreatorFragment extends Fragment {
     cameraView.captureImage();
 
     final File nextJpegFile = getNextJpegFile();
-    mJpegCallback.setFile(nextJpegFile);
+//    mJpegCallback.setFile(nextJpegFile);
 
     final String filePath = nextJpegFile.getAbsolutePath().replace(
         Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
