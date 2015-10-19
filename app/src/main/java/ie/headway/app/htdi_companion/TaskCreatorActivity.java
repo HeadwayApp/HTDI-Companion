@@ -51,7 +51,7 @@ public class TaskCreatorActivity extends Activity {
 
   /**
    * TODO: Proxy for fragment method, may need refactoring.
-   * */
+   */
   public void onClickCreateStepButton(final View view) {
     mTaskCreatorFragment.onClickCreateStepButton(view);
   }
@@ -59,7 +59,7 @@ public class TaskCreatorActivity extends Activity {
   private void loadTask() {
     final Intent intent = getIntent();
     final Parcelable taskParcleable = intent.getParcelableExtra("task");
-    final Task task = (Task)taskParcleable;
+    final Task task = (Task) taskParcleable;
     mTask = task;
     mTask.makeRequiredDirs();
   }

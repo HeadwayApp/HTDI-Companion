@@ -9,6 +9,16 @@ import java.io.File;
 
 public class Step implements Parcelable {
 
+  public static final Parcelable.Creator<Step> CREATOR
+      = new Parcelable.Creator<Step>() {
+    public Step createFromParcel(Parcel source) {
+      return new Step(source);
+    }
+
+    public Step[] newArray(int size) {
+      return new Step[size];
+    }
+  };
   /**
    * TODO Does SimpleXML need these to be non-final?
    */
@@ -30,6 +40,16 @@ public class Step implements Parcelable {
     this.text = text;
     this.imagePath = imagePath;
     this.audioPath = audioPath;
+  }
+
+  /**
+   * TODO Can't be private because compiler error occurs. I don't remember this happening before,
+   * this should be investigated further. The API example code has the ctor as private aswell.
+   */
+  Step(Parcel in) {
+    this(in.readString(),
+        in.readString(),
+        in.readString());
   }
 
   public String getText() {
@@ -59,27 +79,6 @@ public class Step implements Parcelable {
     dest.writeString(text);
     dest.writeString(imagePath);
     dest.writeString(audioPath);
-  }
-
-  public static final Parcelable.Creator<Step> CREATOR
-      = new Parcelable.Creator<Step>() {
-    public Step createFromParcel(Parcel source) {
-      return new Step(source);
-    }
-
-    public Step[] newArray(int size) {
-      return new Step[size];
-    }
-  };
-
-  /**
-   * TODO Can't be private because compiler error occurs. I don't remember this happening before,
-   * this should be investigated further. The API example code has the ctor as private aswell.
-   */
-  Step(Parcel in) {
-    this(in.readString(),
-        in.readString(),
-        in.readString());
   }
 
 }

@@ -3,13 +3,9 @@ package ie.headway.app.htdi_companion.camera;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 
-/**
- * TODO: This class can be split up so that it extemds JpegCallback and adds the scaling stuff here.
- * */
 public class ScaledJpegCallback extends JpegCallback {
 
   private final Resources mResources;
@@ -22,23 +18,14 @@ public class ScaledJpegCallback extends JpegCallback {
   public void onPictureTaken(final byte[] data, final Camera camera) {
     super.onPictureTaken(data, camera);
 
-    final Bitmap originalBitmap = getCapturedBitmap();
-
     final int screenWidth = getScreenWidth();
     final int screenHeight = getScreenHeight();
 
-    // Notice that width and height are reversed
-    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, screenHeight, screenWidth, true);
+    scaleCapturedBitmap(screenWidth, screenHeight);
 
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-      final int scaledWidth = scaledBitmap.getWidth();
-      final int scaledHeight = scaledBitmap.getHeight();
-      final Matrix mtx = new Matrix();
-      mtx.postRotate(90);
-      scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledWidth, scaledHeight, mtx, true);
+      rotateCapturedBitmap(90.0f);
     }
-
-    setCapturedBitmap(scaledBitmap);
   }
 
   private int getScreenWidth() {
@@ -48,6 +35,29 @@ public class ScaledJpegCallback extends JpegCallback {
   private int getScreenHeight() {
     return mResources.getDisplayMetrics().heightPixels;
   }
+
+  private void scaleCapturedBitmap(final int width, final int height) {
+    final Bitmap capturedBitmap = getCapturedBitmap();
+    final Bitmap scaledCapturedBitmap = Bitmap.createScaledBitmap(capturedBitmap, height, width, true);
+    setCapturedBitmap(scaledCapturedBitmap);
+  }
+
+  private void rotateCapturedBitmap(final float degrees) {
+    final Bitmap capturedBitmap = getCapturedBitmap();
+
+    final int bitmapWidth = capturedBitmap.getWidth();
+    final int bitmapHeight = capturedBitmap.getHeight();
+
+    final Matrix mtx = new Matrix();
+    mtx.postRotate(degrees);
+
+    final Bitmap rotatedCapturedBitmap =
+        Bitmap.createBitmap(capturedBitmap, 0, 0, bitmapWidth, bitmapHeight, mtx, true);
+
+    setCapturedBitmap(rotatedCapturedBitmap);
+  }
+
+}
 
 //    try {
 ////            writeRawDataToFile(data, mFile);
@@ -61,7 +71,6 @@ public class ScaledJpegCallback extends JpegCallback {
 //    } catch (Exception e) {
 //      Log.e("mo", "Error occurred", e);
 //    }
-  }
 
 //  private void writeBitmapToFile(final Bitmap bitmap, final File file) throws IOException {
 //    FileOutputStream out = new FileOutputStream(file);
@@ -79,4 +88,3 @@ public class ScaledJpegCallback extends JpegCallback {
 //  public void setFile(File file) {
 //    mFile = file;
 //  }
-}

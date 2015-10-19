@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  * TODO: Should CameraView return an ImageCapture which is used to invoke captureImage() on?
- * */
+ */
 public final class CameraView extends AbstractCameraView {
 
   private Camera mCamera;

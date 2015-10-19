@@ -13,6 +13,11 @@ public class DelayedStartActivityRunnable extends StartActivityRunnable {
     super(context, activityClass);
   }
 
+  private static void runAfterDelay(final Runnable runnable, final long delay) {
+    final Handler handler = new Handler();
+    handler.postDelayed(runnable, delay);
+  }
+
   public long getDelay() {
     return mDelay;
   }
@@ -36,11 +41,6 @@ public class DelayedStartActivityRunnable extends StartActivityRunnable {
     };
 
     return runnable;
-  }
-
-  private static void runAfterDelay(final Runnable runnable, final long delay) {
-    final Handler handler = new Handler();
-    handler.postDelayed(runnable, delay);
   }
 
 }

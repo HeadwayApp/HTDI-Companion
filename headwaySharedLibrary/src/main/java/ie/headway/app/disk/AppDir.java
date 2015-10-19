@@ -15,6 +15,19 @@ public enum AppDir {
   }
 
   /**
+   * Create any directories required by the app which do not currently exist.
+   */
+  public static void makeAppDirs() {
+    for (final AppDir appDir : values()) {
+      if (!appDir.getFile().exists()) {
+        if (!appDir.getFile().mkdirs()) {    //mkdirs doesn't throw anything if it fails.
+          throw new RuntimeException("Couldn't create " + appDir.getFile());
+        }
+      }
+    }
+  }
+
+  /**
    * Returns a path with this AppDir as the parent to all the specified {@code children},
    * e.g ROOT.getPath("tmp", "64") would return a path ROOT/tmp/64, where ROOT is itself a path.
    *
@@ -39,19 +52,6 @@ public enum AppDir {
    */
   public File getFile(CharSequence... children) {
     return new File(getPath(children));
-  }
-
-  /**
-   * Create any directories required by the app which do not currently exist.
-   */
-  public static void makeAppDirs() {
-    for (final AppDir appDir : values()) {
-      if (!appDir.getFile().exists()) {
-        if (!appDir.getFile().mkdirs()) {    //mkdirs doesn't throw anything if it fails.
-          throw new RuntimeException("Couldn't create " + appDir.getFile());
-        }
-      }
-    }
   }
 
 }

@@ -8,13 +8,13 @@ public final class AutoOrientatedCamera {
 
   private final Activity mActivity;
 
+  private AutoOrientatedCamera(final Activity activity) {
+    mActivity = activity;
+  }
+
   public static Camera getCamera(final Activity activity) {
     final AutoOrientatedCamera aOCam = new AutoOrientatedCamera(activity);
     return aOCam.setCameraDisplayOrientation(0, Camera.open());
-  }
-
-  private AutoOrientatedCamera(final Activity activity) {
-    mActivity = activity;
   }
 
   private Camera setCameraDisplayOrientation(final int cameraId, final Camera camera) {
@@ -35,7 +35,8 @@ public final class AutoOrientatedCamera {
       case Surface.ROTATION_270:
         degrees = 270;
         break;
-      default: throw new RuntimeException("Invalid rotation.");
+      default:
+        throw new RuntimeException("Invalid rotation.");
     }
 
     int result;

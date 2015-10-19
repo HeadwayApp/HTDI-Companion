@@ -12,7 +12,7 @@ import java.io.IOException;
  * While this was note completely intentional, it is a good design choice as the AbstractCameraView
  * is now not tied to either android.hardware.Camera or android.hardware.camera2 (which are
  * completely separate entities not related by any kind of inheritance or interface).
- * */
+ */
 public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback {
 
   protected AbstractCameraView(final Context context) {
@@ -35,7 +35,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
   public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
     try {
       refreshCameraView();
-    }catch(IOException ioe) {
+    } catch (IOException ioe) {
       throw new RuntimeException("Couldn't refresh camera view.", ioe);
     }
   }
@@ -44,7 +44,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
   public void surfaceCreated(final SurfaceHolder holder) {
     try {
       startCamera();
-    }catch(IOException ioe) {
+    } catch (IOException ioe) {
       throw new RuntimeException("Couldn't start camera.", ioe);
     }
   }

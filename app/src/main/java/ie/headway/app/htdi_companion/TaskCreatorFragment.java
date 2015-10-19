@@ -22,15 +22,15 @@ import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.ImageCapture;
-import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
 import ie.headway.app.htdi_companion.camera.JpegImageCapture;
+import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
 /**
  * TODO: Should getActivity().findViewById() be replaced with getView().findViewById()?
- * */
+ */
 public class TaskCreatorFragment extends Fragment {
 
   private static final String TAG = "TaskCreatorFragment";
@@ -58,7 +58,7 @@ public class TaskCreatorFragment extends Fragment {
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
     final LinearLayout rootLayout =
-        (LinearLayout)inflater.inflate(R.layout.task_creator_fragment, container);
+        (LinearLayout) inflater.inflate(R.layout.task_creator_fragment, container);
 
     mJpegCallback =
         ScaledJpegCallback.newInstance(getNextJpegFile(), null, getActivity());
@@ -72,12 +72,12 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   protected CharSequence getStepDescription() {
-    final EditText editText = (EditText)getActivity().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
     return editText.getText();
   }
 
   protected void clearStepDescriptionField() {
-    final EditText editText = (EditText)getActivity().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
     editText.getText().clear();
   }
 
@@ -88,14 +88,14 @@ public class TaskCreatorFragment extends Fragment {
 
     try {
       serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
-    }catch(Exception e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
   void onClickCreateStepButton(final View view) {
 
-    final CameraView cameraView = (CameraView)getActivity().findViewById(R.id.cameraView);
+    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
 
     cameraView.captureImage();
 
@@ -117,7 +117,7 @@ public class TaskCreatorFragment extends Fragment {
 
   private void setUpCameraView(final Camera camera, final ScaledJpegCallback jpegCallback, ImageCapture imageCapture) {
 
-    final CameraView cameraView = (CameraView)getActivity().findViewById(R.id.cameraView);
+    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
     cameraView.setImageCapture(imageCapture);
 
