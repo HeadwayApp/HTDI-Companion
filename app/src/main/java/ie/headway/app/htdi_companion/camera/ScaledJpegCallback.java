@@ -23,6 +23,7 @@ public class ScaledJpegCallback extends JpegCallback {
 
     scaleCapturedBitmap(screenWidth, screenHeight);
 
+    //TODO: The roating of the image is not the responsibility of ScaledJpegCallback, must refactor.
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
       rotateCapturedBitmap(90.0f);
     }
