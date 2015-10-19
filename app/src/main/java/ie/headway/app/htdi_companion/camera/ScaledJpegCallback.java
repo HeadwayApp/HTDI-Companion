@@ -10,7 +10,7 @@ import android.hardware.Camera;
 /**
  * TODO: This class can be split up so that it extemds JpegCallback and adds the scaling stuff here.
  * */
-public class ScaledJpegCallback implements Camera.PictureCallback {
+public class ScaledJpegCallback extends JpegCallback {
 
   private final Resources mResources;
 
@@ -20,26 +20,25 @@ public class ScaledJpegCallback implements Camera.PictureCallback {
 
   @Override
   public void onPictureTaken(final byte[] data, final Camera camera) {
+    super.onPictureTaken(data, camera);
+
+    final Bitmap originalBitmap = getCapturedBitmap();
 
     final int screenWidth = getScreenWidth();
     final int screenHeight = getScreenHeight();
 
-    final Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, (data != null) ? data.length : 0);
+    // Notice that width and height are reversed
+    Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, screenHeight, screenWidth, true);
 
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-      // Notice that width and height are reversed
-      final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, screenHeight, screenWidth, true);
       final int scaledWidth = scaledBitmap.getWidth();
       final int scaledHeight = scaledBitmap.getHeight();
-      // Setting post rotate to 90
       final Matrix mtx = new Matrix();
       mtx.postRotate(90);
-      // Rotating Bitmap
-      final Bitmap rotatedScaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledWidth, scaledHeight, mtx, true);
-    } else {// LANDSCAPE MODE
-      //No need to reverse width and height
-      final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, screenWidth, screenHeight, true);
+      scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledWidth, scaledHeight, mtx, true);
     }
+
+    setCapturedBitmap(scaledBitmap);
   }
 
   private int getScreenWidth() {
