@@ -1,9 +1,5 @@
 package ie.headway.app.htdi_companion;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -13,7 +9,7 @@ import ie.headway.app.xml.Task;
 
 import static com.google.common.base.Preconditions.checkState;
 
-public class TaskCreatorActivity extends Activity {
+public class TaskCreatorActivity extends HeadwayActivity {
 
   private Task mTask;
   private TaskCreatorFragment mTaskCreatorFragment;
@@ -62,20 +58,6 @@ public class TaskCreatorActivity extends Activity {
     final Task task = (Task) taskParcleable;
     mTask = task;
     mTask.makeRequiredDirs();
-  }
-
-  private void addFragmentToLayout(final int layoutId, final Fragment fragment, final String tag) {
-    final FragmentManager fragmentManager = getFragmentManager();
-    final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.add(layoutId, fragment, tag);
-    fragmentTransaction.commit();
-  }
-
-  private void removeFragmentFromLayout(final Fragment fragment) {
-    final FragmentManager fragmentManager = getFragmentManager();
-    final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.remove(fragment);
-    fragmentTransaction.commit();
   }
 
 }

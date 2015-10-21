@@ -1,12 +1,13 @@
 package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
+
+import ie.headway.app.htdi_companion.camera.capture.ImageCapture;
 
 public final class CameraView extends AbstractCameraView {
 
@@ -27,10 +28,10 @@ public final class CameraView extends AbstractCameraView {
 
   @Override
   public void captureImage() {
-    final Bitmap imageBitmap = mImageCapture.takePicture(mCamera);
+    mImageCapture.takePicture(mCamera);
 
     try {
-      mImageCapture.savePicture(imageBitmap);
+      mImageCapture.savePicture();
     }catch(IOException ioe) {
       throw new RuntimeException("Couldn't save image.", ioe);
     }

@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.camera;
+package ie.headway.app.htdi_companion.camera.capture;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 
-public class ScaledJpegCallback extends JpegCallback {
+class ScaledJpegCallback extends JpegCallback {
 
   private final Resources mResources;
 
@@ -24,6 +24,7 @@ public class ScaledJpegCallback extends JpegCallback {
     scaleCapturedBitmap(screenWidth, screenHeight);
 
     //TODO: The rotating of the image is not the responsibility of ScaledJpegCallback, must refactor.
+    //TODO: See: http://developer.android.com/training/camera/cameradirect.html#TaskOrientation
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
       rotateCapturedBitmap(90.0f);
     }

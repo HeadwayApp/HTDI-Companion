@@ -1,19 +1,26 @@
-package ie.headway.app.htdi_companion.camera;
+package ie.headway.app.htdi_companion.camera.capture;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 
-public class JpegCallback implements Camera.PictureCallback {
+import static com.google.common.base.Preconditions.checkState;
+
+class JpegCallback implements Camera.PictureCallback {
 
   private Bitmap mCapturedBitmap;
 
-  public Bitmap getCapturedBitmap() {
+  protected Bitmap getCapturedBitmap() {
+    checkState(mCapturedBitmap != null, "No bitmap has been captured.");
     return mCapturedBitmap;
   }
 
   protected void setCapturedBitmap(final Bitmap bitmap) {
     mCapturedBitmap = bitmap;
+  }
+
+  protected boolean hasCapturedBitmap() {
+    return mCapturedBitmap != null;
   }
 
   @Override

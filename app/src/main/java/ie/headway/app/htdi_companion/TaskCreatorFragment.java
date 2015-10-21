@@ -23,27 +23,19 @@ import java.io.FileOutputStream;
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.ImageCapture;
-import ie.headway.app.htdi_companion.camera.JpegCallback;
-import ie.headway.app.htdi_companion.camera.SavableJpegCapture;
-import ie.headway.app.htdi_companion.camera.ScaledJpegCallback;
+import ie.headway.app.htdi_companion.camera.capture.ImageCapture;
+import ie.headway.app.htdi_companion.camera.capture.JpegImageCapture;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
-/**
- * TODO: Should getActivity().findViewById() be replaced with getView().findViewById()?
- */
 public class TaskCreatorFragment extends Fragment {
 
-  private static final String TAG = "TaskCreatorFragment";
   private static final String EMPTY_STRING = "";
-  private static final View NO_VIEW_TO_RETURN = null;
+  private static final View VIEW_ALREADY_ATTACHED = null;
 
   private Task mTask;
   private int stepCnt;
-
-  private JpegCallback mJpegCallback;
 
   public static final TaskCreatorFragment newInstance(final Task task) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
@@ -61,10 +53,8 @@ public class TaskCreatorFragment extends Fragment {
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-
     inflater.inflate(R.layout.task_creator_fragment, container);
-
-    return NO_VIEW_TO_RETURN;
+    return VIEW_ALREADY_ATTACHED;
   }
 
   @Override
@@ -72,20 +62,20 @@ public class TaskCreatorFragment extends Fragment {
     super.onActivityCreated(savedInstanceState);
 
     final Resources resources = getResources();
-    mJpegCallback = new ScaledJpegCallback(resources);
 
     FileOutputStream jpegOutputStream;
 
     try{
-      jpegOutputStream = new FileOutputStream(getNextJpegFile());
+      final File nextJpeg = getNextJpegFile();
+      jpegOutputStream = new FileOutputStream(nextJpeg);
     }catch(FileNotFoundException fnfe){
       throw new RuntimeException("File not found", fnfe);
     }
 
-    final ImageCapture imageCapture = new SavableJpegCapture(mJpegCallback, jpegOutputStream);
+    final ImageCapture imageCapture = new JpegImageCapture(resources, jpegOutputStream);
     final Camera camera = openCamera();
 
-    setUpCameraView(camera, mJpegCallback, imageCapture);
+    initialiseCameraView(camera, imageCapture);
   }
 
   protected CharSequence getStepDescription() {
@@ -117,7 +107,6 @@ public class TaskCreatorFragment extends Fragment {
     cameraView.captureImage();
 
     final File nextJpegFile = getNextJpegFile();
-//    mJpegCallback.setFile(nextJpegFile);
 
     final String filePath = nextJpegFile.getAbsolutePath().replace(
         Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
@@ -132,7 +121,7 @@ public class TaskCreatorFragment extends Fragment {
 
   }
 
-  private void setUpCameraView(final Camera camera, final JpegCallback jpegCallback, ImageCapture imageCapture) {
+  private void initialiseCameraView(final Camera camera, final ImageCapture imageCapture) {
 
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
@@ -140,14 +129,18 @@ public class TaskCreatorFragment extends Fragment {
 
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override
-      public boolean onLongClick(View view) {
-        final String taskName = (mTask != null) ? mTask.getName() : EMPTY_STRING;
-        final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
-        toast.show();
-        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
-        return true;
+      public boolean onLongClick(final View view) {
+        return onLongClickCameraView(view);
       }
     });
+  }
+
+  private boolean onLongClickCameraView(final View View) {
+    final String taskName = (mTask != null) ? mTask.getName() : EMPTY_STRING;
+    final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
+    toast.show();
+    startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
+    return true;
   }
 
   private File getNextJpegFile() {
