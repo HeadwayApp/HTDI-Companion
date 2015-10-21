@@ -24,7 +24,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    attachTaskCreatorFragmentForTask(mTask);
+    attachTaskCreatorFragment();
   }
 
   @Override
@@ -33,10 +33,10 @@ public class TaskCreatorActivity extends HeadwayActivity {
     detachTaskCreatorFragment();
   }
 
-  protected void attachTaskCreatorFragmentForTask(final Task task) {
+  protected void attachTaskCreatorFragment() {
     checkState(mTaskCreatorFragment == null, "task creator fragment is already assigned.");
-    final String taskName = task.getName();
-    mTaskCreatorFragment = TaskCreatorFragment.newInstance(task);
+    final String taskName = mTask.getName();
+    mTaskCreatorFragment = TaskCreatorFragment.newInstance(mTask);
     addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName);
   }
 
@@ -55,7 +55,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   private void loadTask() {
     final Intent intent = getIntent();
     final Parcelable taskParcleable = intent.getParcelableExtra("task");
-    final Task task = (Task) taskParcleable;
+    final Task task = (Task)taskParcleable;
     mTask = task;
     mTask.makeRequiredDirs();
   }
