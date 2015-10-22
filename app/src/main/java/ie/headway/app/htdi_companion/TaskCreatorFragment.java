@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class TaskCreatorFragment extends Fragment {
 
     try{
       final File nextJpeg = getNextJpegFile();
+      Log.d("mobius", "creating output stream for " + nextJpeg);
       jpegOutputStream = new FileOutputStream(nextJpeg);
     }catch(FileNotFoundException fnfe){
       throw new RuntimeException("File not found", fnfe);
