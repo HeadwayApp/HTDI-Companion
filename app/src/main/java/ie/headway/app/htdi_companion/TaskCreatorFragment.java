@@ -3,11 +3,9 @@ package ie.headway.app.htdi_companion;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +18,7 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
@@ -36,12 +35,15 @@ public class TaskCreatorFragment extends Fragment {
   private static final View VIEW_ALREADY_ATTACHED = null;
 
   private Task mTask;
-  private int stepCnt;
 
-  public static final TaskCreatorFragment newInstance(final Task task) {
+  private File nextJpeg;
+  private OutputStream jpegOutputStream;
+
+  public static final TaskCreatorFragment newInstance(final Task task, final int stepNum) {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
     final Bundle args = new Bundle();
     args.putParcelable("task", task);
+    args.putInt("stepNum", stepNum);
     taskCreatorFragment.setArguments(args);
     return taskCreatorFragment;
   }
@@ -50,6 +52,7 @@ public class TaskCreatorFragment extends Fragment {
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     loadTaskFromArguments();
+    setJpegFile();
   }
 
   @Override
@@ -62,19 +65,13 @@ public class TaskCreatorFragment extends Fragment {
   public void onActivityCreated(final Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    final Resources resources = getResources();
-
-    FileOutputStream jpegOutputStream;
-
     try{
-      final File nextJpeg = getNextJpegFile();
-      Log.d("mobius", "creating output stream for " + nextJpeg);
       jpegOutputStream = new FileOutputStream(nextJpeg);
     }catch(FileNotFoundException fnfe){
       throw new RuntimeException("File not found", fnfe);
     }
 
-    final ImageCapture imageCapture = new JpegImageCapture(resources, jpegOutputStream);
+    final ImageCapture imageCapture = new JpegImageCapture(jpegOutputStream);
     final Camera camera = openCamera();
 
     initialiseCameraView(camera, imageCapture);
@@ -85,12 +82,7 @@ public class TaskCreatorFragment extends Fragment {
     return editText.getText();
   }
 
-  protected void clearStepDescriptionField() {
-    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
-    editText.getText().clear();
-  }
-
-  protected void saveStep(final Step step) {
+  protected void serialiseStep(final Step step) {
     mTask.addStep(step);
 
     final Serializer serializer = new Persister();
@@ -108,18 +100,14 @@ public class TaskCreatorFragment extends Fragment {
 
     cameraView.captureImage();
 
-    final File nextJpegFile = getNextJpegFile();
-
-    final String filePath = nextJpegFile.getAbsolutePath().replace(
+    final String filePath = nextJpeg.getAbsolutePath().replace(
         Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
     final String stepDescription = getStepDescription().toString();
 
     final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
 
-    saveStep(step);
-
-    clearStepDescriptionField();
+    serialiseStep(step);
 
   }
 
@@ -145,13 +133,14 @@ public class TaskCreatorFragment extends Fragment {
     return true;
   }
 
-  private File getNextJpegFile() {
+  private void setJpegFile() {
+    final Bundle arguments = getArguments();
+    final int stepNum = arguments.getInt("stepNum");
     final String taskName = mTask.getName();
-    final File jpegFile = AppDir.ROOT.getFile(File.separator + taskName +
-        File.separator + "imgs" +
-        File.separator + stepCnt++ + ".jpg");
 
-    return jpegFile;
+    nextJpeg = AppDir.ROOT.getFile(File.separator + taskName +
+        File.separator + "imgs" +
+        File.separator + stepNum + ".jpg");
   }
 
   private void loadTaskFromArguments() {

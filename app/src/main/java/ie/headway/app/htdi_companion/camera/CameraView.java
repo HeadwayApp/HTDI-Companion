@@ -31,10 +31,11 @@ public final class CameraView extends AbstractCameraView {
     mImageCapture.takePicture(mCamera);
 
     try {
-      mImageCapture.savePicture();
+      refreshCameraView();
     }catch(IOException ioe) {
       throw new RuntimeException("Couldn't save image.", ioe);
     }
+
   }
 
   @Override

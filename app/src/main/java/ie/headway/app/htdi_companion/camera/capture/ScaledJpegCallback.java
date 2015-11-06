@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 
-class ScaledJpegCallback extends JpegCallback {
+class ScaledJpegCallback {
 
   private final Resources mResources;
 
@@ -14,19 +14,9 @@ class ScaledJpegCallback extends JpegCallback {
     mResources = resources;
   }
 
-  @Override
   public void onPictureTaken(final byte[] data, final Camera camera) {
-    super.onPictureTaken(data, camera);
-
-    final int screenWidth = getScreenWidth();
-    final int screenHeight = getScreenHeight();
-
-    scaleCapturedBitmap(screenWidth, screenHeight);
-
-    //TODO: The rotating of the image is not the responsibility of ScaledJpegCallback, must refactor.
-    //TODO: See: http://developer.android.com/training/camera/cameradirect.html#TaskOrientation
     if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-      rotateCapturedBitmap(90.0f);
+//      rotateCapturedBitmap(90.0f);
     }
   }
 
@@ -38,25 +28,23 @@ class ScaledJpegCallback extends JpegCallback {
     return mResources.getDisplayMetrics().heightPixels;
   }
 
-  private void scaleCapturedBitmap(final int width, final int height) {
-    final Bitmap capturedBitmap = getCapturedBitmap();
+  private Bitmap scaleAndRotateCapturedBitmap(final Bitmap capturedBitmap, final float degrees) {
+
+    final int height = getScreenHeight();
+    final int width = getScreenWidth();
+
     final Bitmap scaledCapturedBitmap = Bitmap.createScaledBitmap(capturedBitmap, height, width, true);
-    setCapturedBitmap(scaledCapturedBitmap);
-  }
 
-  private void rotateCapturedBitmap(final float degrees) {
-    final Bitmap capturedBitmap = getCapturedBitmap();
-
-    final int bitmapWidth = capturedBitmap.getWidth();
-    final int bitmapHeight = capturedBitmap.getHeight();
+    final int bitmapWidth = scaledCapturedBitmap.getWidth();
+    final int bitmapHeight = scaledCapturedBitmap.getHeight();
 
     final Matrix mtx = new Matrix();
     mtx.postRotate(degrees);
 
     final Bitmap rotatedCapturedBitmap =
-        Bitmap.createBitmap(capturedBitmap, 0, 0, bitmapWidth, bitmapHeight, mtx, true);
+        Bitmap.createBitmap(scaledCapturedBitmap, 0, 0, bitmapWidth, bitmapHeight, mtx, true);
 
-    setCapturedBitmap(rotatedCapturedBitmap);
+    return rotatedCapturedBitmap;
   }
 
 }

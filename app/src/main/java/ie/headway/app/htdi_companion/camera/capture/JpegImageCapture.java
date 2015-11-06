@@ -1,54 +1,45 @@
 package ie.headway.app.htdi_companion.camera.capture;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 
-import java.io.IOException;
 import java.io.OutputStream;
-
-import ie.headway.app.htdi_companion.util.BitmapHolder;
 
 public class JpegImageCapture implements ImageCapture {
 
-  private final JpegCallback mJpegCallback;
-  private final OutputStream mOutputStream;
+  private OutputStream mOutputStream;
 
-  public JpegImageCapture(final Resources resources, final OutputStream outputStream) {
-    mJpegCallback = new ScaledJpegCallback(resources);
+  public JpegImageCapture(final OutputStream outputStream) {
+    mOutputStream = outputStream;
+  }
+
+  public void setOutputStream(final OutputStream outputStream) {
     mOutputStream = outputStream;
   }
 
   @Override
   public void takePicture(final Camera camera) {
-    camera.takePicture(null, null, mJpegCallback);
+    camera.takePicture(null, null, this);
   }
 
   @Override
-  public void savePicture() throws IOException {
-
-    final BitmapHolder bitmapHolder = new BitmapHolder();
-
-    new Thread() {
-      @Override
-      public void run() {
-        while(!mJpegCallback.hasCapturedBitmap()) {
-          try {
-            Thread.sleep(1000);
-          }catch(InterruptedException ie) {
-            throw new RuntimeException("Couldn't sleep...", ie);
-          }
-        }
-
-        bitmapHolder.bitmap = mJpegCallback.getCapturedBitmap();
-        writeBitmapToFile(bitmapHolder.bitmap);
-
-      }
-    }.start();
+  public void onPictureTaken(final byte[] data, final Camera camera) {
+    final int offset = 0;
+    final int length = (data != null) ? data.length : 0;
+    final Bitmap capturedBitmap = BitmapFactory.decodeByteArray(data, offset, length);
+    writeBitmapToFile(capturedBitmap);
   }
 
+  private OutputStream prevOs;
+
   private void writeBitmapToFile(final Bitmap bitmap) {
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, mOutputStream);
+    if((prevOs != null) && (prevOs == mOutputStream)) {
+      throw new IllegalStateException("OutputStream was already used");
+    }else {
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, mOutputStream);
+      prevOs = mOutputStream;
+    }
   }
 
 }
