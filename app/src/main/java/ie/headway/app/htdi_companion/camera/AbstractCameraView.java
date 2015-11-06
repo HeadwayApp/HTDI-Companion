@@ -23,8 +23,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
     this(context, attrs, 0);
   }
 
-  protected AbstractCameraView(final Context context, final AttributeSet attrs,
-                               final int defStyleAttr) {
+  protected AbstractCameraView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     final SurfaceHolder holder = getHolder();
     final SurfaceHolder.Callback callback = this;

@@ -14,7 +14,9 @@ public final class AutoOrientatedCamera {
 
   public static Camera getCamera(final Activity activity) {
     final AutoOrientatedCamera aOCam = new AutoOrientatedCamera(activity);
-    return aOCam.setCameraDisplayOrientation(0, Camera.open());
+    final Camera camera = Camera.open();
+    final int cameraId = 0;
+    return aOCam.setCameraDisplayOrientation(cameraId, camera);
   }
 
   private Camera setCameraDisplayOrientation(final int cameraId, final Camera camera) {

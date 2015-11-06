@@ -18,6 +18,7 @@ public class JpegImageCapture implements ImageCapture {
     mJpegCallback = new ScaledJpegCallback(resources);
     mOutputStream = outputStream;
   }
+
   @Override
   public void takePicture(final Camera camera) {
     camera.takePicture(null, null, mJpegCallback);
