@@ -1,6 +1,5 @@
 package ie.headway.app.htdi_companion;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,14 +22,10 @@ import static com.google.common.base.Preconditions.checkState;
 
 public class TaskCreatorActivity extends HeadwayActivity {
 
-  private static final Fragment NO_FRAGMENT = null;
+  private static final StepCreatorFragment NO_FRAGMENT = null;
 
   private Task mTask;
-  private Fragment mTaskCreatorFragment;
-
-  private int fragCnt;
-
-  private int stepCnt;
+  private StepCreatorFragment mTaskCreatorFragment;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -52,10 +47,10 @@ public class TaskCreatorActivity extends HeadwayActivity {
   }
 
   protected void attachTaskCreatorFragment() {
-    checkState(mTaskCreatorFragment == NO_FRAGMENT, "task creator fragment is already assigned");
+    checkState(mTaskCreatorFragment == NO_FRAGMENT, "task creator fragment is already attached");
     final String taskName = mTask.getName();
     mTaskCreatorFragment = StepCreatorFragment.newInstance();
-    addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName + fragCnt++);
+    addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName);
   }
 
   protected void detachTaskCreatorFragment() {
@@ -68,37 +63,37 @@ public class TaskCreatorActivity extends HeadwayActivity {
    * TODO: Proxy for fragment method, may need refactoring.
    */
   public void onClickCreateStepButton(final View view) {
-    final Step step = ((StepCreatorFragment)mTaskCreatorFragment).onClickCreateStepButton(view);
+    final Step step = mTaskCreatorFragment.onClickCreateStepButton(view);
     serializeStep(step);
   }
 
   private void serializeStep(final Step step) {
 
-    ((StepCreatorFragment)mTaskCreatorFragment).setTmpImg();
-    ((StepCreatorFragment)mTaskCreatorFragment).setOutputStream();
+    mTaskCreatorFragment.setTmpImg();
+    mTaskCreatorFragment.setOutputStream();
 
-        final File imgFile = new File(step.getImagePath());
-        while(!imgFile.exists()) {
-          try { Thread.sleep(1000); } catch (InterruptedException ie) {}
-        }
+    final File imgFile = new File(step.getImagePath());
+    while(!imgFile.exists()) {
+      try { Thread.sleep(1000); } catch (InterruptedException ie) {}
+    }
 
-        final File newImg = new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "imgs" + File.separator + stepCnt++ + ".jpg"));
+    final File newImg = new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "imgs" + File.separator + mTask.getStepCount() + ".jpg"));
 
-        try {
-          FileUtils.moveFile(imgFile, newImg);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
+    try {
+      FileUtils.moveFile(imgFile, newImg);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
 
-        mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath().replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "EXTERNAL_STORAGE_DIRECTORY"), ""));
+    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath().replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "EXTERNAL_STORAGE_DIRECTORY"), ""));
 
-        final Serializer serializer = new Persister();
+    final Serializer serializer = new Persister();
 
-        try {
-          serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
+    try {
+      serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void loadTaskFromIntent() {

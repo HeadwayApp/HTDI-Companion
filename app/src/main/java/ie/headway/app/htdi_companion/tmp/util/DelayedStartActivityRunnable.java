@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.util;
+package ie.headway.app.htdi_companion.tmp.util;
 
 import android.app.Activity;
 import android.content.Context;

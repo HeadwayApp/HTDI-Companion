@@ -2,6 +2,8 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +14,12 @@ import android.widget.EditText;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.capture.ScaledJpegPictureCallback;
+import ie.headway.app.htdi_companion.camera.capture.ContextualJpegPictureCallback;
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
@@ -32,7 +35,7 @@ public class StepCreatorFragment extends Fragment {
   }
 
   public StepCreatorFragment() {
-   setTmpImg();
+    setTmpImg();
     setOutputStream();
   }
 
@@ -43,7 +46,7 @@ public class StepCreatorFragment extends Fragment {
   public void setOutputStream() {
     try {
       mOutputStream = new FileOutputStream(mTmpImg);
-      getCameraView().setPictureCallback(new ScaledJpegPictureCallback(mOutputStream, getResources(), getCameraView()));
+      getCameraView().setPictureCallback(new PictureCallback(mOutputStream, getResources()));
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
     }catch(NullPointerException npe) {
@@ -84,13 +87,31 @@ public class StepCreatorFragment extends Fragment {
     final Camera camera = openCamera();
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
-    cameraView.setPictureCallback(new ScaledJpegPictureCallback(mOutputStream, getResources(), getCameraView()));
+    cameraView.setPictureCallback(new PictureCallback(mOutputStream, getResources()));
   }
 
   private Camera openCamera() {
     final Activity activity = getActivity();
     final Camera camera = AutoOrientatedCamera.getCamera(activity);
     return camera;
+  }
+
+  class PictureCallback extends ContextualJpegPictureCallback {
+
+    public PictureCallback(OutputStream outputStream, Resources resources) {
+      super(outputStream, resources);
+    }
+
+    @Override
+    protected void writeBitmapToFile(final Bitmap bitmap) {
+      super.writeBitmapToFile(bitmap);
+      try {
+        getCameraView().refreshCameraView();
+      } catch (IOException e) {
+        throw new RuntimeException("couldn't refresh camera view", e);
+      }
+    }
+
   }
 
 }

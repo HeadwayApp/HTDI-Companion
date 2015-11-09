@@ -19,12 +19,10 @@ public final class CameraView extends AbstractCameraView {
   }
 
   public void setCamera(final Camera camera) {
-    checkState(mCamera == null, "cannot reassign camera");
     mCamera = camera;
   }
 
   public void setPictureCallback(final Camera.PictureCallback pictureCallback) {
-//    checkState(mPictureCallback == null, "cannot reassign picture callback");
     mPictureCallback = pictureCallback;
   }
 

@@ -5,25 +5,24 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
-import ie.headway.app.htdi_companion.camera.CameraView;
-
-public class ScaledJpegPictureCallback extends JpegPictureCallback{
+public class ContextualJpegPictureCallback extends JpegPictureCallback {
 
   private final Resources mResources;
-  private final CameraView mCameraView;
 
-  public ScaledJpegPictureCallback(final OutputStream outputStream, final Resources resources, final CameraView cameraView) {
+  public ContextualJpegPictureCallback(final OutputStream outputStream, final Resources resources) {
     super(outputStream);
     mResources = resources;
-    mCameraView = cameraView;
   }
 
   @Override
   protected void writeBitmapToFile(final Bitmap bitmap) {
+    final Bitmap contextualizedBitmap = contextualizeBitmap(bitmap);
+    super.writeBitmapToFile(contextualizedBitmap);
+  }
 
+  protected Bitmap contextualizeBitmap(final Bitmap bitmap) {
     final int screenWidth = getScreenWidth();
     final int screenHeight = getScreenHeight();
 
@@ -32,14 +31,7 @@ public class ScaledJpegPictureCallback extends JpegPictureCallback{
     final Bitmap scaledBitmap = scaleBitmap(bitmap, screenWidth, screenHeight);
     final Bitmap rotatedBitmap = rotateBitmap(scaledBitmap, orientation);
 
-    //TODO: The rotating of the image is not the responsibility of ScaledJpegCallback, must refactor.
-    super.writeBitmapToFile(rotatedBitmap);
-
-    try {
-      mCameraView.refreshCameraView();
-    } catch (IOException e) {
-      throw new RuntimeException("couldn't refresh camera view", e);
-    }
+    return rotatedBitmap;
   }
 
   private int getScreenWidth() {

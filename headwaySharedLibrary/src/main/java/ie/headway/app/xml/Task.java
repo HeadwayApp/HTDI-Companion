@@ -76,6 +76,10 @@ public class Task implements Parcelable, RequiresDirs {
     return steps;
   }
 
+  public int getStepCount() {
+    return steps.size();
+  }
+
   @Override
   public int describeContents() {
     return 0;

@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import ie.headway.app.HeadwaySplashScreenActivity;
 import ie.headway.app.htdi_companion.TaskInitialiserActivity;
-import ie.headway.app.htdi_companion.util.DelayedStartActivityRunnable;
+import ie.headway.app.htdi_companion.tmp.util.DelayedStartActivityRunnable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
