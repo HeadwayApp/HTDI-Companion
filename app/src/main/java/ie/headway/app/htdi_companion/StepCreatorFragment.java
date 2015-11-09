@@ -14,7 +14,6 @@ import android.widget.EditText;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import ie.headway.app.disk.AppDir;
@@ -24,8 +23,6 @@ import ie.headway.app.htdi_companion.camera.capture.ContextualJpegPictureCallbac
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
-
-  private static final View VIEW_ALREADY_ATTACHED = null;
 
   private File mTmpImg;
   private OutputStream mOutputStream;
@@ -54,8 +51,7 @@ public class StepCreatorFragment extends Fragment {
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    inflater.inflate(R.layout.task_creator_fragment, container);
-    return VIEW_ALREADY_ATTACHED;
+    return inflater.inflate(R.layout.task_creator_fragment, null);
   }
 
   @Override
@@ -103,11 +99,11 @@ public class StepCreatorFragment extends Fragment {
     @Override
     protected void writeBitmapToFile(final Bitmap bitmap) {
       super.writeBitmapToFile(bitmap);
-      try {
-        getCameraView().refreshCameraView();
-      } catch (IOException e) {
-        throw new RuntimeException("couldn't refresh camera view", e);
-      }
+//      try {
+//        getCameraView().refreshCameraView();
+//      } catch (IOException e) {
+//        throw new RuntimeException("couldn't refresh camera view", e);
+//      }
     }
 
   }

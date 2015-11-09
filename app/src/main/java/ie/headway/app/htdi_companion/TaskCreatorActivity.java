@@ -37,23 +37,23 @@ public class TaskCreatorActivity extends HeadwayActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    attachTaskCreatorFragment();
+    addTaskCreatorFragment();
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    detachTaskCreatorFragment();
+    removeTaskCreatorFragment();
   }
 
-  protected void attachTaskCreatorFragment() {
+  protected void addTaskCreatorFragment() {
     checkState(mStepCreatorFragment == NO_FRAGMENT, "task creator fragment is already attached");
-    final String taskName = mTask.getName();
+    final String fragmentName = mTask.getName() + "step_" + mTask.getStepCount();
     mStepCreatorFragment = StepCreatorFragment.newInstance();
-    addFragmentToLayout(R.id.splash_screen_layout, mStepCreatorFragment, taskName);
+    addFragmentToLayout(R.id.activity_task_creator_layout, mStepCreatorFragment, fragmentName);
   }
 
-  protected void detachTaskCreatorFragment() {
+  protected void removeTaskCreatorFragment() {
     checkState(mStepCreatorFragment != NO_FRAGMENT, "no task creator fragment to detach");
     removeFragmentFromLayout(mStepCreatorFragment);
     mStepCreatorFragment = NO_FRAGMENT;
@@ -69,7 +69,8 @@ public class TaskCreatorActivity extends HeadwayActivity {
 
   private void serializeStep(final Step step) {
 
-    mStepCreatorFragment.init();
+    removeTaskCreatorFragment();
+    addTaskCreatorFragment();
 
     final File imgFile = new File(step.getImagePath());
     while(!imgFile.exists()) {
@@ -93,6 +94,8 @@ public class TaskCreatorActivity extends HeadwayActivity {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
+//    addTaskCreatorFragment();
   }
 
   private void loadTaskFromIntent() {
