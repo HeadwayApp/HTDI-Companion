@@ -2,53 +2,51 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
-import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.capture.JpegPictureCallback;
-import ie.headway.app.xml.PortableStep;
+import ie.headway.app.htdi_companion.camera.capture.ScaledJpegPictureCallback;
 import ie.headway.app.xml.Step;
-import ie.headway.app.xml.Task;
 
 public class StepCreatorFragment extends Fragment {
 
-  private static final String EMPTY_STRING = "";
   private static final View VIEW_ALREADY_ATTACHED = null;
 
-  private Task mTask;
+  private File mTmpImg;
+  private OutputStream mOutputStream;
 
-  public static final StepCreatorFragment newInstance(final Task task) {
+  public static final StepCreatorFragment newInstance() {
     final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
-    final Bundle args = new Bundle();
-    args.putParcelable("task", task);
-    stepCreatorFragment.setArguments(args);
     return stepCreatorFragment;
   }
 
-  @Override
-  public void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    loadTaskFromArguments();
-    setJpegFile();
+  public StepCreatorFragment() {
+   setTmpImg();
+    setOutputStream();
+  }
+
+  public void setTmpImg() {
+    mTmpImg = new File("/sdcard/Headway/ " + System.currentTimeMillis() + ".jpg");
+  }
+
+  public void setOutputStream() {
+    try {
+      mOutputStream = new FileOutputStream(mTmpImg);
+      getCameraView().setPictureCallback(new ScaledJpegPictureCallback(mOutputStream, getResources(), getCameraView()));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }catch(NullPointerException npe) {}
   }
 
   @Override
@@ -60,106 +58,31 @@ public class StepCreatorFragment extends Fragment {
   @Override
   public void onActivityCreated(final Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-
-    OutputStream jpegOutputStream;
-
-    try{
-      jpegOutputStream = new FileOutputStream(nextJpeg);
-    }catch(FileNotFoundException fnfe){
-      throw new RuntimeException("File not found", fnfe);
-    }
-
-    final Camera.PictureCallback pictureCallback = new JpegPictureCallback(jpegOutputStream);
-    final Camera camera = openCamera();
-
-    initialiseCameraView(camera, pictureCallback);
+    initialiseCameraView();
   }
 
-  protected CharSequence getStepDescription() {
+  public Step onClickCreateStepButton(final View view) {
+    final CameraView cameraView = getCameraView();
+    cameraView.captureImage();
+
+    return new Step(new String(getStepDescription().toString()), new String(mTmpImg.getAbsolutePath()), "");
+  }
+
+  private CharSequence getStepDescription() {
     final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
     return editText.getText();
   }
 
-  protected void serialiseStep(final Step step) {
-    mTask.addStep(step);
-
-    final Serializer serializer = new Persister();
-
-    try {
-      serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   * TODO: Throw exception if an action is attempted after captureImage on the UI thread.
-   * */
-  void onClickCreateStepButton(final View view) {
-
+  private CameraView getCameraView() {
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
-
-    cameraView.captureImage();
-
-    final String filePath = nextJpeg.getAbsolutePath().replace(
-        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
-
-    final String stepDescription = getStepDescription().toString();
-
-    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
-
-    serialiseStep(step);
-
-    try {
-      cameraView.refreshCameraView();
-    } catch (IOException e) {
-      throw new RuntimeException("couldn't refresh camera view");
-    }
-
-    try{
-      jpegOutputStream = new FileOutputStream(nextJpeg);
-    }catch(FileNotFoundException fnfe){
-      throw new RuntimeException("File not found", fnfe);
-    }
-
-    ((JpegPictureCallback) mPictureCallback).setOutputStream(jpegOutputStream);
-    final Camera camera = openCamera();
-
+    return cameraView;
   }
 
-  private void initialiseCameraView(final Camera camera, final Camera.PictureCallback pictureCallback) {
-
+  private void initialiseCameraView() {
+    final Camera camera = openCamera();
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
-    cameraView.setPictureCallback(pictureCallback);
-
-    cameraView.setOnLongClickListener(new View.OnLongClickListener() {
-      @Override
-      public boolean onLongClick(final View view) {
-        return onLongClickCameraView(view);
-      }
-    });
-  }
-
-  private boolean onLongClickCameraView(final View View) {
-    final String taskName = (mTask != null) ? mTask.getName() : EMPTY_STRING;
-    final Toast toast = Toast.makeText(getActivity(), "Created Task " + taskName, Toast.LENGTH_LONG);
-    toast.show();
-    startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
-    return true;
-  }
-
-  private void setJpegFile() {
-    final String taskName = mTask.getName();
-
-    nextJpeg = AppDir.ROOT.getFile(File.separator + taskName +
-        File.separator + "imgs" +
-        File.separator + stepCnt++ + ".jpg");
-  }
-
-  private void loadTaskFromArguments() {
-    final Bundle arguments = getArguments();
-    mTask = arguments.getParcelable("task");
+    cameraView.setPictureCallback(new ScaledJpegPictureCallback(mOutputStream, getResources(), getCameraView()));
   }
 
   private Camera openCamera() {

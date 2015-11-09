@@ -22,7 +22,7 @@ public class JpegPictureCallback implements Camera.PictureCallback {
     writeBitmapToFile(capturedBitmap);
   }
 
-  private void writeBitmapToFile(final Bitmap bitmap) {
+  protected void writeBitmapToFile(final Bitmap bitmap) {
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, mOutputStream);
   }
 
