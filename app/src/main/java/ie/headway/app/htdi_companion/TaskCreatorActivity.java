@@ -23,7 +23,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_task_creator);
-    loadTask();
+    loadTaskFromIntent();
   }
 
   @Override
@@ -41,7 +41,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   protected void attachTaskCreatorFragment() {
     checkState(mTaskCreatorFragment == NO_FRAGMENT, "task creator fragment is already assigned");
     final String taskName = mTask.getName();
-    mTaskCreatorFragment = TaskCreatorFragment.newInstance(mTask, fragCnt);
+    mTaskCreatorFragment = StepCreatorFragment.newInstance(mTask);
     addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName + fragCnt++);
   }
 
@@ -55,10 +55,10 @@ public class TaskCreatorActivity extends HeadwayActivity {
    * TODO: Proxy for fragment method, may need refactoring.
    */
   public void onClickCreateStepButton(final View view) {
-    ((TaskCreatorFragment)mTaskCreatorFragment).onClickCreateStepButton(view);
+    ((StepCreatorFragment)mTaskCreatorFragment).onClickCreateStepButton(view);
   }
 
-  private void loadTask() {
+  private void loadTaskFromIntent() {
     final Intent intent = getIntent();
     final Parcelable taskParcleable = intent.getParcelableExtra("task");
     final Task task = (Task) taskParcleable;

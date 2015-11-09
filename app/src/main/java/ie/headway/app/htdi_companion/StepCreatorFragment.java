@@ -18,34 +18,30 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.capture.ImageCapture;
-import ie.headway.app.htdi_companion.camera.capture.JpegImageCapture;
+import ie.headway.app.htdi_companion.camera.capture.JpegPictureCallback;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
-public class TaskCreatorFragment extends Fragment {
+public class StepCreatorFragment extends Fragment {
 
   private static final String EMPTY_STRING = "";
   private static final View VIEW_ALREADY_ATTACHED = null;
 
   private Task mTask;
-  private int stepCnt;
 
-  private File nextJpeg;
-  private OutputStream jpegOutputStream;
-
-  public static final TaskCreatorFragment newInstance(final Task task, final int stepNum) {
-    final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
+  public static final StepCreatorFragment newInstance(final Task task) {
+    final StepCreatorFragment stepCreatorFragment = new StepCreatorFragment();
     final Bundle args = new Bundle();
     args.putParcelable("task", task);
-    taskCreatorFragment.setArguments(args);
-    return taskCreatorFragment;
+    stepCreatorFragment.setArguments(args);
+    return stepCreatorFragment;
   }
 
   @Override
@@ -65,16 +61,18 @@ public class TaskCreatorFragment extends Fragment {
   public void onActivityCreated(final Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
+    OutputStream jpegOutputStream;
+
     try{
       jpegOutputStream = new FileOutputStream(nextJpeg);
     }catch(FileNotFoundException fnfe){
       throw new RuntimeException("File not found", fnfe);
     }
 
-    final ImageCapture imageCapture = new JpegImageCapture(jpegOutputStream);
+    final Camera.PictureCallback pictureCallback = new JpegPictureCallback(jpegOutputStream);
     final Camera camera = openCamera();
 
-    initialiseCameraView(camera, imageCapture);
+    initialiseCameraView(camera, pictureCallback);
   }
 
   protected CharSequence getStepDescription() {
@@ -101,29 +99,39 @@ public class TaskCreatorFragment extends Fragment {
 
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
 
-    cameraView.captureImage(new Runnable() {
-      @Override
-      public void run() {
-        final String filePath = nextJpeg.getAbsolutePath().replace(
-            Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
+    cameraView.captureImage();
 
-        final String stepDescription = getStepDescription().toString();
+    final String filePath = nextJpeg.getAbsolutePath().replace(
+        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
-        final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
+    final String stepDescription = getStepDescription().toString();
 
-        serialiseStep(step);
+    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
 
-        cameraView.refresh();
-      }
-    });
+    serialiseStep(step);
+
+    try {
+      cameraView.refreshCameraView();
+    } catch (IOException e) {
+      throw new RuntimeException("couldn't refresh camera view");
+    }
+
+    try{
+      jpegOutputStream = new FileOutputStream(nextJpeg);
+    }catch(FileNotFoundException fnfe){
+      throw new RuntimeException("File not found", fnfe);
+    }
+
+    ((JpegPictureCallback) mPictureCallback).setOutputStream(jpegOutputStream);
+    final Camera camera = openCamera();
 
   }
 
-  private void initialiseCameraView(final Camera camera, final ImageCapture imageCapture) {
+  private void initialiseCameraView(final Camera camera, final Camera.PictureCallback pictureCallback) {
 
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
-    cameraView.setImageCapture(imageCapture);
+    cameraView.setPictureCallback(pictureCallback);
 
     cameraView.setOnLongClickListener(new View.OnLongClickListener() {
       @Override

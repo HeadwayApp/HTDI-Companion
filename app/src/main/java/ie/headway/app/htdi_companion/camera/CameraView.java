@@ -3,64 +3,57 @@ package ie.headway.app.htdi_companion.camera;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
-import ie.headway.app.htdi_companion.camera.capture.ImageCapture;
+import static com.google.common.base.Preconditions.checkState;
 
 public final class CameraView extends AbstractCameraView {
 
   private Camera mCamera;
-  private ImageCapture mImageCapture;
+  private Camera.PictureCallback mPictureCallback;
 
   public CameraView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
   }
 
   public void setCamera(final Camera camera) {
+    checkState(mCamera == null, "cannot reassign camera");
     mCamera = camera;
   }
 
-  public void setImageCapture(final ImageCapture imageCapture) {
-    mImageCapture = imageCapture;
+  public void setPictureCallback(final Camera.PictureCallback pictureCallback) {
+    checkState(mPictureCallback == null, "cannot reassign picture callback");
+    mPictureCallback = pictureCallback;
   }
 
   @Override
-  public void captureImage(final Runnable runnable) {
-    mImageCapture.takePicture(mCamera, runnable);
-  }
-
-  public void refresh() {
-    try {
-      refreshCameraView(getHolder());
-    } catch (IOException e) {
-      throw new RuntimeException("couldn't refresh camera view", e);
-    }
+  public void captureImage() {
+    checkState(mPictureCallback != null, "picture callback not set");
+    mCamera.takePicture(null, null, mPictureCallback);
   }
 
   @Override
-  protected void refreshCameraView(final SurfaceHolder holder) throws IOException {
-    stopCamera();
-    startCamera(holder);
-
-    Log.e("CameraView", "refreshed camera view");
+  public void refreshCameraView() throws IOException {
+    stopCameraPreview();
+    startCameraPreview();
   }
 
   @Override
-  protected void startCamera(final SurfaceHolder holder) throws IOException {
+  public void startCameraPreview() throws IOException {
+    final SurfaceHolder holder = getHolder();
     mCamera.setPreviewDisplay(holder);
     mCamera.startPreview();
   }
 
   @Override
-  protected void stopCamera() {
+  public void stopCameraPreview() {
     mCamera.stopPreview();
   }
 
   @Override
-  protected void releaseCamera() {
+  public void releaseCamera() {
     mCamera.release();
   }
 
