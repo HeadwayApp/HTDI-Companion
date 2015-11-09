@@ -69,6 +69,8 @@ public class TaskCreatorActivity extends HeadwayActivity {
 
   private void serializeStep(final Step step) {
 
+    mStepCreatorFragment.refresh();
+
     final File imgFile = new File(step.getImagePath());
     while(!imgFile.exists()) {
       try { Thread.sleep(1000); } catch (InterruptedException ie) {}
@@ -92,8 +94,6 @@ public class TaskCreatorActivity extends HeadwayActivity {
       throw new RuntimeException(e);
     }
 
-    removeTaskCreatorFragment();
-    addTaskCreatorFragment();
   }
 
   private void loadTaskFromIntent() {

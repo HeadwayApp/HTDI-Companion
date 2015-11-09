@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import ie.headway.app.disk.AppDir;
@@ -24,6 +25,8 @@ import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
 
+  private static final View NO_VIEW_TO_RETURN = null;
+
   private File mTmpImg;
   private OutputStream mOutputStream;
 
@@ -33,25 +36,28 @@ public class StepCreatorFragment extends Fragment {
   }
 
   public StepCreatorFragment() {
+    mTmpImg = new File(AppDir.TMP.getPath(System.currentTimeMillis() + ".jpg"));
     init();
   }
 
-  void init() {
-    mTmpImg = new File(AppDir.TMP.getPath(System.currentTimeMillis() + ".jpg"));
-
+  private void init() {
     try {
+      mTmpImg = new File(AppDir.TMP.getPath(System.currentTimeMillis() + ".jpg"));
       mOutputStream = new FileOutputStream(mTmpImg);
-      getCameraView().setPictureCallback(new PictureCallback(mOutputStream, getResources()));
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
-    }catch(NullPointerException npe) {
-
     }
+  }
+
+  void refresh() {
+    init();
+    getCameraView().setPictureCallback(new PictureCallback(mOutputStream, getResources()));
   }
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.task_creator_fragment, null);
+    inflater.inflate(R.layout.task_creator_fragment, null);
+    return NO_VIEW_TO_RETURN;
   }
 
   @Override
@@ -99,11 +105,11 @@ public class StepCreatorFragment extends Fragment {
     @Override
     protected void writeBitmapToFile(final Bitmap bitmap) {
       super.writeBitmapToFile(bitmap);
-//      try {
-//        getCameraView().refreshCameraView();
-//      } catch (IOException e) {
-//        throw new RuntimeException("couldn't refresh camera view", e);
-//      }
+      try {
+        getCameraView().refreshCameraView();
+      } catch (IOException e) {
+        throw new RuntimeException("couldn't refresh camera view", e);
+      }
     }
 
   }
