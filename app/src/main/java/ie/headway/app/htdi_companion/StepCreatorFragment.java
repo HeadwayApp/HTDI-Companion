@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.capture.ContextualJpegPictureCallback;
@@ -35,15 +36,12 @@ public class StepCreatorFragment extends Fragment {
   }
 
   public StepCreatorFragment() {
-    setTmpImg();
-    setOutputStream();
+    init();
   }
 
-  public void setTmpImg() {
-    mTmpImg = new File("/sdcard/Headway/ " + System.currentTimeMillis() + ".jpg");
-  }
+  void init() {
+    mTmpImg = new File(AppDir.TMP.getPath(System.currentTimeMillis() + ".jpg"));
 
-  public void setOutputStream() {
     try {
       mOutputStream = new FileOutputStream(mTmpImg);
       getCameraView().setPictureCallback(new PictureCallback(mOutputStream, getResources()));
@@ -70,7 +68,7 @@ public class StepCreatorFragment extends Fragment {
     final CameraView cameraView = getCameraView();
     cameraView.captureImage();
 
-    return new Step(new String(getStepDescription().toString()), new String(mTmpImg.getAbsolutePath()), "");
+    return new Step(getStepDescription().toString(), mTmpImg.getAbsolutePath(), "");
   }
 
   private CharSequence getStepDescription() {

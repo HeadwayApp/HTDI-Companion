@@ -25,7 +25,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   private static final StepCreatorFragment NO_FRAGMENT = null;
 
   private Task mTask;
-  private StepCreatorFragment mTaskCreatorFragment;
+  private StepCreatorFragment mStepCreatorFragment;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -47,30 +47,29 @@ public class TaskCreatorActivity extends HeadwayActivity {
   }
 
   protected void attachTaskCreatorFragment() {
-    checkState(mTaskCreatorFragment == NO_FRAGMENT, "task creator fragment is already attached");
+    checkState(mStepCreatorFragment == NO_FRAGMENT, "task creator fragment is already attached");
     final String taskName = mTask.getName();
-    mTaskCreatorFragment = StepCreatorFragment.newInstance();
-    addFragmentToLayout(R.id.splash_screen_layout, mTaskCreatorFragment, taskName);
+    mStepCreatorFragment = StepCreatorFragment.newInstance();
+    addFragmentToLayout(R.id.splash_screen_layout, mStepCreatorFragment, taskName);
   }
 
   protected void detachTaskCreatorFragment() {
-    checkState(mTaskCreatorFragment != NO_FRAGMENT, "no task creator fragment to detach");
-    removeFragmentFromLayout(mTaskCreatorFragment);
-    mTaskCreatorFragment = NO_FRAGMENT;
+    checkState(mStepCreatorFragment != NO_FRAGMENT, "no task creator fragment to detach");
+    removeFragmentFromLayout(mStepCreatorFragment);
+    mStepCreatorFragment = NO_FRAGMENT;
   }
 
   /**
    * TODO: Proxy for fragment method, may need refactoring.
    */
   public void onClickCreateStepButton(final View view) {
-    final Step step = mTaskCreatorFragment.onClickCreateStepButton(view);
+    final Step step = mStepCreatorFragment.onClickCreateStepButton(view);
     serializeStep(step);
   }
 
   private void serializeStep(final Step step) {
 
-    mTaskCreatorFragment.setTmpImg();
-    mTaskCreatorFragment.setOutputStream();
+    mStepCreatorFragment.init();
 
     final File imgFile = new File(step.getImagePath());
     while(!imgFile.exists()) {
@@ -85,7 +84,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
       throw new RuntimeException(e);
     }
 
-    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath().replace(Environment.getExternalStorageDirectory().getAbsolutePath(), "EXTERNAL_STORAGE_DIRECTORY"), ""));
+    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath().replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT), ""));
 
     final Serializer serializer = new Persister();
 

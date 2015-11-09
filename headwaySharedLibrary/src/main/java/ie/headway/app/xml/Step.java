@@ -9,16 +9,6 @@ import java.io.File;
 
 public class Step implements Parcelable {
 
-  public static final Parcelable.Creator<Step> CREATOR
-      = new Parcelable.Creator<Step>() {
-    public Step createFromParcel(Parcel source) {
-      return new Step(source);
-    }
-
-    public Step[] newArray(int size) {
-      return new Step[size];
-    }
-  };
   /**
    * TODO Does SimpleXML need these to be non-final?
    */
@@ -33,7 +23,6 @@ public class Step implements Parcelable {
    * TODO Does SimpleXML need this constructor to be public? Can it be private?
    */
   public Step() {
-
   }
 
   public Step(String text, String imagePath, String audioPath) {
@@ -73,6 +62,16 @@ public class Step implements Parcelable {
   public int describeContents() {
     return 0;
   }
+
+  public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
+    public Step createFromParcel(Parcel source) {
+      return new Step(source);
+    }
+
+    public Step[] newArray(int size) {
+      return new Step[size];
+    }
+  };
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {

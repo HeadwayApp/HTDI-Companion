@@ -17,17 +17,6 @@ import ie.headway.app.disk.AppDir;
 @Root
 public class Task implements Parcelable, RequiresDirs {
 
-  public static final Parcelable.Creator<Task> CREATOR
-      = new Parcelable.Creator<Task>() {
-    public Task createFromParcel(final Parcel source) {
-      return new Task(source);
-    }
-
-    @Override
-    public Task[] newArray(final int size) {
-      return new Task[size];
-    }
-  };
   @Attribute
   private String name;
   @ElementListUnion({
@@ -51,13 +40,6 @@ public class Task implements Parcelable, RequiresDirs {
   public Task(final Parcel in) {
     name = in.readString();
     steps = retrieveStepsFromParcel(in);
-  }
-
-  private static List<Step> retrieveStepsFromParcel(final Parcel in) {
-    final List<Step> unmarshalledSteps = new ArrayList<>(10);
-    final ClassLoader classLoader = Task.class.getClassLoader();
-    in.readList(unmarshalledSteps, classLoader);
-    return unmarshalledSteps;
   }
 
   public String getName() {
@@ -91,6 +73,17 @@ public class Task implements Parcelable, RequiresDirs {
     dest.writeList(steps);
   }
 
+  public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+    public Task createFromParcel(final Parcel source) {
+      return new Task(source);
+    }
+
+    @Override
+    public Task[] newArray(final int size) {
+      return new Task[size];
+    }
+  };
+
   @Override
   public String toString() {
     return name;
@@ -105,6 +98,13 @@ public class Task implements Parcelable, RequiresDirs {
     if (!dirsAlreadyExist && !wasSuccessful) {
       throw new RuntimeException("Couldn't make task directories for task: " + this);
     }
+  }
+
+  private static List<Step> retrieveStepsFromParcel(final Parcel in) {
+    final List<Step> unmarshalledSteps = new ArrayList<>(10);
+    final ClassLoader classLoader = Task.class.getClassLoader();
+    in.readList(unmarshalledSteps, classLoader);
+    return unmarshalledSteps;
   }
 
 }

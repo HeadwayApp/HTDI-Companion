@@ -6,7 +6,9 @@ import java.io.File;
 
 public enum AppDir {
 
-  ROOT(Environment.getExternalStorageDirectory() + File.separator + "Headway");
+  ROOT(Environment.getExternalStorageDirectory() + File.separator + "Headway"),
+
+  TMP(ROOT.getPath("tmp_" + System.currentTimeMillis()));
 
   private final String mPath;
 

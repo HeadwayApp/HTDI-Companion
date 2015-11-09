@@ -23,4 +23,10 @@ public class PortableStep extends Step {
         PATH_ARTIFACT, Environment.getExternalStorageDirectory().getPath());
   }
 
+  @Override
+  public String getAudioPath() {
+    return super.getAudioPath().replace(
+        PATH_ARTIFACT, Environment.getExternalStorageDirectory().getPath());
+  }
+
 }
