@@ -4,6 +4,6 @@ import android.hardware.Camera;
 
 public interface ImageCapture extends Camera.PictureCallback {
 
-  void takePicture(Camera camera);
+  void takePicture(Camera camera, Runnable runnable);
 
 }

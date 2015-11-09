@@ -3,6 +3,7 @@ package ie.headway.app.htdi_companion.camera;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
@@ -27,27 +28,29 @@ public final class CameraView extends AbstractCameraView {
   }
 
   @Override
-  public void captureImage() {
-    mImageCapture.takePicture(mCamera);
+  public void captureImage(final Runnable runnable) {
+    mImageCapture.takePicture(mCamera, runnable);
+  }
 
+  public void refresh() {
     try {
-      refreshCameraView();
-    }catch(IOException ioe) {
-      throw new RuntimeException("Couldn't save image.", ioe);
+      refreshCameraView(getHolder());
+    } catch (IOException e) {
+      throw new RuntimeException("couldn't refresh camera view", e);
     }
-
   }
 
   @Override
-  protected void refreshCameraView() throws IOException {
+  protected void refreshCameraView(final SurfaceHolder holder) throws IOException {
     stopCamera();
-    startCamera();
+    startCamera(holder);
+
+    Log.e("CameraView", "refreshed camera view");
   }
 
   @Override
-  protected void startCamera() throws IOException {
-    final SurfaceHolder surfaceHolder = getHolder();
-    mCamera.setPreviewDisplay(surfaceHolder);
+  protected void startCamera(final SurfaceHolder holder) throws IOException {
+    mCamera.setPreviewDisplay(holder);
     mCamera.startPreview();
   }
 

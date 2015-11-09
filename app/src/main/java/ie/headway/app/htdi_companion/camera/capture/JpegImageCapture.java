@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 public class JpegImageCapture implements ImageCapture {
 
+  private Runnable mRunnable;
   private OutputStream mOutputStream;
 
   public JpegImageCapture(final OutputStream outputStream) {
@@ -19,8 +20,9 @@ public class JpegImageCapture implements ImageCapture {
   }
 
   @Override
-  public void takePicture(final Camera camera) {
+  public void takePicture(final Camera camera, final Runnable runnable) {
     camera.takePicture(null, null, this);
+    mRunnable = runnable;
   }
 
   @Override
@@ -29,6 +31,7 @@ public class JpegImageCapture implements ImageCapture {
     final int length = (data != null) ? data.length : 0;
     final Bitmap capturedBitmap = BitmapFactory.decodeByteArray(data, offset, length);
     writeBitmapToFile(capturedBitmap);
+    mRunnable.run();
   }
 
   private OutputStream prevOs;

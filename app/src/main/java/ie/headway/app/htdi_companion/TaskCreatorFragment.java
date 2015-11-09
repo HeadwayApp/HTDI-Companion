@@ -35,6 +35,7 @@ public class TaskCreatorFragment extends Fragment {
   private static final View VIEW_ALREADY_ATTACHED = null;
 
   private Task mTask;
+  private int stepCnt;
 
   private File nextJpeg;
   private OutputStream jpegOutputStream;
@@ -43,7 +44,6 @@ public class TaskCreatorFragment extends Fragment {
     final TaskCreatorFragment taskCreatorFragment = new TaskCreatorFragment();
     final Bundle args = new Bundle();
     args.putParcelable("task", task);
-    args.putInt("stepNum", stepNum);
     taskCreatorFragment.setArguments(args);
     return taskCreatorFragment;
   }
@@ -94,20 +94,28 @@ public class TaskCreatorFragment extends Fragment {
     }
   }
 
+  /**
+   * TODO: Throw exception if an action is attempted after captureImage on the UI thread.
+   * */
   void onClickCreateStepButton(final View view) {
 
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
 
-    cameraView.captureImage();
+    cameraView.captureImage(new Runnable() {
+      @Override
+      public void run() {
+        final String filePath = nextJpeg.getAbsolutePath().replace(
+            Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
 
-    final String filePath = nextJpeg.getAbsolutePath().replace(
-        Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT);
+        final String stepDescription = getStepDescription().toString();
 
-    final String stepDescription = getStepDescription().toString();
+        final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
 
-    final PortableStep step = new PortableStep(stepDescription, filePath, EMPTY_STRING);
+        serialiseStep(step);
 
-    serialiseStep(step);
+        cameraView.refresh();
+      }
+    });
 
   }
 
@@ -134,13 +142,11 @@ public class TaskCreatorFragment extends Fragment {
   }
 
   private void setJpegFile() {
-    final Bundle arguments = getArguments();
-    final int stepNum = arguments.getInt("stepNum");
     final String taskName = mTask.getName();
 
     nextJpeg = AppDir.ROOT.getFile(File.separator + taskName +
         File.separator + "imgs" +
-        File.separator + stepNum + ".jpg");
+        File.separator + stepCnt++ + ".jpg");
   }
 
   private void loadTaskFromArguments() {

@@ -33,7 +33,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
   @Override
   public void surfaceChanged(final SurfaceHolder holder, final int format, final int w, final int h) {
     try {
-      refreshCameraView();
+      refreshCameraView(holder);
     } catch (IOException ioe) {
       throw new RuntimeException("Couldn't refresh camera view.", ioe);
     }
@@ -42,7 +42,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
   @Override
   public void surfaceCreated(final SurfaceHolder holder) {
     try {
-      startCamera();
+      startCamera(holder);
     } catch (IOException ioe) {
       throw new RuntimeException("Couldn't start camera.", ioe);
     }
@@ -54,11 +54,11 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
     releaseCamera();
   }
 
-  public abstract void captureImage();
+  public abstract void captureImage(Runnable runnable);
 
-  protected abstract void refreshCameraView() throws IOException;
+  protected abstract void refreshCameraView(SurfaceHolder holder) throws IOException;
 
-  protected abstract void startCamera() throws IOException;
+  protected abstract void startCamera(SurfaceHolder holder) throws IOException;
 
   protected abstract void stopCamera();
 
