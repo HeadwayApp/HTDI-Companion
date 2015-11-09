@@ -46,7 +46,9 @@ public class StepCreatorFragment extends Fragment {
       getCameraView().setPictureCallback(new ScaledJpegPictureCallback(mOutputStream, getResources(), getCameraView()));
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
-    }catch(NullPointerException npe) {}
+    }catch(NullPointerException npe) {
+
+    }
   }
 
   @Override
