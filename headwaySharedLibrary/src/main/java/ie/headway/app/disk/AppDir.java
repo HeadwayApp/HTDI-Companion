@@ -2,19 +2,34 @@ package ie.headway.app.disk;
 
 import android.os.Environment;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 
 public enum AppDir {
 
-  ROOT(Environment.getExternalStorageDirectory() + File.separator + "Headway"),
+  ROOT(Environment.getExternalStorageDirectory() + File.separator + "Headway") {
+    @Override
+    public void empty() throws IOException {
+      throw new UnsupportedOperationException("cannot empty ROOT");
+    }
+  },
 
-  TMP(ROOT.getPath("tmp_" + System.currentTimeMillis()));
+  TMP(ROOT.getPath(".tmp")) {
+    @Override
+    public void empty() throws IOException {
+      FileUtils.cleanDirectory(getFile());
+    }
+  };
 
   private final String mPath;
 
   AppDir(String path) {
     mPath = path;
   }
+
+  public abstract void empty() throws IOException;
 
   /**
    * Create any directories required by the app which do not currently exist.
