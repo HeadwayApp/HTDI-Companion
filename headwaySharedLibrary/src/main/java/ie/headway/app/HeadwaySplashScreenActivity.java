@@ -16,6 +16,12 @@ public abstract class HeadwaySplashScreenActivity extends Activity {
   @Override
   protected void onCreate(final Bundle savedInstanceBundle) {
     super.onCreate(savedInstanceBundle);
+
+    if (!isTaskRoot()) {
+      finish();
+      return;
+    }
+
     setContentView(R.layout.activity_splash_screen);
     makeAppDirs();  //TODO:  Having this across both apps may cause problems, keep that in mind.
     exitSplashScreen(SPLASH_SCREEN_SHOW_TIME);
