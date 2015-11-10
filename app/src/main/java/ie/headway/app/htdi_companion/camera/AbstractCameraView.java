@@ -51,7 +51,7 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
   @Override
   public void surfaceDestroyed(final SurfaceHolder holder) {
     stopPreview();
-//    releaseCamera();
+    releaseCamera();
   }
 
   protected abstract void captureImage();

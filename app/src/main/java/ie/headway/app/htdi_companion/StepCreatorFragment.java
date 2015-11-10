@@ -59,8 +59,8 @@ public class StepCreatorFragment extends Fragment {
   }
 
   @Override
-  public void onActivityCreated(final Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  public void onResume() {
+    super.onResume();
     initialiseCameraView();
   }
 
