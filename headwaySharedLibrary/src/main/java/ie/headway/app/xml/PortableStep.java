@@ -2,6 +2,8 @@ package ie.headway.app.xml;
 
 import android.os.Environment;
 
+import java.io.File;
+
 public class PortableStep extends Step {
 
   /**
@@ -10,23 +12,34 @@ public class PortableStep extends Step {
   public static final String PATH_ARTIFACT = "EXTERNAL_STORAGE_DIRECTORY";
 
   public PortableStep() {
-
   }
 
   public PortableStep(String text, String imagePath, String audioPath) {
-    super(text, imagePath, audioPath);
+    super(text, artifisePath(imagePath), artifisePath(audioPath));
   }
 
   @Override
   public String getImagePath() {
-    return super.getImagePath().replace(
-        PATH_ARTIFACT, Environment.getExternalStorageDirectory().getPath());
+    final String artifisedPath = super.getImagePath();
+    return normalisePath(artifisedPath);
   }
 
   @Override
   public String getAudioPath() {
-    return super.getAudioPath().replace(
-        PATH_ARTIFACT, Environment.getExternalStorageDirectory().getPath());
+    final String artifisedPath = super.getAudioPath();
+    return normalisePath(artifisedPath);
+  }
+
+  private static String artifisePath(final String normalisedPath) {
+    final File extStorage = Environment.getExternalStorageDirectory();
+    final String extStoragePath = extStorage.getAbsolutePath();
+    return normalisedPath.replace(extStoragePath, PATH_ARTIFACT);
+  }
+
+  private static String normalisePath(final String artifisedPath) {
+    final File extStorage = Environment.getExternalStorageDirectory();
+    final String extStoragePath = extStorage.getAbsolutePath();
+    return artifisedPath.replace(PATH_ARTIFACT, extStoragePath);
   }
 
 }

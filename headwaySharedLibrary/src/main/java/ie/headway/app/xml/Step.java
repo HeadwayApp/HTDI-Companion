@@ -12,12 +12,9 @@ public class Step implements Parcelable {
   /**
    * TODO Does SimpleXML need these to be non-final?
    */
-  @Attribute
-  private String text;
-  @Attribute
-  private String imagePath;
-  @Attribute
-  private String audioPath;
+  @Attribute private String text;
+  @Attribute private String imagePath;
+  @Attribute private String audioPath;
 
   /**
    * TODO Does SimpleXML need this constructor to be public? Can it be private?
@@ -63,6 +60,13 @@ public class Step implements Parcelable {
     return 0;
   }
 
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(text);
+    dest.writeString(imagePath);
+    dest.writeString(audioPath);
+  }
+
   public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
     public Step createFromParcel(Parcel source) {
       return new Step(source);
@@ -72,12 +76,5 @@ public class Step implements Parcelable {
       return new Step[size];
     }
   };
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(text);
-    dest.writeString(imagePath);
-    dest.writeString(audioPath);
-  }
 
 }

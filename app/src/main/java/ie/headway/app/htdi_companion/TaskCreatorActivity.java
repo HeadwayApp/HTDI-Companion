@@ -4,18 +4,16 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.view.View;
 
 import org.apache.commons.io.FileUtils;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 import java.io.IOException;
 
 import ie.headway.app.disk.AppDir;
+import ie.headway.app.htdi_companion.tmp.util.TaskSerialiser;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
@@ -34,9 +32,6 @@ public class TaskCreatorActivity extends HeadwayActivity {
     mStepCreatorFragment = getStepCreatorFragment();
   }
 
-  /**
-   * TODO: Proxy for fragment method, may need refactoring.
-   */
   public void onClickCreateStepButton(final View view) {
     final Step step = mStepCreatorFragment.onClickCreateStepButton(view);
     serializeStep(step);
@@ -59,15 +54,10 @@ public class TaskCreatorActivity extends HeadwayActivity {
       throw new RuntimeException(e);
     }
 
-    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath().replace(Environment.getExternalStorageDirectory().getAbsolutePath(), PortableStep.PATH_ARTIFACT), ""));
+    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath(), ""));
 
-    final Serializer serializer = new Persister();
-
-    try {
-      serializer.write(mTask, new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "task.xml")));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    final TaskSerialiser taskSerialiser = new TaskSerialiser();
+    taskSerialiser.write(mTask);
 
   }
 
