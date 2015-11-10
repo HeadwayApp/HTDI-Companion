@@ -1,5 +1,7 @@
 package ie.headway.app.htdi_companion;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,11 +20,7 @@ import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
-import static com.google.common.base.Preconditions.checkState;
-
 public class TaskCreatorActivity extends HeadwayActivity {
-
-  private static final StepCreatorFragment NO_FRAGMENT = null;
 
   private Task mTask;
   private StepCreatorFragment mStepCreatorFragment;
@@ -31,32 +29,9 @@ public class TaskCreatorActivity extends HeadwayActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_task_creator);
-    loadTaskFromIntent();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    addTaskCreatorFragment();
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    removeTaskCreatorFragment();
-  }
-
-  protected void addTaskCreatorFragment() {
-    checkState(mStepCreatorFragment == NO_FRAGMENT, "task creator fragment is already attached");
-    final String fragmentName = mTask.getName() + "step_" + mTask.getStepCount();
-    mStepCreatorFragment = StepCreatorFragment.newInstance();
-    addFragmentToLayout(R.id.activity_task_creator_layout, mStepCreatorFragment, fragmentName);
-  }
-
-  protected void removeTaskCreatorFragment() {
-    checkState(mStepCreatorFragment != NO_FRAGMENT, "no task creator fragment to detach");
-    removeFragmentFromLayout(mStepCreatorFragment);
-    mStepCreatorFragment = NO_FRAGMENT;
+    mTask = getTask();
+    mTask.makeRequiredDirs();
+    mStepCreatorFragment = getStepCreatorFragment();
   }
 
   /**
@@ -96,12 +71,18 @@ public class TaskCreatorActivity extends HeadwayActivity {
 
   }
 
-  private void loadTaskFromIntent() {
+  private Task getTask() {
     final Intent intent = getIntent();
     final Parcelable taskParcleable = intent.getParcelableExtra("task");
     final Task task = (Task) taskParcleable;
-    mTask = task;
-    mTask.makeRequiredDirs();
+    return task;
+  }
+
+  private StepCreatorFragment getStepCreatorFragment() {
+    final FragmentManager fragmentManager = getFragmentManager();
+    final Fragment fragment = fragmentManager.findFragmentById(R.id.step_creator_fragment);
+    final StepCreatorFragment stepCreatorFragment = (StepCreatorFragment)fragment;
+    return stepCreatorFragment;
   }
 
 }

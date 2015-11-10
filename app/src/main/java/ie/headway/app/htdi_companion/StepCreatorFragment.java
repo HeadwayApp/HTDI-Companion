@@ -56,8 +56,8 @@ public class StepCreatorFragment extends Fragment {
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    inflater.inflate(R.layout.task_creator_fragment, container);
-    return NO_VIEW_TO_RETURN;
+    return inflater.inflate(R.layout.task_creator_fragment, null);
+//    return NO_VIEW_TO_RETURN;
   }
 
   @Override
@@ -74,12 +74,12 @@ public class StepCreatorFragment extends Fragment {
   }
 
   private CharSequence getStepDescription() {
-    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText) getActivity().findViewById(R.id.input_step_description_view);
     return editText.getText();
   }
 
   private void clearStepDescription() {
-    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
+    final EditText editText = (EditText) getActivity().findViewById(R.id.input_step_description_view);
     editText.setText("");
   }
 
@@ -90,13 +90,13 @@ public class StepCreatorFragment extends Fragment {
   }
 
   private CameraView getCameraView() {
-    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
+    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.camera_view);
     return cameraView;
   }
 
   private void initialiseCameraView() {
     final Camera camera = openCamera();
-    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
+    final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.camera_view);
     cameraView.setCamera(camera);
     cameraView.setPictureCallback(new _PictureCallback(mOutputStream, getResources()));
   }
