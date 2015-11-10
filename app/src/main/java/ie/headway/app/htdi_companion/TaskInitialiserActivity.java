@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.headway.app.htdi_companion.tmp.util.TaskNotFoundException;
+import ie.headway.app.htdi_companion.tmp.util.TaskPersister;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 
@@ -47,10 +48,19 @@ public class TaskInitialiserActivity extends Activity {
   }
 
   private void startTaskCreation(final Context context, final CharSequence taskName) {
-    final String taskNameStr = taskName.toString();
-    final List<Step> stepsLst = new ArrayList<>(10);
 
-    final Parcelable task = new Task(taskNameStr, stepsLst);
+    final TaskPersister taskDeserialiser = new TaskPersister();
+
+    Task task;
+
+    try {
+      task = taskDeserialiser.read(taskName.toString());
+    } catch (TaskNotFoundException tnf) {
+      final String taskNameStr = taskName.toString();
+      final List<Step> stepsLst = new ArrayList<>(10);
+      task = new Task(taskNameStr, stepsLst);
+    }
+
     final Intent intent = new Intent(context, TaskCreatorActivity.class);
     intent.putExtra("task", task);
 

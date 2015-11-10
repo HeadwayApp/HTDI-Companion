@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import ie.headway.app.disk.AppDir;
-import ie.headway.app.htdi_companion.tmp.util.TaskSerialiser;
+import ie.headway.app.htdi_companion.tmp.util.TaskPersister;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
@@ -44,14 +44,14 @@ public class TaskCreatorActivity extends HeadwayActivity {
     final PortableStep contextualisedStep = contextualiseStep(step);
     mTask.addStep(contextualisedStep);
 
-    final TaskSerialiser taskSerialiser = new TaskSerialiser();
-    taskSerialiser.write(mTask);
+    final TaskPersister taskPersister = new TaskPersister();
+    taskPersister.write(mTask);
 
   }
 
   private PortableStep contextualiseStep(final Step step) {
     final File imgFile = new File(step.getImagePath());
-    final File newImg = new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "imgs" + File.separator + mTask.getStepCount() + ".jpg"));
+    final File newImg = new File(AppDir.ROOT.getPath(mTask.getName(), "imgs", mTask.getStepCount() + ".jpg"));
 
     try {
       FileUtils.moveFile(imgFile, newImg);

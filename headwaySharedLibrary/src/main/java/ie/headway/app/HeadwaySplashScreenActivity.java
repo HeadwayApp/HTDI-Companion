@@ -7,7 +7,7 @@ import static ie.headway.app.disk.AppDir.makeAppDirs;
 
 public abstract class HeadwaySplashScreenActivity extends Activity {
 
-  private static final long SPLASH_SCREEN_SHOW_TIME = 1L;
+  private static final long SPLASH_SCREEN_SHOW_TIME = 5000L;
 
   public HeadwaySplashScreenActivity() {
     Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
