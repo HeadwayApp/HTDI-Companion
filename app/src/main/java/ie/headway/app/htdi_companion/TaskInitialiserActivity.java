@@ -38,7 +38,7 @@ public class TaskInitialiserActivity extends Activity {
   private String getCurrentlyEnteredTaskNameText() {
     final EditText inputTaskNameView = (EditText) findViewById(R.id.input_task_name_view);
     final String taskNameFromView = inputTaskNameView.getText().toString();
-    return taskNameFromView;
+    return taskNameFromView.replaceAll("[^a-zA-Z0-9-_\\.]", "_"); //Sanitise input for file name.
   }
 
   private void showEnterTaskNameToast(final Context context) {

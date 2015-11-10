@@ -14,6 +14,7 @@ public class SplashScreenActivity extends HeadwaySplashScreenActivity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
   }
 
   @Override

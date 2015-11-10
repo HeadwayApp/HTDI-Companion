@@ -92,11 +92,11 @@ public class Task implements Parcelable, RequiresDirs {
   @Override
   public void makeRequiredDirs() {
     final String taskName = getName();
-    final File taskImgDirectory = AppDir.ROOT.getFile(taskName + File.separator + "imgs");
+    final File taskImgDirectory = AppDir.ROOT.getFile(taskName, "imgs");
     final boolean dirsAlreadyExist = taskImgDirectory.exists();
     final boolean wasSuccessful = taskImgDirectory.mkdirs();
     if (!dirsAlreadyExist && !wasSuccessful) {
-      throw new RuntimeException("Couldn't make task directories for task: " + this);
+      throw new RuntimeException("Couldn't make task directory: " + taskImgDirectory + " for task: " + this);
     }
   }
 
