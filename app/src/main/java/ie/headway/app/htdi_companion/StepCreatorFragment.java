@@ -2,6 +2,7 @@ package ie.headway.app.htdi_companion;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -97,6 +98,14 @@ public class StepCreatorFragment extends Fragment {
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.camera_view);
     cameraView.setCamera(camera);
     cameraView.setPictureCallback(new _PictureCallback(mOutputStream, getResources()));
+
+    cameraView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View view) {
+        startActivity(new Intent(getActivity(), TaskInitialiserActivity.class));
+        return true;
+      }
+    });
   }
 
   private class _PictureCallback extends ContextualPictureCallback {
