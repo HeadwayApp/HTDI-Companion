@@ -21,11 +21,10 @@ import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.capture.ContextualPictureCallback;
+import ie.headway.app.htdi_companion.step.LatentStep;
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
-
-  private static final View NO_VIEW_TO_RETURN = null;
 
   private File mTmpImg;
   private OutputStream mOutputStream;
@@ -57,7 +56,6 @@ public class StepCreatorFragment extends Fragment {
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
     return inflater.inflate(R.layout.task_creator_fragment, null);
-//    return NO_VIEW_TO_RETURN;
   }
 
   @Override
@@ -70,7 +68,7 @@ public class StepCreatorFragment extends Fragment {
     final CameraView cameraView = getCameraView();
     cameraView.captureImage();
 
-    return new Step(getStepDescription().toString(), mTmpImg.getAbsolutePath(), "");
+    return new LatentStep(getStepDescription().toString(), mTmpImg.getAbsolutePath(), "");
   }
 
   private CharSequence getStepDescription() {

@@ -41,11 +41,16 @@ public class TaskCreatorActivity extends HeadwayActivity {
 
     mStepCreatorFragment.refresh();
 
-    final File imgFile = new File(step.getImagePath());
-    while(!imgFile.exists()) {
-      try { Thread.sleep(1000); } catch (InterruptedException ie) {}
-    }
+    final PortableStep contextualisedStep = contextualiseStep(step);
+    mTask.addStep(contextualisedStep);
 
+    final TaskSerialiser taskSerialiser = new TaskSerialiser();
+    taskSerialiser.write(mTask);
+
+  }
+
+  private PortableStep contextualiseStep(final Step step) {
+    final File imgFile = new File(step.getImagePath());
     final File newImg = new File(AppDir.ROOT.getPath(mTask.getName() + File.separator + "imgs" + File.separator + mTask.getStepCount() + ".jpg"));
 
     try {
@@ -54,11 +59,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
       throw new RuntimeException(e);
     }
 
-    mTask.addStep(new PortableStep(step.getText(), newImg.getAbsolutePath(), ""));
-
-    final TaskSerialiser taskSerialiser = new TaskSerialiser();
-    taskSerialiser.write(mTask);
-
+    return new PortableStep(step.getText(), newImg.getAbsolutePath(), "");
   }
 
   private Task getTask() {
