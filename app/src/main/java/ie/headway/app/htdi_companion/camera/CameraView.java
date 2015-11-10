@@ -19,12 +19,10 @@ public final class CameraView extends AbstractCameraView {
   }
 
   public void setCamera(final Camera camera) {
-//    checkState(mCamera == null, "cannot reassign camera");
     mCamera = camera;
   }
 
   public void setPictureCallback(final Camera.PictureCallback pictureCallback) {
-//    checkState(mPictureCallback == null, "cannot reassign picture callback");
     mPictureCallback = pictureCallback;
   }
 
@@ -36,19 +34,19 @@ public final class CameraView extends AbstractCameraView {
 
   @Override
   public void refreshCameraView() throws IOException {
-    stopCameraPreview();
-    startCameraPreview();
+    stopPreview();
+    startPreview();
   }
 
   @Override
-  public void startCameraPreview() throws IOException {
+  public void startPreview() throws IOException {
     final SurfaceHolder holder = getHolder();
     mCamera.setPreviewDisplay(holder);
     mCamera.startPreview();
   }
 
   @Override
-  public void stopCameraPreview() {
+  public void stopPreview() {
     mCamera.stopPreview();
   }
 

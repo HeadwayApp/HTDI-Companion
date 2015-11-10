@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.capture.ContextualJpegPictureCallback;
+import ie.headway.app.htdi_companion.camera.capture.ContextualPictureCallback;
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
@@ -36,7 +36,6 @@ public class StepCreatorFragment extends Fragment {
   }
 
   public StepCreatorFragment() {
-    mTmpImg = new File(AppDir.TMP.getPath(System.currentTimeMillis() + ".jpg"));
     init();
   }
 
@@ -51,12 +50,13 @@ public class StepCreatorFragment extends Fragment {
 
   void refresh() {
     init();
-    getCameraView().setPictureCallback(new PictureCallback(mOutputStream, getResources()));
+    clearStepDescription();
+    getCameraView().setPictureCallback(new _PictureCallback(mOutputStream, getResources()));
   }
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    inflater.inflate(R.layout.task_creator_fragment, null);
+    inflater.inflate(R.layout.task_creator_fragment, container);
     return NO_VIEW_TO_RETURN;
   }
 
@@ -78,6 +78,17 @@ public class StepCreatorFragment extends Fragment {
     return editText.getText();
   }
 
+  private void clearStepDescription() {
+    final EditText editText = (EditText) getActivity().findViewById(R.id.inputStepDescriptionView);
+    editText.setText("");
+  }
+
+  private Camera openCamera() {
+    final Activity activity = getActivity();
+    final Camera camera = AutoOrientatedCamera.getCamera(activity);
+    return camera;
+  }
+
   private CameraView getCameraView() {
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     return cameraView;
@@ -87,18 +98,12 @@ public class StepCreatorFragment extends Fragment {
     final Camera camera = openCamera();
     final CameraView cameraView = (CameraView) getActivity().findViewById(R.id.cameraView);
     cameraView.setCamera(camera);
-    cameraView.setPictureCallback(new PictureCallback(mOutputStream, getResources()));
+    cameraView.setPictureCallback(new _PictureCallback(mOutputStream, getResources()));
   }
 
-  private Camera openCamera() {
-    final Activity activity = getActivity();
-    final Camera camera = AutoOrientatedCamera.getCamera(activity);
-    return camera;
-  }
+  private class _PictureCallback extends ContextualPictureCallback {
 
-  class PictureCallback extends ContextualJpegPictureCallback {
-
-    public PictureCallback(OutputStream outputStream, Resources resources) {
+    _PictureCallback(final OutputStream outputStream, final Resources resources) {
       super(outputStream, resources);
     }
 

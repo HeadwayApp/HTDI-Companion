@@ -7,11 +7,11 @@ import android.graphics.Matrix;
 
 import java.io.OutputStream;
 
-public class ContextualJpegPictureCallback extends JpegPictureCallback {
+public class ContextualPictureCallback extends JpegPictureCallback {
 
   private final Resources mResources;
 
-  public ContextualJpegPictureCallback(final OutputStream outputStream, final Resources resources) {
+  public ContextualPictureCallback(final OutputStream outputStream, final Resources resources) {
     super(outputStream);
     mResources = resources;
   }
