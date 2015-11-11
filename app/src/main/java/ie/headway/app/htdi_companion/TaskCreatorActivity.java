@@ -12,11 +12,12 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-import ie.headway.app.disk.AppDir;
-import ie.headway.app.htdi_companion.tmp.util.TaskPersister;
+import ie.headway.app.util.AppDir;
+import ie.headway.app.util.HeadwayActivity;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
+import ie.headway.app.xml.TaskPersister;
 
 public class TaskCreatorActivity extends HeadwayActivity {
 

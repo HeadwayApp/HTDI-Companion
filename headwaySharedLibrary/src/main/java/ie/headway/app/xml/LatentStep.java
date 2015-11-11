@@ -1,9 +1,7 @@
-package ie.headway.app.htdi_companion.step;
+package ie.headway.app.xml;
 
 import java.io.File;
 import java.util.concurrent.TimeoutException;
-
-import ie.headway.app.xml.PortableStep;
 
 public class LatentStep extends PortableStep {
 

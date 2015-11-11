@@ -67,7 +67,7 @@ public class Step implements Parcelable {
     dest.writeString(audioPath);
   }
 
-  public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
+  public static final Creator<Step> CREATOR = new Creator<Step>() {
     public Step createFromParcel(Parcel source) {
       return new Step(source);
     }

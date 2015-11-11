@@ -11,10 +11,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ie.headway.app.htdi_companion.tmp.util.TaskNotFoundException;
-import ie.headway.app.htdi_companion.tmp.util.TaskPersister;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
+import ie.headway.app.xml.TaskNotFoundException;
+import ie.headway.app.xml.TaskPersister;
 
 public class TaskInitialiserActivity extends Activity {
 

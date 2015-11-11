@@ -1,15 +1,11 @@
-package ie.headway.app.htdi_companion.tmp.util;
+package ie.headway.app.xml;
 
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 
-import ie.headway.app.disk.AppDir;
-import ie.headway.app.xml.Task;
+import ie.headway.app.util.AppDir;
 
-/**
- * TODO: If one of the steps serialised is a PortableStep, do the replace(PATH_ARTIFACT) there?
- * */
 public class TaskPersister extends Persister {
 
   public Task read(final String taskName) throws TaskNotFoundException {

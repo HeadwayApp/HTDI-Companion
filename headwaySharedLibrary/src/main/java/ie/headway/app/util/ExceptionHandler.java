@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.tmp;
+package ie.headway.app.util;
 
 import android.os.Environment;
 
@@ -10,7 +10,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
   @Override
   public void uncaughtException(Thread thread, Throwable ex) {
-//    Log.e("headway", "exception occurred", ex);
+//  Log.e("headway", "exception occurred", ex);
     final File logFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "headway_" + System.currentTimeMillis() + ".log");
     try {
       final PrintStream ps = new PrintStream(logFile);
@@ -18,7 +18,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-
   }
 
 }

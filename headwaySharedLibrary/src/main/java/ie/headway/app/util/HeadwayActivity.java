@@ -1,11 +1,9 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.util;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import java.io.IOException;
-
-import ie.headway.app.disk.AppDir;
 
 public class HeadwayActivity extends Activity {
 

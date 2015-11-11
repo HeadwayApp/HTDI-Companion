@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ie.headway.app.disk.AppDir;
+import ie.headway.app.util.AppDir;
 
 @Root
 public class Task implements Parcelable, RequiresDirs {
@@ -73,7 +73,7 @@ public class Task implements Parcelable, RequiresDirs {
     dest.writeList(steps);
   }
 
-  public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+  public static final Creator<Task> CREATOR = new Creator<Task>() {
     public Task createFromParcel(final Parcel source) {
       return new Task(source);
     }

@@ -18,11 +18,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ie.headway.app.disk.AppDir;
 import ie.headway.app.htdi_companion.camera.AutoOrientatedCamera;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.capture.ContextualPictureCallback;
-import ie.headway.app.htdi_companion.step.LatentStep;
+import ie.headway.app.util.AppDir;
+import ie.headway.app.xml.LatentStep;
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
