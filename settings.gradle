@@ -1,1 +1,2 @@
 include ':app', ':headwaySharedLibrary'
+project(':headwaySharedLibrary').projectDir = new File(settingsDir, '../How-To-Do-It-/headwaySharedLibrary')
