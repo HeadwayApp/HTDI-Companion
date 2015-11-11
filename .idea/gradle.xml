@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/../How-To-Do-It-/headwaySharedLibrary" />
+            <option value="$PROJECT_DIR$/../headwaySharedLibrary" />
           </set>
         </option>
       </GradleProjectSettings>
