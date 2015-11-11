@@ -25,6 +25,4 @@ android {
 
 dependencies {
     compile project(':headwaySharedLibrary')
-    compile group: 'com.google.guava', name: 'guava', version: '18.0'
-    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 }
