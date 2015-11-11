@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HTDI-Companion.iml" filepath="$PROJECT_DIR$/HTDI-Companion.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../How-To-Do-It-/headwaySharedLibrary/headwaySharedLibrary.iml" filepath="$PROJECT_DIR$/../How-To-Do-It-/headwaySharedLibrary/headwaySharedLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../headwaySharedLibrary/headwaySharedLibrary.iml" filepath="$PROJECT_DIR$/../headwaySharedLibrary/headwaySharedLibrary.iml" />
     </modules>
   </component>
 </project>
