@@ -51,12 +51,14 @@ public class StepCreatorFragment extends Fragment {
   void refresh() {
     init();
     clearStepDescription();
-    getCameraView().setPictureCallback(new _PictureCallback(mOutputStream, getResources()));
+    final CameraView cameraView = getCameraView();
+    final Camera.PictureCallback pitureCalback = new _PictureCallback(mOutputStream, getResources());
+    cameraView.setPictureCallback(pitureCalback);
   }
 
   @Override
   public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.task_creator_fragment, null);
+    return inflater.inflate(R.layout.step_creator_fragment, null);
   }
 
   @Override
@@ -118,7 +120,8 @@ public class StepCreatorFragment extends Fragment {
     protected void writeBitmapToFile(final Bitmap bitmap) {
       super.writeBitmapToFile(bitmap);
       try {
-        getCameraView().refreshCameraView();
+        final CameraView camView = getCameraView();
+        camView.refreshCameraView();
       } catch (IOException e) {
         throw new RuntimeException("couldn't refresh camera view", e);
       }
