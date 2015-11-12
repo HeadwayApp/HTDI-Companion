@@ -26,45 +26,54 @@ public class TaskInitialiserActivity extends Activity {
 
   public void onClickStartTaskCreationButton(final View v) {
     final Context context = getApplicationContext();
-    final String taskNameFromView = getCurrentlyEnteredTaskNameText();
+    final String taskNameFromView = getEnteredTaskName();
 
     if (taskNameFromView.isEmpty()) {
-      showEnterTaskNameToast(context);
+      toastTaskName(context);
     } else {
       startTaskCreation(context, taskNameFromView);
     }
   }
 
-  private String getCurrentlyEnteredTaskNameText() {
+  private String getEnteredTaskName() {
     final EditText inputTaskNameView = (EditText) findViewById(R.id.input_task_name_view);
     final String taskNameFromView = inputTaskNameView.getText().toString();
-    return taskNameFromView.replaceAll("[^a-zA-Z0-9-_\\.]", "_"); //Sanitise input for file name.
+    return taskNameFromView.trim().replaceAll("[^a-zA-Z0-9-_\\.]", "_"); //Sanitise input for file name.
   }
 
-  private void showEnterTaskNameToast(final Context context) {
+  private void toastTaskName(final Context context) {
     final String toastText = getString(R.string.enter_task_toast_text);
     final Toast toast = Toast.makeText(context, toastText, Toast.LENGTH_SHORT);
     toast.show();
   }
 
-  private void startTaskCreation(final Context context, final CharSequence taskName) {
-
-    final TaskPersister taskDeserialiser = new TaskPersister();
-
-    Task task;
-
-    try {
-      task = taskDeserialiser.read(taskName.toString());
-    } catch (TaskNotFoundException tnf) {
-      final String taskNameStr = taskName.toString();
-      final List<Step> stepsLst = new ArrayList<>(10);
-      task = new Task(taskNameStr, stepsLst);
-    }
+  private void startTaskCreation(final Context context, final String taskName) {
+    final Task task = loadTask(taskName);
 
     final Intent intent = new Intent(context, TaskCreatorActivity.class);
     intent.putExtra("task", task);
 
     startActivity(intent);
+  }
+
+  private Task loadTask(final String taskName) {
+    final TaskPersister taskDeserialiser = new TaskPersister(taskName);
+
+    Task task;
+
+    try {
+      task = taskDeserialiser.read();
+    } catch (TaskNotFoundException tnf) {
+      task = makeNewTask(taskName);
+    }
+
+    return task;
+  }
+
+  private static Task makeNewTask(final String taskName) {
+    final List<Step> stepsLst = new ArrayList<>(10);
+    final Task task = new Task(taskName, stepsLst);
+    return task;
   }
 
 }
