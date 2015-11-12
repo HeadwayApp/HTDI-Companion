@@ -1,14 +1,22 @@
 package ie.headway.app.htdi_companion;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
+import ie.headway.app.htdi_companion.camera.FixBitmap;
 import ie.headway.app.htdi_companion.camera.OnImageCapturedListener;
+import ie.headway.app.util.AppDir;
+import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;
 
 public class StepCreatorFragment extends Fragment {
@@ -27,9 +35,21 @@ public class StepCreatorFragment extends Fragment {
     mCreateStepView = (CreateStepView) layout;
     mCreateStepView.registerOnImageCapturedListener(new OnImageCapturedListener() {
       @Override
-      public void onImageCaptured(byte[] data) {
+      public void onImageCaptured(final byte[] data) {
         final String stepDescription = mCreateStepView.getStepDescription();
-        final Step step = new InMemoryStep(stepDescription, data, null);
+
+        final File imgFile = AppDir.TMP.getFile(System.currentTimeMillis() + ".jpg");
+        OutputStream os;
+
+        try {
+          os = new FileOutputStream(imgFile);
+        } catch (FileNotFoundException e) {
+          throw new RuntimeException("couldn't open output stream for " + imgFile, e);
+        }
+
+        writeDataAsBitmap(os, data);
+
+        final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), "");
         mOnStepCreatedListener.onStepCreated(step);
       }
     });
@@ -40,15 +60,12 @@ public class StepCreatorFragment extends Fragment {
     mOnStepCreatedListener = listener;
   }
 
-  protected ByteArrayOutputStream writeDataToMemory(final byte[] data) {
-//    final int offset = 0;
-//    final int length = (data != null) ? data.length : 0;
-//    final Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
-//    bitmap.compress(Bitmap.CompressFormat.PNG, 100, mOutputStream);
-
-    //new ByteArrayOutputStream(data.length); //TODO: Should that be divided by 4?
-
-    throw new UnsupportedOperationException();
+  protected void writeDataAsBitmap(final OutputStream os, final byte[] data) {
+    final int offset = 0;
+    final int length = (data != null) ? data.length : 0;
+    Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
+    bitmap = FixBitmap.fixBitmap(getResources(), bitmap);  //TODO: Lot of processing happens here. You shouldn't need to do this in the first place, find out why the orientation is wrong from the camera?
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
   }
 
 }

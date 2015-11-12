@@ -2,14 +2,23 @@ package ie.headway.app.htdi_companion;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.OnImageCapturedListener;
 
+/**
+ * TODO: Should this class implement {@link ie.headway.app.htdi_companion.camera.CameraControls}?
+ * */
 public class CreateStepView extends LinearLayout {
+
+  private final EditText mStepDescriptionField;
+  private final Button mCreateStepButton;
+  private final CameraView mCameraView;
 
   public CreateStepView(final Context context) {
     this(context, null);
@@ -22,22 +31,28 @@ public class CreateStepView extends LinearLayout {
   public CreateStepView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     inflateLayout(context);
+    mStepDescriptionField = (EditText) findViewById(R.id.input_step_description_view);
+    mCreateStepButton = (Button) findViewById(R.id.create_step_button);
+    mCreateStepButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+    public void onClick(final View view) {
+        mCameraView.captureImage();
+      }
+    });
+    mCameraView = (CameraView) findViewById(R.id.camera_view);
   }
 
   public String getStepDescription() {
-    final EditText editText = (EditText) findViewById(R.id.input_step_description_view);
-    final CharSequence text = editText.getText();
+    final CharSequence text = mStepDescriptionField.getText();
     return text.toString();
   }
 
-  public void clearStepDescription() {
-    final EditText editText = (EditText) findViewById(R.id.input_step_description_view);
-    editText.setText("");
+  public void clearStepDescriptionField() {
+    mStepDescriptionField.setText("");
   }
 
   public void registerOnImageCapturedListener(final OnImageCapturedListener listener) {
-    final CameraView cameraView = (CameraView) findViewById(R.id.camera_view);
-    cameraView.registerOnImageCapturedListener(listener);
+    mCameraView.registerOnImageCapturedListener(listener);
   }
 
   private void inflateLayout(final Context context) {
