@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.View;
 
 import org.apache.commons.io.FileUtils;
 
@@ -31,17 +30,16 @@ public class TaskCreatorActivity extends HeadwayActivity {
     mTask = getTask();
     mTask.makeRequiredDirs();
     mStepCreatorFragment = getStepCreatorFragment();
-  }
 
-  public void onClickCreateStepButton(final View view) {
-    final Step step = mStepCreatorFragment.onClickCreateStepButton(view);
-    serializeStep(step);
+    mStepCreatorFragment.registerOnStepCreatedListener(new OnStepCreatedListener() {
+      @Override
+      public void onStepCreated(final Step step) {
+        serializeStep(step);
+      }
+    });
   }
 
   private void serializeStep(final Step step) {
-
-    mStepCreatorFragment.refresh();
-
     final PortableStep contextualisedStep = contextualiseStep(step);
     mTask.addStep(contextualisedStep);
 

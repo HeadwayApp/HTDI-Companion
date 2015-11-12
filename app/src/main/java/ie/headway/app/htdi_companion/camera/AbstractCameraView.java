@@ -13,7 +13,7 @@ import java.io.IOException;
  * is now not tied to either android.hardware.Camera or android.hardware.camera2 (which are
  * completely separate entities not related by any kind of inheritance or interface).
  */
-public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback {
+public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback, CameraViewControls {
 
   protected AbstractCameraView(final Context context) {
     this(context, null);
@@ -53,15 +53,5 @@ public abstract class AbstractCameraView extends SurfaceView implements SurfaceH
     stopPreview();
     releaseCamera();
   }
-
-  protected abstract void captureImage();
-
-  protected abstract void refreshCameraView() throws IOException;
-
-  protected abstract void startPreview() throws IOException;
-
-  protected abstract void stopPreview();
-
-  protected abstract void releaseCamera();
 
 }
