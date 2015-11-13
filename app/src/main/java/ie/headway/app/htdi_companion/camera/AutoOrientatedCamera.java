@@ -1,19 +1,20 @@
 package ie.headway.app.htdi_companion.camera;
 
-import android.app.Activity;
+import android.content.Context;
 import android.hardware.Camera;
 import android.view.Surface;
+import android.view.WindowManager;
 
 public final class AutoOrientatedCamera {
 
-  private final Activity mActivity;
+  private final Context mContext;
 
-  private AutoOrientatedCamera(final Activity activity) {
-    mActivity = activity;
+  private AutoOrientatedCamera(final Context context) {
+    mContext = context;
   }
 
-  public static Camera getCamera(final Activity activity) {
-    final AutoOrientatedCamera aOCam = new AutoOrientatedCamera(activity);
+  public static Camera getCamera(final Context context) {
+    final AutoOrientatedCamera aOCam = new AutoOrientatedCamera(context);
     final Camera camera = Camera.open();
     final int cameraId = 0;
     return aOCam.setCameraDisplayOrientation(cameraId, camera);
@@ -22,7 +23,7 @@ public final class AutoOrientatedCamera {
   private Camera setCameraDisplayOrientation(final int cameraId, final Camera camera) {
     final Camera.CameraInfo info = new Camera.CameraInfo();
     Camera.getCameraInfo(cameraId, info);
-    int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
+    int rotation = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
     int degrees = 0;
     switch (rotation) {
       case Surface.ROTATION_0:

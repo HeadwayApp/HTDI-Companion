@@ -2,10 +2,11 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false"/>
@@ -16,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ie.headway.app.htdi_companion.SplashScreenActivity"
+            android:name=".SplashScreenActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,7 +28,7 @@
             android:name=".TaskCreatorActivity"
             android:label="@string/app_name"/>
         <activity
-            android:name="ie.headway.app.htdi_companion.TaskInitialiserActivity"
+            android:name=".TaskInitialiserActivity"
             android:label="@string/app_name"/>
     </application>
 

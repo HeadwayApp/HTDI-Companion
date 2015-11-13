@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import ie.headway.app.htdi_companion.camera.FixBitmap;
 import ie.headway.app.htdi_companion.camera.OnImageCapturedListener;
 import ie.headway.app.util.AppDir;
 import ie.headway.app.xml.PortableStep;
@@ -64,7 +63,7 @@ public class StepCreatorFragment extends Fragment {
     final int offset = 0;
     final int length = (data != null) ? data.length : 0;
     Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
-    bitmap = FixBitmap.fixBitmap(getResources(), bitmap);  //TODO: Lot of processing happens here. You shouldn't need to do this in the first place, find out why the orientation is wrong from the camera?
+//    bitmap = _FixBitmap.fixBitmap(getResources(), bitmap);  //TODO: Lot of processing happens here. You shouldn't need to do this in the first place, find out why the orientation is wrong from the camera?
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
   }
 

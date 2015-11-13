@@ -1,6 +1,5 @@
 package ie.headway.app.htdi_companion.camera;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.AttributeSet;
@@ -16,7 +15,8 @@ public final class CameraView extends AbstractCameraView implements Camera.Pictu
 
   public CameraView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
-    mCamera = AutoOrientatedCamera.getCamera((Activity)context);
+//    mCamera = AutoOrientatedCamera.getCamera((Activity)context);
+      mCamera = Camera.open();
   }
 
   public void registerOnImageCapturedListener(final OnImageCapturedListener listener) {

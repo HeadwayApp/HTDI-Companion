@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/HTDI-Companion/headwaySharedLibrary/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3f6f7795b6669aab6ef53d93c568f198423c7310">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/classes-9805fd5dc159b66cfa59691a21a66992f5e0ad7d.jar" />
+    </item>
+
+</items>
