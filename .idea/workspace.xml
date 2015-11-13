@@ -61,11 +61,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TaskCreatorActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TaskCreatorActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="46" column="31" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.42192692">
+              <caret line="46" column="35" selection-start-line="46" selection-start-column="35" selection-end-line="46" selection-end-column="35" />
               <folding>
                 <element signature="e#971#1110#0" expanded="true" />
                 <element signature="e#1109#1110#0" expanded="true" />
@@ -78,7 +78,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/StepCreatorFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+              <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
               <folding>
                 <element signature="e#1234#1924#0" expanded="true" />
                 <element signature="e#1923#1924#0" expanded="true" />
@@ -87,20 +87,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InMemoryStep.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/InMemoryStep.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Task.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Task.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.358804">
+            <state vertical-scroll-proportion="0.0">
               <caret line="24" column="89" selection-start-line="24" selection-start-column="89" selection-end-line="24" selection-end-column="89" />
               <folding />
             </state>
@@ -124,7 +114,7 @@
     <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$USER_HOME$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="availableProjects">
@@ -2519,7 +2509,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/Listenable.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/OnImageCapturedListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/OnStepCreatedListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_task_creator.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/step_creator_view.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java" />
@@ -2536,8 +2525,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/StepCreatorFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/FixBitmap.java" />
         <option value="$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/PortableStep.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/InMemoryStep.java" />
         <option value="$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/InMemoryStep.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" />
       </list>
     </option>
   </component>
@@ -3628,17 +3618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="31" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
-          <folding>
-            <element signature="e#971#1110#0" expanded="true" />
-            <element signature="e#1109#1110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/PortableStep.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3652,15 +3631,15 @@
         <state vertical-scroll-proportion="0.179402">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
-            <element signature="class#1543:1726" expanded="true" />
+            <element signature="class#1543:1726" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/InMemoryStep.java">
+    <entry file="file://$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+          <caret line="24" column="89" selection-start-line="24" selection-start-column="89" selection-end-line="24" selection-end-column="89" />
           <folding />
         </state>
       </provider>
@@ -3668,7 +3647,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/StepCreatorFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+          <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
           <folding>
             <element signature="e#1234#1924#0" expanded="true" />
             <element signature="e#1923#1924#0" expanded="true" />
@@ -3676,11 +3655,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.358804">
-          <caret line="24" column="89" selection-start-line="24" selection-start-column="89" selection-end-line="24" selection-end-column="89" />
-          <folding />
+        <state vertical-scroll-proportion="0.42192692">
+          <caret line="46" column="35" selection-start-line="46" selection-start-column="35" selection-end-line="46" selection-end-column="35" />
+          <folding>
+            <element signature="e#971#1110#0" expanded="true" />
+            <element signature="e#1109#1110#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

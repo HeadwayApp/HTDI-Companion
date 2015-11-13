@@ -40,6 +40,12 @@ public class TaskCreatorActivity extends HeadwayActivity {
   }
 
   private void serializeStep(final Step step) {
+    /**
+     * TODO: {@link #serializeStep(Step)} shouldn't know it has to "contextualise" the {@link Step}
+     * it receives in the manner defined in {@link #contextualiseStep(Step)}, but a good solution
+     * cannot be found at this time (given current time constraints), a better solution should be
+     * sought out when time allows.
+     * */
     final PortableStep contextualisedStep = contextualiseStep(step);
     mTask.addStep(contextualisedStep);
 
