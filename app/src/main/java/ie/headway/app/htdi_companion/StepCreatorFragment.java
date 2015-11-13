@@ -1,6 +1,7 @@
 package ie.headway.app.htdi_companion;
 
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -63,7 +64,9 @@ public class StepCreatorFragment extends Fragment {
     final int offset = 0;
     final int length = (data != null) ? data.length : 0;
     Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length);
-//    bitmap = _FixBitmap.fixBitmap(getResources(), bitmap);  //TODO: Lot of processing happens here. You shouldn't need to do this in the first place, find out why the orientation is wrong from the camera?
+    final Resources resources = getResources();
+    final FixBitmap fixBitmap = new FixBitmapRotationAndScale(resources);
+    bitmap = fixBitmap.fixBitmap(bitmap);  //TODO: Lot of processing happens here. Do this off the main thread.
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
   }
 
