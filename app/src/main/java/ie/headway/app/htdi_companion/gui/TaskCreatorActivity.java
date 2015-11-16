@@ -1,9 +1,10 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import ie.headway.app.htdi_companion.R;
 import ie.headway.app.util.HeadwayActivity;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;

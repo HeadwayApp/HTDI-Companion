@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.headway.app.htdi_companion.R;
 import ie.headway.app.xml.Step;
 import ie.headway.app.xml.Task;
 import ie.headway.app.xml.TaskNotFoundException;

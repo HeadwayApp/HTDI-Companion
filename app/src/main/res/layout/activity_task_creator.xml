@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent" >
 
-    <ie.headway.app.htdi_companion.CreateStepView
+    <ie.headway.app.htdi_companion.gui.CreateStepView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/create_step_view"
         android:layout_width="match_parent"

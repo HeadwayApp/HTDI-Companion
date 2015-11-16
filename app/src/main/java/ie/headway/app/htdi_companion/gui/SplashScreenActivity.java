@@ -1,9 +1,7 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 import ie.headway.app.util.HeadwaySplashScreenActivity;
 

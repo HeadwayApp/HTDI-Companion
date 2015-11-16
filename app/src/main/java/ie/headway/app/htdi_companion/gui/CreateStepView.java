@@ -1,6 +1,7 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import java.io.OutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ie.headway.app.htdi_companion.R;
 import ie.headway.app.htdi_companion.camera.CameraView;
 import ie.headway.app.htdi_companion.camera.OnImageCapturedListener;
 import ie.headway.app.util.AppDir;
@@ -44,7 +46,12 @@ public class CreateStepView extends LinearLayout {
     super(context, attrs, defStyleAttr);
     inflateLayout(context);
     mCreateStepButton.setOnClickListener(new _OnClickListener());
+    mCameraView.setOnLongClickListener(new _OnLongClickListener());
     mCameraView.setOnImageCapturedListener(new _OnImageCapturedListener());
+  }
+
+  public void setOnStepCreatedListener(final OnStepCreatedListener listener) {
+    mOnStepCreatedListener = listener;
   }
 
   public String getStepDescription() {
@@ -54,10 +61,6 @@ public class CreateStepView extends LinearLayout {
 
   public void clearStepDescriptionField() {
     mStepDescriptionField.setText("");
-  }
-
-  public void setOnStepCreatedListener(final OnStepCreatedListener listener) {
-    mOnStepCreatedListener = listener;
   }
 
   private void inflateLayout(final Context context) {
@@ -103,6 +106,16 @@ public class CreateStepView extends LinearLayout {
       mOnStepCreatedListener.onStepCreated(step);
 
       clearStepDescriptionField();
+    }
+  }
+
+  private class _OnLongClickListener implements OnLongClickListener {
+    @Override
+    public boolean onLongClick(final View v) {
+      final Context context = getContext();
+      final Intent endTaskCreationIntent = new Intent(context, TaskInitialiserActivity.class);
+      context.startActivity(endTaskCreationIntent);
+      return true;
     }
   }
 

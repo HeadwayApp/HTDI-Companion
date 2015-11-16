@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import ie.headway.app.xml.Step;
 

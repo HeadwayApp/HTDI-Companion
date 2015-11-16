@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi_companion.gui;
 
 import android.graphics.Bitmap;
 
