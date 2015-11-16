@@ -1,6 +1,7 @@
 package ie.headway.app.htdi_companion.camera;
 
 import android.content.Context;
+import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,7 +14,7 @@ import java.io.IOException;
  * is now not tied to either android.hardware.Camera or android.hardware.camera2 (which are
  * completely separate entities not related by any kind of inheritance or interface).
  */
-public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback, CameraViewControls {
+public abstract class AbstractCameraView extends SurfaceView implements SurfaceHolder.Callback, Camera.PictureCallback, CameraViewControls {
 
   protected AbstractCameraView(final Context context) {
     this(context, null);

@@ -1,7 +1,5 @@
 package ie.headway.app.htdi_companion;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -20,8 +18,10 @@ import ie.headway.app.xml.TaskPersister;
 
 public class TaskCreatorActivity extends HeadwayActivity {
 
+  private static final TaskPersister TASK_SERIALIZER = new TaskPersister();
+
   private Task mTask;
-  private StepCreatorFragment mStepCreatorFragment;
+  private CreateStepView mCreateStepView;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -29,9 +29,8 @@ public class TaskCreatorActivity extends HeadwayActivity {
     setContentView(R.layout.activity_task_creator);
     mTask = getTask();
     mTask.makeRequiredDirs();
-    mStepCreatorFragment = getStepCreatorFragment();
-
-    mStepCreatorFragment.registerOnStepCreatedListener(new OnStepCreatedListener() {
+    mCreateStepView = (CreateStepView)findViewById(R.id.create_step_view);
+    mCreateStepView.setOnStepCreatedListener(new OnStepCreatedListener() {
       @Override
       public void onStepCreated(final Step step) {
         serializeStep(step);
@@ -49,8 +48,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
     final PortableStep contextualisedStep = contextualiseStep(step);
     mTask.addStep(contextualisedStep);
 
-    final TaskPersister taskPersister = new TaskPersister();
-    taskPersister.write(mTask);
+    TASK_SERIALIZER.write(mTask);
 
   }
 
@@ -72,13 +70,6 @@ public class TaskCreatorActivity extends HeadwayActivity {
     final Parcelable taskParcleable = intent.getParcelableExtra("task");
     final Task task = (Task) taskParcleable;
     return task;
-  }
-
-  private StepCreatorFragment getStepCreatorFragment() {
-    final FragmentManager fragmentManager = getFragmentManager();
-    final Fragment fragment = fragmentManager.findFragmentById(R.id.step_creator_fragment);
-    final StepCreatorFragment stepCreatorFragment = (StepCreatorFragment)fragment;
-    return stepCreatorFragment;
   }
 
 }

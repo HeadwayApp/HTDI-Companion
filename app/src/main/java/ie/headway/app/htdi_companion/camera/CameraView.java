@@ -1,6 +1,5 @@
 package ie.headway.app.htdi_companion.camera;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.AttributeSet;
@@ -9,18 +8,18 @@ import android.view.SurfaceHolder;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-public final class CameraView extends AbstractCameraView implements Camera.PictureCallback {
+public final class CameraView extends AbstractCameraView {
 
   private final Camera mCamera;
-  private WeakReference<OnImageCapturedListener> mImageCapturedListener;
+  private WeakReference<OnImageCapturedListener> mImageCapturedListenerRef;
 
   public CameraView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
-    mCamera = AutoOrientatedCamera.getCamera((Activity)context);
+    mCamera = AutoOrientatedCamera.getCamera(context);
   }
 
-  public void registerOnImageCapturedListener(final OnImageCapturedListener listener) {
-    mImageCapturedListener = new WeakReference<>(listener);
+  public void setOnImageCapturedListener(final OnImageCapturedListener listener) {
+    mImageCapturedListenerRef = new WeakReference<>(listener);
   }
 
   @Override
@@ -54,7 +53,7 @@ public final class CameraView extends AbstractCameraView implements Camera.Pictu
   @Override
   public void onPictureTaken(final byte[] data, final Camera camera) {
     try {
-      final OnImageCapturedListener listener = mImageCapturedListener.get();
+      final OnImageCapturedListener listener = mImageCapturedListenerRef.get();
       listener.onImageCaptured(data);
       refreshCameraView();
     } catch (IOException e) {

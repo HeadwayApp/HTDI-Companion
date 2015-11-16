@@ -4,9 +4,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent" >
 
-    <fragment class="ie.headway.app.htdi_companion.StepCreatorFragment"
-        android:id="@+id/step_creator_fragment"
+    <ie.headway.app.htdi_companion.CreateStepView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/create_step_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </FrameLayout>
