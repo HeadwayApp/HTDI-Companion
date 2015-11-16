@@ -10,12 +10,14 @@ import java.lang.ref.WeakReference;
 
 public final class CameraView extends AbstractCameraView {
 
-  private final Camera mCamera;
+  private Context mContext;
+
+  private Camera mCamera;
   private WeakReference<OnImageCapturedListener> mImageCapturedListenerRef;
 
   public CameraView(final Context context, final AttributeSet attrs) {
     super(context, attrs);
-    mCamera = AutoOrientatedCamera.getCamera(context);
+    mContext = context;
   }
 
   public void setOnImageCapturedListener(final OnImageCapturedListener listener) {
@@ -35,6 +37,7 @@ public final class CameraView extends AbstractCameraView {
 
   @Override
   public void startPreview() throws IOException {
+    mCamera = AutoOrientatedCamera.getCamera(mContext);
     final SurfaceHolder holder = getHolder();
     mCamera.setPreviewDisplay(holder);
     mCamera.startPreview();
@@ -43,6 +46,7 @@ public final class CameraView extends AbstractCameraView {
   @Override
   public void stopPreview() {
     mCamera.stopPreview();
+    releaseCamera();
   }
 
   @Override

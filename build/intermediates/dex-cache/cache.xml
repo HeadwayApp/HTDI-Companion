@@ -5,7 +5,7 @@
         jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/HTDI-Companion/headwaySharedLibrary/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="08b633351efe32968a6b69dadc03dd768ace051c">
+        sha1="3f313be569cffb39ed1634387c6129cb0cfc98b9">
         <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/classes-9805fd5dc159b66cfa59691a21a66992f5e0ad7d.jar" />
     </item>
 
