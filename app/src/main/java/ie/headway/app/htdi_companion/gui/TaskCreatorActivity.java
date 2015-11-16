@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ie.headway.app.htdi_companion.R;
 import ie.headway.app.util.HeadwayActivity;
 import ie.headway.app.xml.PortableStep;
@@ -17,15 +19,15 @@ public class TaskCreatorActivity extends HeadwayActivity {
   private static final TaskPersister TASK_SERIALIZER = new TaskPersister();
 
   private Task mTask;
-  private CreateStepView mCreateStepView;
+  @Bind(R.id.create_step_view) CreateStepView mCreateStepView;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_task_creator);
+    ButterKnife.bind(this);
     mTask = getTask();
     mTask.makeRequiredDirs();
-    mCreateStepView = (CreateStepView)findViewById(R.id.create_step_view);
     mCreateStepView.setOnStepCreatedListener(new OnStepCreatedListener() {
       @Override
       public void onStepCreated(final Step step) {
