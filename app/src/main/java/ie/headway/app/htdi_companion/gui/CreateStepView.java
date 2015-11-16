@@ -1,13 +1,19 @@
 package ie.headway.app.htdi_companion.gui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
+import android.media.MediaRecorder;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,6 +21,7 @@ import android.widget.LinearLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import butterknife.Bind;
@@ -78,7 +85,6 @@ public class CreateStepView extends LinearLayout {
     bitmap = fixBitmap.fixBitmap(bitmap);  //TODO: Lot of processing happens here. Do this off the main thread.
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
   }
-
   private class _OnClickListener implements View.OnClickListener {
     @Override
     public void onClick(final View view) {
@@ -102,8 +108,73 @@ public class CreateStepView extends LinearLayout {
 
       writeDataAsBitmap(os, data);
 
-      final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), "");
-      mOnStepCreatedListener.onStepCreated(step);
+      final Context context = getContext();
+
+      new AlertDialog.Builder(context)
+          .setTitle("Confirm record")
+          .setMessage("Do you want to record audio for this step?")
+          .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+              mStepDescriptionField.setEnabled(false);
+              mCreateStepButton.setEnabled(false);
+              mCameraView.setEnabled(false);
+
+              final String audFilePath = AppDir.TMP.getPath(System.currentTimeMillis() + ".3gp");
+
+              final MediaRecorder audioRecorder = new MediaRecorder();
+              audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+              audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+              audioRecorder.setOutputFile(audFilePath);
+              audioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+              try {
+                audioRecorder.prepare();
+              } catch (IOException ioe) {
+                throw new RuntimeException("couldn't prepare audio recorder", ioe);
+              }
+
+              final WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+
+              final Button stopRecBttn = new Button(context);
+              stopRecBttn.setText("stop recording");
+
+              stopRecBttn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  audioRecorder.stop();
+                  audioRecorder.release();
+                  final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), audFilePath);
+                  mOnStepCreatedListener.onStepCreated(step);
+                  mStepDescriptionField.setEnabled(true);
+                  mCreateStepButton.setEnabled(true);
+                  mCameraView.setEnabled(true);
+                  windowManager.removeView(stopRecBttn);
+                }
+              });
+
+              WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                  WindowManager.LayoutParams.WRAP_CONTENT,
+                  WindowManager.LayoutParams.WRAP_CONTENT,
+                  WindowManager.LayoutParams.TYPE_PHONE,
+                  WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                  PixelFormat.TRANSLUCENT);
+              params.gravity = Gravity.LEFT;
+
+              windowManager.addView(stopRecBttn, params);
+
+              audioRecorder.start();
+            }
+          })
+          .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), "");
+              mOnStepCreatedListener.onStepCreated(step);
+            }
+          })
+          .show();
 
       clearStepDescriptionField();
     }
