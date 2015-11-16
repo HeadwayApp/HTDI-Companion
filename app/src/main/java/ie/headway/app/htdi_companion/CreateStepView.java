@@ -43,32 +43,8 @@ public class CreateStepView extends LinearLayout {
   public CreateStepView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     inflateLayout(context);
-    mCreateStepButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-    public void onClick(final View view) {
-        mCameraView.captureImage();
-      }
-    });
-    mCameraView.setOnImageCapturedListener(new OnImageCapturedListener() {
-      @Override
-      public void onImageCaptured(byte[] data) {
-        final String stepDescription = getStepDescription();
-
-        final File imgFile = AppDir.TMP.getFile(System.currentTimeMillis() + ".jpg");
-        OutputStream os;
-
-        try {
-          os = new FileOutputStream(imgFile);
-        } catch (FileNotFoundException e) {
-          throw new RuntimeException("couldn't open output stream for " + imgFile, e);
-        }
-
-        writeDataAsBitmap(os, data);
-
-        final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), "");
-        mOnStepCreatedListener.onStepCreated(step);
-      }
-    });
+    mCreateStepButton.setOnClickListener(new _OnClickListener());
+    mCameraView.setOnImageCapturedListener(new _OnImageCapturedListener());
   }
 
   public String getStepDescription() {
@@ -100,6 +76,34 @@ public class CreateStepView extends LinearLayout {
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
   }
 
-//  private _OnImageCapturedListener
+  private class _OnClickListener implements View.OnClickListener {
+    @Override
+    public void onClick(final View view) {
+      mCameraView.captureImage();
+    }
+  }
+
+  private class _OnImageCapturedListener implements OnImageCapturedListener {
+    @Override
+    public void onImageCaptured(final byte[] data) {
+      final String stepDescription = getStepDescription();
+
+      final File imgFile = AppDir.TMP.getFile(System.currentTimeMillis() + ".jpg");
+      OutputStream os;
+
+      try {
+        os = new FileOutputStream(imgFile);
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException("couldn't open output stream for " + imgFile, e);
+      }
+
+      writeDataAsBitmap(os, data);
+
+      final Step step = new PortableStep(stepDescription, imgFile.getAbsolutePath(), "");
+      mOnStepCreatedListener.onStepCreated(step);
+
+      clearStepDescriptionField();
+    }
+  }
 
 }

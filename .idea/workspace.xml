@@ -11,25 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b942964-dcd3-46c8-9607-2739b1d4821a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/butterknife_7_0_1.xml" />
       <change type="NEW" beforePath="" afterPath="$APPLICATION_CONFIG_DIR$/options/fileEditorProviderManager.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/StepCreatorFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/step_creator_fragment.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/AbstractCameraView.java" afterPath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/AbstractCameraView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/CameraView.java" afterPath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/CameraView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java" afterPath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_creator.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_creator.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="HTDI-Companion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,10 +48,10 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
+              <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
               <folding>
-                <element signature="e#984#1123#0" expanded="true" />
-                <element signature="e#1122#1123#0" expanded="true" />
+                <element signature="e#895#1034#0" expanded="true" />
+                <element signature="e#1033#1034#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,12 +61,9 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.820598">
-              <caret line="102" column="36" selection-start-line="102" selection-start-column="36" selection-end-line="102" selection-end-column="36" />
+              <caret line="104" column="34" selection-start-line="104" selection-start-column="34" selection-end-line="104" selection-end-column="34" />
               <folding>
-                <element signature="e#1473#1610#0" expanded="true" />
-                <element signature="e#1609#1610#0" expanded="true" />
-                <element signature="e#1656#2324#0" expanded="true" />
-                <element signature="e#2323#2324#0" expanded="true" />
+                <element signature="class#_OnClickListener#0;class#CreateStepView#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2470,7 +2450,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/tmp/util/TaskPersister.java" />
         <option value="$PROJECT_DIR$/headwaySharedLibrary/src/main/java/ie/headway/app/disk/AppDir.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/HeadwayActivity.java" />
         <option value="$PROJECT_DIR$/headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java" />
@@ -2513,13 +2492,14 @@
         <option value="$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/PortableStep.java" />
         <option value="$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/Task.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/InMemoryStep.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/AbstractCameraView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/CameraView.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/StepCreatorFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/step_creator_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_task_creator.xml" />
+        <option value="$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/StepUtils.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java" />
       </list>
     </option>
@@ -3571,14 +3551,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/OnImageCapturedListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03986711">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/AbstractCameraView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.59800667">
@@ -3591,14 +3563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19933555">
           <caret line="25" column="14" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/OnStepCreatedListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07973422">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -3649,17 +3613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="33" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="33" />
-          <folding>
-            <element signature="e#984#1123#0" expanded="true" />
-            <element signature="e#1122#1123#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/ad53343e57ae0969aaf451a19eef381abe2ad3a1/butterknife-7.0.1-sources.jar!/butterknife/ButterKnife.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -3668,15 +3621,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../headwaySharedLibrary/src/main/java/ie/headway/app/xml/StepUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47840533">
+          <caret line="24" column="74" selection-start-line="24" selection-start-column="74" selection-end-line="24" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/OnStepCreatedListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11960133">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/camera/OnImageCapturedListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.03986711">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/TaskCreatorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
+          <folding>
+            <element signature="e#895#1034#0" expanded="true" />
+            <element signature="e#1033#1034#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/headway/app/htdi_companion/CreateStepView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.820598">
-          <caret line="102" column="36" selection-start-line="102" selection-start-column="36" selection-end-line="102" selection-end-column="36" />
+          <caret line="104" column="34" selection-start-line="104" selection-start-column="34" selection-end-line="104" selection-end-column="34" />
           <folding>
-            <element signature="e#1473#1610#0" expanded="true" />
-            <element signature="e#1609#1610#0" expanded="true" />
-            <element signature="e#1656#2324#0" expanded="true" />
-            <element signature="e#2323#2324#0" expanded="true" />
+            <element signature="class#_OnClickListener#0;class#CreateStepView#0" expanded="true" />
           </folding>
         </state>
       </provider>
