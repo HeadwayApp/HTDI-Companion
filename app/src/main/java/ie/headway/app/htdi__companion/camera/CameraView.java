@@ -56,8 +56,7 @@ public final class CameraView extends AbstractCameraView {
   @Override
   public void onPictureTaken(final byte[] data, final Camera camera) {
     try {
-      final OnImageCapturedListener listener = mImageCapturedListener;
-      listener.onImageCaptured(data);
+      mImageCapturedListener.onImageCaptured(data);
       refreshCameraView();
     } catch (IOException e) {
       throw new RuntimeException("couldn't refresh camera view", e);
