@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.gui;
+package ie.headway.app.htdi__companion.gui;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,9 +26,9 @@ import java.io.OutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ie.headway.app.htdi_companion.R;
-import ie.headway.app.htdi_companion.camera.CameraView;
-import ie.headway.app.htdi_companion.camera.OnImageCapturedListener;
+import ie.headway.app.htdi__companion.R;
+import ie.headway.app.htdi__companion.camera.CameraView;
+import ie.headway.app.htdi__companion.camera.OnImageCapturedListener;
 import ie.headway.app.util.AppDir;
 import ie.headway.app.xml.PortableStep;
 import ie.headway.app.xml.Step;

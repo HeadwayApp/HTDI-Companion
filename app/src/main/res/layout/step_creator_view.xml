@@ -19,7 +19,7 @@
         android:text="@string/create_step_button_text"
         android:textSize="25sp"/>
 
-    <ie.headway.app.htdi_companion.camera.CameraView
+    <ie.headway.app.htdi__companion.camera.CameraView
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

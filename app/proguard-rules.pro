@@ -9,6 +9,30 @@
 
 # Add any project specific keep options here:
 
+  ###  Butter Knife  ###
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+  ### Butter Knife  ###
+
+
+  ###  Guava  ###
+-dontwarn sun.misc.Unsafe
+-dontwarn com.google.common.collect.MinMaxPriorityQueue
+  ###  Guava  ###
+
+  ###  Javax  ###
+-dontwarn javax.**
+  ###  Javax  ###
+
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:

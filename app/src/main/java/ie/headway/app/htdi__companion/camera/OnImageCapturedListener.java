@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion.camera;
+package ie.headway.app.htdi__companion.camera;
 
 public interface OnImageCapturedListener {
 

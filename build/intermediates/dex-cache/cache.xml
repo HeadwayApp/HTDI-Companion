@@ -2,11 +2,67 @@
 <items version="2" >
 
     <item
+        jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-5383c8b4faa537b7a25d99445f79d46055876660.jar" />
+    </item>
+    <item
         jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/HTDI-Companion/headwaySharedLibrary/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="c77a8c420a1ad289246decd68a511bea9f7b3fbd">
-        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/release/classes-9805fd5dc159b66cfa59691a21a66992f5e0ad7d.jar" />
+        sha1="71e683867f52ba94d8f2760d5db3c55c85a78eb8">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/classes-9805fd5dc159b66cfa59691a21a66992f5e0ad7d.jar" />
+    </item>
+    <item
+        jar="/home/puter/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/butterknife-7.0.1-7bd1f67bf03789a223ce26d84c6924ac237cc6e0.jar" />
+    </item>
+    <item
+        jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/classes-f8c9710d20aea1150e1d5c65445eeaa98c93982d.jar" />
+    </item>
+    <item
+        jar="/home/puter/.gradle/caches/modules-2/files-2.1/org.simpleframework/simple-xml/2.7.1/dd91fb744c2ff921407475cb29a1e3fee397d411/simple-xml-2.7.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd91fb744c2ff921407475cb29a1e3fee397d411">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/simple-xml-2.7.1-7812f2a531bfba2a72b32382abc0087297769208.jar" />
+    </item>
+    <item
+        jar="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/classes-404a2d6ad50c924778a4ee8998828647130b97c7.jar" />
+    </item>
+    <item
+        jar="/home/puter/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.1-3e4d066db4c45bcd2917d91993d11d2300a613bf.jar" />
+    </item>
+    <item
+        jar="/home/puter/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/commons-io-2.4-ba4afbfe0aabbe46d3fcabcda30db77b0429b276.jar" />
+    </item>
+    <item
+        jar="/home/puter/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cce0823396aa693798f8882e64213b1772032b09">
+        <dex dex="/home/puter/StudioProjects/HTDI-Companion/app/build/intermediates/pre-dexed/debug/guava-18.0-0043b985fe6d13d36a5679caf561f31eda28fa45.jar" />
     </item>
 
 </items>

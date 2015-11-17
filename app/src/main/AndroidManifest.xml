@@ -1,4 +1,4 @@
-<manifest package="ie.headway.app.htdi_companion"
+<manifest package="ie.headway.app.htdi__companion"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".gui.SplashScreenActivity"
+            android:name="ie.headway.app.htdi__companion.gui.SplashScreenActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -26,10 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gui.TaskCreatorActivity"
+            android:name="ie.headway.app.htdi__companion.gui.TaskCreatorActivity"
             android:label="@string/app_name"/>
         <activity
-            android:name=".gui.TaskInitialiserActivity"
+            android:name="ie.headway.app.htdi__companion.gui.TaskInitialiserActivity"
             android:label="@string/app_name"/>
     </application>
 

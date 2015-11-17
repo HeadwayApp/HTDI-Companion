@@ -1,4 +1,4 @@
-package ie.headway.app.htdi_companion;
+package ie.headway.app.htdi__companion;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
