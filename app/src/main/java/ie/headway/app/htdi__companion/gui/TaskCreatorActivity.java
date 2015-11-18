@@ -8,11 +8,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ie.headway.app.htdi__companion.R;
 import ie.headway.app.util.HeadwayActivity;
-import ie.headway.app.xml.PortableStep;
-import ie.headway.app.xml.Step;
-import ie.headway.app.xml.StepUtils;
-import ie.headway.app.xml.Task;
-import ie.headway.app.xml.TaskPersister;
+import ie.headway.app.xml.step.PortableStep;
+import ie.headway.app.xml.step.Step;
+import ie.headway.app.xml.step.StepUtils;
+import ie.headway.app.xml.task.Task;
+import ie.headway.app.xml.task.TaskPersister;
 
 public class TaskCreatorActivity extends HeadwayActivity {
 

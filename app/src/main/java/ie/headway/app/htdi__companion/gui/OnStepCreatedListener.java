@@ -1,6 +1,6 @@
 package ie.headway.app.htdi__companion.gui;
 
-import ie.headway.app.xml.Step;
+import ie.headway.app.xml.step.Step;
 
 public interface OnStepCreatedListener {
 

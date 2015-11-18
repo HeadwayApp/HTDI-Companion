@@ -30,8 +30,8 @@ import ie.headway.app.htdi__companion.R;
 import ie.headway.app.htdi__companion.camera.CameraView;
 import ie.headway.app.htdi__companion.camera.OnImageCapturedListener;
 import ie.headway.app.util.AppDir;
-import ie.headway.app.xml.PortableStep;
-import ie.headway.app.xml.Step;
+import ie.headway.app.xml.step.PortableStep;
+import ie.headway.app.xml.step.Step;
 
 public class CreateStepView extends LinearLayout {
 
