@@ -1034,8 +1034,8 @@
     <inspection_tool class="StringCompareTo" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="StringConcatenation" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreAsserts" value="true" />
-      <option name="ignoreSystemOuts" value="false" />
-      <option name="ignoreSystemErrs" value="false" />
+      <option name="ignoreSystemOuts" value="true" />
+      <option name="ignoreSystemErrs" value="true" />
       <option name="ignoreThrowableArguments" value="true" />
       <option name="ignoreConstantInitializers" value="true" />
       <option name="ignoreInTestCode" value="false" />

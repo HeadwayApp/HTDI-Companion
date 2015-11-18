@@ -37,7 +37,7 @@ public class TaskCreatorActivity extends HeadwayActivity {
   }
 
   private void serializeStep(final Step step) {
-    final PortableStep contextualisedStep = StepUtils.contextualiseStep(step, mTask);
+    final PortableStep contextualisedStep = StepUtils.contextualiseStep(mTask, step);
     mTask.addStep(contextualisedStep);
     TASK_SERIALIZER.write(mTask);
   }
