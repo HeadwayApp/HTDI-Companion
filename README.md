@@ -1,2 +1,2 @@
-# HTDI-Companion
-A compnaion application for the How-To-Do-It! app
+# DEPRECATED
+go to https://github.com/abuicke/Headway
